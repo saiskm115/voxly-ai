@@ -1,6 +1,6 @@
 # Voxly AI — Interactive 3D Voice Employee Landing Page
 
-> An interactive landing page featuring **Voxly**, a real-time 3D AI voice employee powered by Three.js, React Three Fiber, Web Audio synthesis, and modern Tailwind CSS design.
+> An interactive, enterprise-grade landing page featuring **Voxly**, a real-time 3D AI voice employee. Built around the **Hero UI** design system as its aesthetic and interactive anchor—uniting living 3D character embodiment, sub-500ms Web Audio synthesis, disciplined typography, and Emil Kowalski craft principles.
 
 ![Voxly Preview](/public/images/VoxlyBot_preview.png)
 

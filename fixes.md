@@ -11,9 +11,25 @@
 This document serves as the single source of truth for auditing, refining, and transitioning **Voxly AI** from a prototype with high-energy landing page sections into an elite, production-ready enterprise product.
 
 ### Core Objectives
-1. **Eliminate "Vibecoded" / AI-Generated SaaS Tropes**: Transition away from purple gradients, colored-border cards, decorative pills, and generic glassmorphism toward a mature, editorial, high-craft product design inspired by Emil Kowalski.
-2. **Remove Unwanted Redundant Sections**: Completely excise `PhoneNumbersSection.jsx` (Dedicated Phone Numbers & Collaborative Handoff) from [`App.jsx`](file:///d:/Antigravity/src/App.jsx) and navigation.
-3. **Execute Full Pre-Launch Hardening**: Address all 15 production audit pillars—implement legal pages, complete SEO metadata (`robots.txt`, `sitemap.xml`, Open Graph), fix broken links, enforce single-goal CTA conversion hierarchy, add accessible error states, and optimize the 3D WebGL asset pipeline without removing the 3D mascot.
+1. **Built Using the Hero UI as the Design North Star**: The entire project must be built using the Hero UI (`Hero.jsx`) as its design anchor and aesthetic benchmark. Every section across the landing page must inherit the Hero's visual polish, high-contrast typography, disciplined spacing, tactile button interactions, and reactive character intelligence so the entire product feels cohesive, intentional, and premium.
+2. **Eliminate "Vibecoded" / AI-Generated SaaS Tropes**: Transition away from purple gradients, colored-border cards, decorative pills, and generic glassmorphism toward a mature, editorial, high-craft product design inspired by Emil Kowalski.
+3. **Remove Unwanted Redundant Sections**: Completely excise `PhoneNumbersSection.jsx` (Dedicated Phone Numbers & Collaborative Handoff) from [`App.jsx`](file:///d:/Antigravity/src/App.jsx) and navigation.
+4. **Execute Full Pre-Launch Hardening**: Address all 15 production audit pillars—implement legal pages, complete SEO metadata (`robots.txt`, `sitemap.xml`, Open Graph), fix broken links, enforce single-goal CTA conversion hierarchy, add accessible error states, and optimize the 3D WebGL asset pipeline without removing the 3D mascot.
+
+---
+
+## Core Architectural Directive: Built Around the Hero UI
+
+The **Hero UI** represents the core identity, conversational soul, and design pinnacle of Voxly AI. The entire landing page and surrounding application interfaces must be explicitly constructed as a natural extension of this Hero UI:
+
+### Principles of the Hero UI Design System
+- **Living Character Embodiment**: Voxly (the 3D mascot) anchors the brand with subtle cursor tracking, articulated gestures (two-hands wave, celebratory roll), and contextual dialogue cards. Subsequent sections must reflect this living intelligence rather than collapsing into static brochure cards.
+- **Typographic Authority**: Clean, solid display typography (deep navy `#0F0E17` / `#111019` with tight letter-spacing `-0.03em`) without gimmick gradient text fills or forced italics.
+- **Conversion Anchor**: Dual high-impact CTAs established in the Hero:
+  - **Primary**: `[ Build Your Agent ]` (Direct route to workspace onboarding/pricing)
+  - **Secondary**: `[ Talk to AI ]` (Instant launch of live voice conversation & speech synthesis)
+- **Visual Harmony & Surface Hierarchy**: Solid, premium card surfaces with hairline borders (`border-black/5` or `border-neutral-200`), tactile active button depressions, and generous whitespace.
+- **Zero Style Drift**: No downstream section should feel like an unrelated template or generic card grid; each section (Capabilities, Studio, Voice Test, Pipeline, Team, Analytics, Pricing) must look and feel as if designed by the exact same product designer who crafted the Hero.
 
 ---
 

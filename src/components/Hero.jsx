@@ -330,13 +330,13 @@ export function Hero({
                 <span>{HERO_CONTENT.ctaPrimary}</span>
               </button>
 
-              {/* Secondary CTA: Watch Demo matching reference with play icon */}
+              {/* Secondary CTA: Talk to AI */}
               <button
-                onClick={onWatchDemo}
-                className="inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full text-sm font-bold text-[#171522] bg-white hover:bg-[#F9F8FD] border border-[#7657E8]/15 shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                onClick={onTalkToMe}
+                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-bold text-[#171522] bg-white hover:bg-[#F9F8FD] border border-[#7657E8]/20 shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
               >
                 <div className="w-7 h-7 rounded-full bg-[#7657E8] flex items-center justify-center text-white shadow-xs">
-                  <Play className="w-3 h-3 fill-current ml-0.5" />
+                  <Mic className="w-3.5 h-3.5" />
                 </div>
                 <span>{HERO_CONTENT.ctaSecondary}</span>
               </button>

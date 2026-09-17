@@ -1,11 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { InteractiveBuilder } from './components/InteractiveBuilder';
+import { AiEmployeeSection } from './components/AiEmployeeSection';
+import { TalkToAiSection } from './components/TalkToAiSection';
+import { PhoneChannelsSection } from './components/PhoneChannelsSection';
+import { LeadEngineSection } from './components/LeadEngineSection';
+import { CampaignScaleSection } from './components/CampaignScaleSection';
 import { TrainingSection } from './components/TrainingSection';
-import { InteractiveCallSimulator } from './components/InteractiveCallSimulator';
+import { AiTeamSection } from './components/AiTeamSection';
+import { ConversationHistorySection } from './components/ConversationHistorySection';
 import { AnalyticsSection } from './components/AnalyticsSection';
-import { PlatformGrid } from './components/PlatformGrid';
+import { PhoneNumbersSection } from './components/PhoneNumbersSection';
+import { IndustriesSection } from './components/IndustriesSection';
+import { HowItWorksSection } from './components/HowItWorksSection';
 import { PricingSection } from './components/PricingSection';
 import { FAQSection } from './components/FAQSection';
 import { FinalCTA } from './components/FinalCTA';
@@ -19,37 +26,6 @@ export function App() {
   const [isTalkModalOpen, setIsTalkModalOpen] = useState(false);
   const botControllerRef = useRef(null);
 
-  // Section scroll observer to subtly synchronize 3D bot states with narrative sections
-  useEffect(() => {
-    const handleScroll = () => {
-      // Don't override if a modal is active
-      if (isDemoModalOpen || isTalkModalOpen) return;
-
-      const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-
-      const builderEl = document.getElementById('builder');
-      const trainEl = document.getElementById('train');
-      const simulatorEl = document.getElementById('simulator');
-      const platformEl = document.getElementById('platform');
-      const pricingEl = document.getElementById('pricing');
-
-      // Subtle reactive updates when sections enter viewport
-      if (pricingEl && scrollY > pricingEl.offsetTop - windowHeight * 0.5) {
-        // Near bottom
-      } else if (simulatorEl && scrollY > simulatorEl.offsetTop - windowHeight * 0.5) {
-        // Simulator section
-      } else if (trainEl && scrollY > trainEl.offsetTop - windowHeight * 0.5) {
-        // Train section
-      } else if (builderEl && scrollY > builderEl.offsetTop - windowHeight * 0.5) {
-        // Builder section
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isDemoModalOpen, isTalkModalOpen]);
-
   const handleGetStarted = () => {
     const pricing = document.getElementById('pricing');
     if (pricing) {
@@ -58,7 +34,7 @@ export function App() {
   };
 
   const handleSelectPlan = (planName) => {
-    alert(`Thank you for selecting the ${planName} plan! In production, this redirects to your billing checkout or onboarding dashboard.`);
+    alert(`Thank you for selecting the ${planName} plan! In production, this redirects to your onboarding workspace.`);
   };
 
   return (
@@ -69,39 +45,82 @@ export function App() {
         onWatchDemo={() => setIsDemoModalOpen(true)}
       />
 
-      {/* Hero Section with Live Three.js Bot Canvas */}
-      <Hero
-        botState={botState}
-        setBotState={setBotState}
-        onTalkToMe={() => setIsTalkModalOpen(true)}
-        onWatchDemo={() => setIsDemoModalOpen(true)}
-        onGetStarted={handleGetStarted}
-        botControllerRef={botControllerRef}
-        isModalOpen={isDemoModalOpen || isTalkModalOpen}
-      />
-
-      {/* Main Content Sections */}
+      {/* Main Content Sections: Exact 16-Stage Ordered Architecture */}
       <main className="flex-1">
-        <InteractiveBuilder
-          onSelectBotState={(state) => setBotState(state)}
+        {/* 01: Hero — AI Voice Agent */}
+        <Hero
+          botState={botState}
+          setBotState={setBotState}
+          onTalkToMe={() => setIsTalkModalOpen(true)}
+          onWatchDemo={() => setIsDemoModalOpen(true)}
+          onGetStarted={handleGetStarted}
+          botControllerRef={botControllerRef}
+          isModalOpen={isDemoModalOpen || isTalkModalOpen}
         />
 
+        {/* 02: What Can Your AI Employee Do? & Build in Minutes */}
+        <AiEmployeeSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 03: Talk to Your AI (Live Audio & Architecture) */}
+        <TalkToAiSection
+          onOpenTalkModal={() => setIsTalkModalOpen(true)}
+        />
+
+        {/* 04: AI That Actually Works on the Phone (Inbound, Outbound, Campaigns) */}
+        <PhoneChannelsSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 05: Turn Calls Into Leads (Pipeline & Intelligence) */}
+        <LeadEngineSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 06: Run Campaigns at Scale (Bulk Dialing Engine) */}
+        <CampaignScaleSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 07: Train Your AI (Business Knowledge & AI Brain) */}
         <TrainingSection />
 
-        <InteractiveCallSimulator
-          onSelectBotState={(state) => setBotState(state)}
+        {/* 08: Build an AI Team (Sales, Support, Receptionist, Follow-up) */}
+        <AiTeamSection
+          onGetStarted={handleGetStarted}
         />
 
+        {/* 09: Conversations & Call History (Transcripts & Sentiment) */}
+        <ConversationHistorySection />
+
+        {/* 10: AI Performance Dashboard (12k+ Calls & Telemetry) */}
         <AnalyticsSection />
 
-        <PlatformGrid />
+        {/* 11: Phone Numbers & AI + Human Handover */}
+        <PhoneNumbersSection
+          onGetStarted={handleGetStarted}
+        />
 
+        {/* 12: Industries / Use Cases (6 Vertical Solutions) */}
+        <IndustriesSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 13: Simple Setup (5 Steps) & Transparent Usage Billing */}
+        <HowItWorksSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 14: Pricing (Plans & Minutes) */}
         <PricingSection
           onSelectPlan={handleSelectPlan}
         />
 
+        {/* 15: Frequently Asked Questions */}
         <FAQSection />
 
+        {/* 16: Final Call to Action */}
         <FinalCTA
           onGetStarted={handleGetStarted}
           onTalkToMe={() => setIsTalkModalOpen(true)}

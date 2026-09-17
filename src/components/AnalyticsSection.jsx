@@ -1,140 +1,189 @@
 import React, { useState } from 'react';
-import { SectionHeading } from './SectionHeading';
-import { ANALYTICS_DATA } from '../data/siteContent';
-import { BarChart3, TrendingUp, Clock, DollarSign, Users, Award, Shield } from 'lucide-react';
+import {
+  BarChart3,
+  TrendingUp,
+  Clock,
+  CheckCircle2,
+  Users,
+  Target,
+  PieChart,
+  Filter,
+  Calendar
+} from 'lucide-react';
+import { PERFORMANCE_STATS } from '../data/siteContent';
 
 export function AnalyticsSection() {
-  const [activeDay, setActiveDay] = useState('Fri');
-
-  const maxCalls = Math.max(...ANALYTICS_DATA.trends.map((t) => t.calls));
+  const [activeChartTab, setActiveChartTab] = useState('calls');
 
   return (
-    <section className="py-24 bg-[#FAF9FD] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
-        <SectionHeading
-          badge="PERFORMANCE ANALYTICS"
-          title="Measurable Impact on Every"
-          highlight="Connected Call"
-          subtitle="Real-time telemetric visibility into fleet utilization, qualification funnels, unit economics, and customer sentiment."
-        />
-
-        {/* Top Metric Cards Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
-          
-          <div className="bg-white p-6 rounded-2xl border border-[#7657E8]/10 shadow-xs hover:shadow-md transition-shadow">
-            <div className="w-10 h-10 rounded-xl bg-[#EDE7FF] flex items-center justify-center text-[#7657E8] mb-4">
-              <Users className="w-5 h-5" />
-            </div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-[#171522]">
-              {ANALYTICS_DATA.totalCalls}
-            </div>
-            <div className="text-xs font-semibold text-[#6F6B7D] mt-1">Total Connected Calls</div>
-            <div className="mt-3 flex items-center gap-1 text-[11px] font-bold text-[#20B486]">
-              <TrendingUp className="w-3.5 h-3.5" /> +18.4% month-over-month
-            </div>
+    <section id="analytics" className="py-24 sm:py-32 bg-[#FAF9FD] relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDE7FF] border border-[#7657E8]/15 text-[#7657E8] text-xs font-bold tracking-widest uppercase mb-4 shadow-xs">
+            <BarChart3 className="w-3.5 h-3.5" />
+            <span>Telemetry & Intelligence</span>
           </div>
-
-          <div className="bg-white p-6 rounded-2xl border border-[#7657E8]/10 shadow-xs hover:shadow-md transition-shadow">
-            <div className="w-10 h-10 rounded-xl bg-[#20B486]/10 flex items-center justify-center text-[#20B486] mb-4">
-              <Award className="w-5 h-5" />
-            </div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-[#171522]">
-              {ANALYTICS_DATA.answerRate}
-            </div>
-            <div className="text-xs font-semibold text-[#6F6B7D] mt-1">First-Ring Pickup Rate</div>
-            <div className="mt-3 flex items-center gap-1 text-[11px] font-bold text-[#20B486]">
-              <TrendingUp className="w-3.5 h-3.5" /> STIR/SHAKEN verified
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl border border-[#7657E8]/10 shadow-xs hover:shadow-md transition-shadow">
-            <div className="w-10 h-10 rounded-xl bg-[#E5A62B]/10 flex items-center justify-center text-[#E5A62B] mb-4">
-              <Clock className="w-5 h-5" />
-            </div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-[#171522]">
-              {ANALYTICS_DATA.avgCallDuration}
-            </div>
-            <div className="text-xs font-semibold text-[#6F6B7D] mt-1">Average Call Resolution</div>
-            <div className="mt-3 text-[11px] font-bold text-[#7657E8]">
-              Zero hold time recorded
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl border border-[#7657E8]/10 shadow-xs hover:shadow-md transition-shadow">
-            <div className="w-10 h-10 rounded-xl bg-[#5D6FEF]/10 flex items-center justify-center text-[#5D6FEF] mb-4">
-              <DollarSign className="w-5 h-5" />
-            </div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-[#171522]">
-              {ANALYTICS_DATA.humanSavings}
-            </div>
-            <div className="text-xs font-semibold text-[#6F6B7D] mt-1">Cost Reduction vs Reps</div>
-            <div className="mt-3 flex items-center gap-1 text-[11px] font-bold text-[#20B486]">
-              <TrendingUp className="w-3.5 h-3.5" /> $0.14/min transparent rate
-            </div>
-          </div>
-
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#171522] tracking-tight mb-4">
+            Your AI gets better{' '}
+            <span className="gradient-text-lavender">when you can see everything.</span>
+          </h2>
+          <p className="text-base sm:text-lg text-[#6F6B7D] leading-relaxed">
+            {PERFORMANCE_STATS.subtitle}
+          </p>
         </div>
 
-        {/* Volume & Qualification Trend Visualization */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#7657E8]/15 shadow-xl shadow-[#7657E8]/5">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-            <div>
-              <h3 className="text-base sm:text-lg font-bold text-[#171522] flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-[#7657E8]" /> Weekly Call Traffic & Lead Conversion
-              </h3>
-              <p className="text-xs text-[#6F6B7D] mt-0.5">
-                Concurrent inbound bursts automatically load-balanced across geographic SIP nodes
-              </p>
-            </div>
-            <div className="flex items-center gap-4 text-xs font-bold">
-              <span className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded bg-[#7657E8]" /> Total Inbound Calls
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded bg-[#9B7BF7]/50" /> Qualified Opportunities
-              </span>
-            </div>
+        {/* Large Top Dashboard Mockup Card */}
+        <div className="max-w-5xl mx-auto bg-white rounded-3xl border border-[#7657E8]/20 shadow-xl p-6 sm:p-10 mb-12">
+          
+          {/* 4 Primary Top Metrics Grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 pb-8 border-b border-[#7657E8]/10 mb-8">
+            {PERFORMANCE_STATS.metrics.map((m) => (
+              <div key={m.label} className="bg-[#FAF9FD] p-5 rounded-2xl border border-[#7657E8]/10">
+                <span className="text-xs font-bold text-[#6F6B7D] uppercase tracking-wider block mb-1">
+                  {m.label}
+                </span>
+                <div className="text-3xl sm:text-4xl font-extrabold text-[#171522] mb-1">
+                  {m.value}
+                </div>
+                <span className="text-xs font-semibold text-[#20B486] flex items-center gap-1">
+                  <TrendingUp className="w-3.5 h-3.5" /> {m.change}
+                </span>
+              </div>
+            ))}
           </div>
 
-          {/* Interactive Bar Columns */}
-          <div className="grid grid-cols-7 gap-2 sm:gap-6 items-end h-64 pt-6 pb-2 border-b border-[#7657E8]/10">
-            {ANALYTICS_DATA.trends.map((item) => {
-              const heightPercent = (item.calls / maxCalls) * 100;
-              const qualPercent = (item.qualified / maxCalls) * 100;
-              const isSelected = activeDay === item.day;
-              return (
-                <div
-                  key={item.day}
-                  onMouseEnter={() => setActiveDay(item.day)}
-                  className="flex flex-col items-center h-full justify-end group cursor-pointer"
+          {/* Interactive Chart View Tabs */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <div className="flex flex-wrap items-center gap-2">
+              {[
+                { id: 'calls', label: 'Calls over time' },
+                { id: 'outcomes', label: 'Outcomes' },
+                { id: 'funnel', label: 'Conversion funnel' },
+                { id: 'hours', label: 'Business hours' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveChartTab(tab.id)}
+                  className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                    activeChartTab === tab.id
+                      ? 'bg-[#7657E8] text-white shadow-sm'
+                      : 'bg-[#FAF9FD] text-[#6F6B7D] hover:text-[#171522] border border-[#7657E8]/15'
+                  }`}
                 >
-                  <div className="w-full max-w-[48px] flex flex-col items-center justify-end h-full relative">
-                    {/* Tooltip on active */}
-                    {isSelected && (
-                      <div className="absolute -top-12 bg-[#171522] text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-md whitespace-nowrap z-10 pointer-events-none">
-                        {item.calls.toLocaleString()} calls ({item.qualified.toLocaleString()} qualified)
-                      </div>
-                    )}
-                    <div
-                      className={`w-full rounded-t-xl transition-all duration-300 relative ${
-                        isSelected ? 'bg-[#7657E8]' : 'bg-[#EDE7FF] group-hover:bg-[#D8D1F5]'
-                      }`}
-                      style={{ height: `${heightPercent}%` }}
-                    >
-                      {/* Inner qualified portion */}
-                      <div
-                        className="w-full bg-[#9B7BF7] rounded-t-xl absolute bottom-0 opacity-80"
-                        style={{ height: `${(item.qualified / item.calls) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                  <span className={`text-xs font-bold mt-3 ${isSelected ? 'text-[#7657E8]' : 'text-[#6F6B7D]'}`}>
-                    {item.day}
-                  </span>
-                </div>
-              );
-            })}
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <span className="text-xs font-semibold text-[#6F6B7D]">
+              Real-time telemetry updated 3s ago
+            </span>
           </div>
+
+          {/* Chart 1: Calls Over Time */}
+          {activeChartTab === 'calls' && (
+            <div className="space-y-4">
+              <div className="h-64 flex items-end justify-between gap-4 sm:gap-8 pt-6 pb-2 border-b border-[#7657E8]/10">
+                {PERFORMANCE_STATS.charts.callsOverTime.map((item) => {
+                  const heightCalls = (item.calls / 13000) * 100;
+                  const heightResolved = (item.resolved / 13000) * 100;
+                  return (
+                    <div key={item.month} className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                      <div className="w-full max-w-[48px] flex items-end justify-center gap-1 h-full">
+                        <div
+                          className="w-1/2 bg-[#7657E8] rounded-t-lg transition-all"
+                          style={{ height: `${heightCalls}%` }}
+                          title={`Total Calls: ${item.calls}`}
+                        />
+                        <div
+                          className="w-1/2 bg-[#20B486] rounded-t-lg transition-all"
+                          style={{ height: `${heightResolved}%` }}
+                          title={`Resolved: ${item.resolved}`}
+                        />
+                      </div>
+                      <span className="text-xs font-bold text-[#6F6B7D]">{item.month}</span>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex justify-center gap-6 text-xs font-bold pt-2">
+                <span className="flex items-center gap-2 text-[#7657E8]">
+                  <span className="w-3 h-3 rounded bg-[#7657E8]" /> Total Inbound & Outbound Calls
+                </span>
+                <span className="flex items-center gap-2 text-[#20B486]">
+                  <span className="w-3 h-3 rounded bg-[#20B486]" /> Fully Resolved by AI (Zero Human Intervention)
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Chart 2: Outcomes */}
+          {activeChartTab === 'outcomes' && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 py-6">
+              {PERFORMANCE_STATS.charts.outcomes.map((out) => (
+                <div key={out.label} className="bg-[#FAF9FD] p-6 rounded-2xl border border-[#7657E8]/15 text-center">
+                  <div
+                    className="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-2xl font-extrabold text-white mb-4 shadow-md"
+                    style={{ backgroundColor: out.color }}
+                  >
+                    {out.pct}%
+                  </div>
+                  <h4 className="text-sm font-extrabold text-[#171522] mb-1">{out.label}</h4>
+                  <p className="text-xs text-[#6F6B7D]">Automatic telemetry categorization</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Chart 3: Conversion Funnel */}
+          {activeChartTab === 'funnel' && (
+            <div className="space-y-3 py-4 max-w-2xl mx-auto">
+              {PERFORMANCE_STATS.charts.funnel.map((fn, idx) => (
+                <div key={fn.stage} className="space-y-1">
+                  <div className="flex justify-between text-xs font-bold">
+                    <span className="text-[#171522]">{fn.stage}</span>
+                    <span className="text-[#7657E8]">{fn.count.toLocaleString()} ({fn.pct})</span>
+                  </div>
+                  <div className="w-full h-3 rounded-full bg-[#EDE7FF] overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-[#7657E8] to-[#9B7BF7] rounded-full transition-all"
+                      style={{ width: `${100 - idx * 21}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Chart 4: Business Hours */}
+          {activeChartTab === 'hours' && (
+            <div className="py-4 text-center space-y-4">
+              <span className="text-xs font-bold text-[#6F6B7D] uppercase tracking-wider block">
+                Call Volume Distribution by Hour of Day (24/7 Coverage)
+              </span>
+              <div className="grid grid-cols-8 sm:grid-cols-12 gap-1.5 max-w-3xl mx-auto">
+                {[
+                  { h: '12am', load: 15 }, { h: '2am', load: 10 }, { h: '4am', load: 12 },
+                  { h: '6am', load: 25 }, { h: '8am', load: 68 }, { h: '9am', load: 95 },
+                  { h: '11am', load: 98 }, { h: '1pm', load: 88 }, { h: '3pm', load: 92 },
+                  { h: '5pm', load: 74 }, { h: '7pm', load: 45 }, { h: '10pm', load: 22 },
+                ].map((slot) => (
+                  <div key={slot.h} className="bg-[#FAF9FD] p-2 rounded-xl border border-[#7657E8]/10 text-center">
+                    <div
+                      className="w-full h-12 rounded-lg bg-gradient-to-t from-[#7657E8] to-[#9B7BF7] transition-all mb-1 opacity-80"
+                      style={{ height: `${Math.max(16, (slot.load / 100) * 48)}px` }}
+                    />
+                    <span className="text-[10px] font-bold text-[#171522] block">{slot.h}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-[#6F6B7D]">
+                Voxly maintains 0-second hold times even during peak 9:00 AM – 3:00 PM enterprise traffic bursts.
+              </p>
+            </div>
+          )}
 
         </div>
 

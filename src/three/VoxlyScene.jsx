@@ -28,6 +28,7 @@ export function VoxlyScene({
   audioAmplitude = 0,
   externalPointer = null,
   className = '',
+  isInView = true,
 }) {
   const [internalPointer, setInternalPointer] = useState({ x: 0, y: 0 });
   const [hasWebGLError, setHasWebGLError] = useState(false);
@@ -59,7 +60,7 @@ export function VoxlyScene({
 
   if (hasWebGLError) {
     return (
-      <div className={`relative flex items-center justify-center p-8 bg-[#EDE7FF]/40 rounded-3xl ${className}`}>
+      <div className={`relative flex items-center justify-center p-8 bg-[#FAF9FD] rounded-3xl ${className}`}>
         <img
           src="/images/VoxlyBot_preview.png"
           alt="Voxly AI Employee Preview"
@@ -77,6 +78,7 @@ export function VoxlyScene({
     >
       <Suspense fallback={<CanvasLoader />}>
         <Canvas
+          frameloop={isInView ? 'always' : 'never'}
           camera={{
             position: isMobile ? [0, 0.2, 5.2] : [0, 0.35, 4.6],
             fov: isMobile ? 40 : 36,

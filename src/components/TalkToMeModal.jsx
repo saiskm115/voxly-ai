@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Mic, MicOff, Sparkles, Volume2, AlertCircle } from 'lucide-react';
+import { X, Mic, MicOff, Volume2, AlertCircle } from 'lucide-react';
 import { voiceAgent } from '../services/voiceAgent';
 
 const QUICK_PROMPTS = [
@@ -39,7 +39,7 @@ export function TalkToMeModal({ isOpen, onClose, onSelectBotState }) {
         } else if (data.state === 'THINKING') {
           setIsListening(false);
           setIsSpeaking(false);
-          setStatusText("Thinking...");
+          setStatusText("Processing...");
           if (data.userText) {
             setConversationHistory((prev) => [...prev, { speaker: 'You', text: data.userText }]);
           }
@@ -70,8 +70,8 @@ export function TalkToMeModal({ isOpen, onClose, onSelectBotState }) {
 
   const handleStartMic = async () => {
     setErrorMessage(null);
-    const success = await voiceAgent.startListening({
-      onError: (err) => {
+    await voiceAgent.startListening({
+      onError: () => {
         setErrorMessage("Microphone access was denied or is not supported. You can still test with the prompt buttons below!");
       },
     });
@@ -86,100 +86,100 @@ export function TalkToMeModal({ isOpen, onClose, onSelectBotState }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#171522]/60 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-white rounded-2xl p-5 sm:p-6 shadow-2xl border border-[#7657E8]/15 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F0E17]/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-md bg-white rounded-2xl p-5 sm:p-6 shadow-2xl border border-[#E4E2EB] overflow-hidden">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#7657E8]/10 mb-4">
+        <div className="flex items-center justify-between pb-3.5 border-b border-[#E4E2EB] mb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#EDE7FF] flex items-center justify-center text-[#7657E8]">
-              <Sparkles className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-lg bg-[#0F0E17] flex items-center justify-center text-white shadow-xs">
+              <Mic className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-[#171522]">
-                Talk to Voxly
+              <h3 className="text-sm font-bold text-[#0F0E17]">
+                Live Mic Experience
               </h3>
-              <p className="text-xs text-[#6F6B7D]">
-                Real-Time Voice Agent with Speech Synthesis & 3D Lip-Sync
+              <p className="text-[11px] text-[#524E5E]">
+                Autonomous voice agent with sub-500ms neural response
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-[#FAF9FD] hover:bg-[#EDE7FF] flex items-center justify-center text-[#6F6B7D] hover:text-[#171522]"
+            className="w-7 h-7 rounded-lg bg-[#FAF9FD] hover:bg-[#F0EEF6] border border-[#E4E2EB] flex items-center justify-center text-[#524E5E] hover:text-[#0F0E17] transition-colors"
           >
-            <X className="w-4 h-4" />
+            <X className="w-3.5 h-3.5" />
           </button>
         </div>
 
         {/* Message Log */}
-        <div className="space-y-3 mb-6 max-h-[220px] overflow-y-auto pr-1">
+        <div className="space-y-2.5 mb-5 max-h-[220px] overflow-y-auto pr-1">
           {conversationHistory.map((item, i) => {
             const isVoxly = item.speaker === 'Voxly';
             return (
               <div
                 key={i}
-                className={`p-3.5 rounded-2xl text-xs sm:text-sm ${
+                className={`p-3 rounded-xl text-xs leading-relaxed ${
                   isVoxly
-                    ? 'bg-[#FAF9FD] text-[#171522] border border-[#7657E8]/12 mr-6'
-                    : 'bg-[#7657E8] text-white ml-6 text-right'
+                    ? 'bg-[#FAF9FD] text-[#0F0E17] border border-[#E4E2EB] mr-5 text-left'
+                    : 'bg-[#0F0E17] text-white ml-5 text-right'
                 }`}
               >
-                <div className={`text-[10px] font-bold uppercase mb-1 ${isVoxly ? 'text-[#7657E8]' : 'text-[#EDE7FF]'}`}>
+                <div className={`text-[10px] font-mono uppercase font-bold mb-1 ${isVoxly ? 'text-[#6344E7]' : 'text-white/60'}`}>
                   {item.speaker}
                 </div>
-                <p className="leading-relaxed">{item.text}</p>
+                <p>{item.text}</p>
               </div>
             );
           })}
         </div>
 
         {/* Status Indicator */}
-        <div className="p-3 rounded-xl bg-[#FAF9FD] border border-[#7657E8]/10 text-center mb-5">
-          <div className="text-xs font-semibold text-[#6F6B7D] flex items-center justify-center gap-2">
-            {isListening && <span className="w-2.5 h-2.5 rounded-full bg-[#E85D75] animate-ping" />}
-            {isSpeaking && <Volume2 className="w-4 h-4 text-[#7657E8] animate-bounce" />}
+        <div className="p-2.5 rounded-lg bg-[#FAF9FD] border border-[#E4E2EB] text-center mb-4">
+          <div className="text-xs font-mono text-[#524E5E] flex items-center justify-center gap-2">
+            {isListening && <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />}
+            {isSpeaking && <Volume2 className="w-3.5 h-3.5 text-[#10B981]" />}
             <span>{statusText}</span>
           </div>
         </div>
 
         {/* Error message banner */}
         {errorMessage && (
-          <div className="p-3.5 rounded-xl bg-[#E85D75]/10 border border-[#E85D75]/20 text-xs text-[#E85D75] flex items-start gap-2 mb-4">
+          <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-600 flex items-start gap-2 mb-4 text-left">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {/* Microphone Button */}
-        <div className="flex flex-col items-center justify-center mb-5">
+        <div className="flex flex-col items-center justify-center mb-4">
           <button
             onClick={isListening ? () => voiceAgent.stopListening() : handleStartMic}
-            className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
+            className={`w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-150 shadow-sm active:scale-[0.96] ${
               isListening
-                ? 'bg-[#E85D75] text-white scale-110 shadow-[#E85D75]/40 animate-pulse'
-                : 'bg-gradient-to-tr from-[#7657E8] to-[#9B7BF7] text-white hover:scale-105 shadow-[#7657E8]/30'
+                ? 'bg-red-500 text-white animate-pulse'
+                : 'bg-[#0F0E17] text-white hover:bg-[#232130]'
             }`}
             aria-label={isListening ? 'Stop listening' : 'Start speaking'}
           >
-            {isListening ? <MicOff className="w-7 h-7" /> : <Mic className="w-7 h-7" />}
+            {isListening ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
           </button>
-          <span className="text-[11px] font-bold text-[#6F6B7D] mt-2">
-            {isListening ? 'Tap to Stop Listening' : 'Tap to Speak'}
+          <span className="text-[11px] font-semibold text-[#524E5E] mt-2">
+            {isListening ? 'Click to Stop' : 'Click to Speak via Mic'}
           </span>
         </div>
 
         {/* Quick Question Chips */}
         <div>
-          <span className="text-[11px] font-bold text-[#6F6B7D] uppercase tracking-wider block mb-2 text-center">
-            Or Click a Sample Question:
+          <span className="text-[10px] font-mono font-bold text-[#524E5E] uppercase tracking-wider block mb-2 text-center">
+            Or Click a Test Query:
           </span>
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex flex-wrap gap-1.5 justify-center">
             {QUICK_PROMPTS.map((prompt) => (
               <button
                 key={prompt}
                 onClick={() => handleQuickPrompt(prompt)}
-                className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#EDE7FF]/60 hover:bg-[#EDE7FF] text-[#4C3A91] transition-colors border border-[#7657E8]/10"
+                className="text-xs font-medium px-3 py-1.5 rounded-lg bg-[#FAF9FD] hover:bg-[#F0EEF6] text-[#0F0E17] border border-[#E4E2EB] transition-colors"
               >
                 {prompt}
               </button>

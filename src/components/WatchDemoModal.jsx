@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Play, Pause, RotateCcw, Volume2, Sparkles, CheckCircle2 } from 'lucide-react';
+import { X, Play, Pause, RotateCcw, CheckCircle2 } from 'lucide-react';
 import { voiceAgent } from '../services/voiceAgent';
 
 const DEMO_STEPS = [
@@ -83,53 +83,65 @@ export function WatchDemoModal({ isOpen, onClose, onSelectBotState }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#171522]/60 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-white rounded-2xl p-5 sm:p-6 shadow-2xl border border-[#7657E8]/15 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F0E17]/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-lg bg-white rounded-2xl p-5 sm:p-6 shadow-2xl border border-[#E4E2EB] overflow-hidden">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#7657E8]/10 mb-4">
+        <div className="flex items-center justify-between pb-3.5 border-b border-[#E4E2EB] mb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#7657E8] to-[#B18CFE] flex items-center justify-center text-white shadow-xs">
-              <Sparkles className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-lg bg-[#0F0E17] flex items-center justify-center text-white shadow-xs">
+              <svg
+                className="w-4 h-4 text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+              </svg>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-[#171522]">
-                Interactive Voice Employee Demo
+              <h3 className="text-sm font-bold text-[#0F0E17]">
+                Live Telephony Simulation
               </h3>
-              <p className="text-xs text-[#6F6B7D]">
-                Simulating Live Telephony Inbound Call with Real-time TTS
+              <p className="text-[11px] text-[#524E5E]">
+                Bidirectional call simulation with synthesized neural voice
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-[#FAF9FD] hover:bg-[#EDE7FF] flex items-center justify-center text-[#6F6B7D] hover:text-[#171522] transition-colors"
+            className="w-7 h-7 rounded-lg bg-[#FAF9FD] hover:bg-[#F0EEF6] border border-[#E4E2EB] flex items-center justify-center text-[#524E5E] hover:text-[#0F0E17] transition-colors"
           >
-            <X className="w-4 h-4" />
+            <X className="w-3.5 h-3.5" />
           </button>
         </div>
 
         {/* Live Conversation Display */}
-        <div className="space-y-3 mb-6 max-h-[280px] overflow-y-auto pr-2">
+        <div className="space-y-2.5 mb-5 max-h-[280px] overflow-y-auto pr-1">
           {DEMO_STEPS.slice(0, currentStep + 1).map((step, idx) => {
             const isVoxly = step.speaker === 'Voxly AI';
             const isCurrent = idx === currentStep;
             return (
               <div
                 key={idx}
-                className={`p-4 rounded-2xl transition-all duration-300 ${
+                className={`p-3.5 rounded-xl border text-left transition-all duration-200 ${
                   isVoxly
-                    ? 'bg-[#FAF9FD] border-l-4 border-l-[#7657E8] border border-[#7657E8]/10'
-                    : 'bg-[#EDE7FF]/30 border-l-4 border-l-[#5D6FEF] border border-[#5D6FEF]/10'
-                } ${isCurrent ? 'ring-2 ring-[#7657E8]/30' : 'opacity-85'}`}
+                    ? 'bg-[#FAF9FD] border-[#E4E2EB]'
+                    : 'bg-white border-[#E4E2EB]'
+                } ${isCurrent ? 'ring-1 ring-[#0F0E17]' : 'opacity-85'}`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className={`text-xs font-bold ${isVoxly ? 'text-[#7657E8]' : 'text-[#5D6FEF]'}`}>
+                  <span className={`text-xs font-bold ${isVoxly ? 'text-[#6344E7]' : 'text-[#0F0E17]'}`}>
                     {step.speaker}
                   </span>
-                  <span className="text-[10px] text-[#6F6B7D] font-mono">{step.time}</span>
+                  <span className="text-[10px] text-[#524E5E] font-mono">{step.time}</span>
                 </div>
-                <p className="text-xs sm:text-sm text-[#171522] leading-relaxed">
+                <p className="text-xs text-[#0F0E17] leading-relaxed">
                   {step.text}
                 </p>
               </div>
@@ -138,13 +150,13 @@ export function WatchDemoModal({ isOpen, onClose, onSelectBotState }) {
         </div>
 
         {/* Playback Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#7657E8]/10">
-          <div className="flex items-center gap-2 text-xs text-[#20B486] font-semibold">
-            <CheckCircle2 className="w-4 h-4" />
-            <span>Audio & Lip-Sync Driver Connected</span>
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3.5 border-t border-[#E4E2EB]">
+          <div className="flex items-center gap-1.5 text-xs text-[#10B981] font-mono font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Telemetry Active</span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => {
                 setCurrentStep(0);
@@ -152,18 +164,18 @@ export function WatchDemoModal({ isOpen, onClose, onSelectBotState }) {
                 voiceAgent.stopTTS();
                 if (onSelectBotState) onSelectBotState('IDLE');
               }}
-              className="p-2.5 rounded-xl bg-[#FAF9FD] hover:bg-[#EDE7FF] text-[#6F6B7D]"
+              className="p-2 rounded-lg bg-[#FAF9FD] hover:bg-[#F0EEF6] border border-[#E4E2EB] text-[#524E5E]"
               title="Restart Demo"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5" />
             </button>
 
             <button
               onClick={handleTogglePlay}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#7657E8] to-[#9B7BF7] hover:from-[#6A47E5] hover:to-[#8E6DF5] shadow-md shadow-[#7657E8]/25 transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-[#0F0E17] hover:bg-[#232130] active:scale-[0.98] transition-all shadow-xs"
             >
               {isPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-              <span>{isPlaying ? 'Pause Demo' : 'Play Live Voice Demo'}</span>
+              <span>{isPlaying ? 'Pause' : 'Play Live Call'}</span>
             </button>
           </div>
         </div>

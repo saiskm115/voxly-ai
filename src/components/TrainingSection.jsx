@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import {
   Brain,
   FileText,
-  Globe,
+  Layers,
   HelpCircle,
   ShieldCheck,
   Sparkles,
   CheckCircle2,
-  UploadCloud,
-  Layers,
-  Bot,
-  Zap,
-  ArrowDown
+  ArrowRight,
+  Database,
+  Lock
 } from 'lucide-react';
 
 const KNOWLEDGE_PILLARS = [
@@ -54,37 +52,34 @@ const KNOWLEDGE_PILLARS = [
 
 export function TrainingSection() {
   const [activePillar, setActivePillar] = useState(0);
-
   const selected = KNOWLEDGE_PILLARS[activePillar];
 
   return (
-    <section id="train" className="py-24 sm:py-32 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="train" className="py-20 sm:py-28 bg-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDE7FF] border border-[#7657E8]/15 text-[#7657E8] text-xs font-bold tracking-widest uppercase mb-4 shadow-xs">
-            <Brain className="w-3.5 h-3.5" />
-            <span>AI Brain & Memory</span>
+        <div className="max-w-3xl mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#FAF9FD] border border-[#E4E2EB] text-[#6344E7] text-xs font-bold tracking-wider uppercase mb-4 shadow-craft-xs">
+            <span>Knowledge Architecture</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#171522] tracking-tight mb-4">
-            Teach it how <span className="gradient-text-lavender">your business works.</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0F0E17] tracking-tight leading-[1.12] mb-4">
+            Teach it how your business works.
           </h2>
-          <p className="text-base sm:text-lg text-[#6F6B7D] leading-relaxed">
-            Give your agent the knowledge, instructions and behavior it needs to represent your business with absolute precision and zero hallucinations.
+          <p className="text-base sm:text-lg text-[#524E5E] leading-relaxed">
+            Give your agent the knowledge, instructions, and behavior it needs to represent your business with absolute precision and zero hallucinations.
           </p>
         </div>
 
         {/* Central Visual Architecture Diagram */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <div className="bg-[#FAF9FD] rounded-3xl p-6 sm:p-10 border border-[#7657E8]/15 shadow-sm text-center">
-            
-            <span className="text-xs font-extrabold uppercase tracking-widest text-[#7657E8] block mb-4">
-              YOUR BUSINESS CONTEXT
+        <div className="max-w-5xl mb-12">
+          <div className="bg-[#FAF9FD] rounded-2xl p-6 sm:p-8 border border-[#E4E2EB] text-left">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#524E5E] block mb-4">
+              Ingestion Channels (Select to inspect):
             </span>
 
-            {/* 5 Information Ingestion Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 max-w-3xl mx-auto mb-6">
+            {/* 5 Ingestion Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
               {KNOWLEDGE_PILLARS.map((p, idx) => {
                 const Icon = p.icon;
                 const isSelected = activePillar === idx;
@@ -92,67 +87,72 @@ export function TrainingSection() {
                   <button
                     key={p.id}
                     onClick={() => setActivePillar(idx)}
-                    className={`p-3.5 rounded-2xl border transition-all text-center flex flex-col items-center justify-center ${
+                    className={`p-4 rounded-xl border text-left transition-all duration-150 flex flex-col justify-between ${
                       isSelected
-                        ? 'bg-white border-[#7657E8] shadow-md shadow-[#7657E8]/15 scale-105'
-                        : 'bg-white/60 hover:bg-white border-[#7657E8]/15'
+                        ? 'bg-white border-[#0F0E17] shadow-craft-sm ring-1 ring-[#0F0E17]'
+                        : 'bg-white/80 hover:bg-white border-[#E4E2EB] hover:border-[#D1CFDB]'
                     }`}
                   >
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-1.5 ${
-                      isSelected ? 'bg-[#7657E8] text-white' : 'bg-[#EDE7FF] text-[#7657E8]'
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-3 ${
+                      isSelected ? 'bg-[#0F0E17] text-white' : 'bg-[#FAF9FD] text-[#524E5E] border border-[#E4E2EB]'
                     }`}>
                       <Icon className="w-4 h-4" />
                     </div>
-                    <span className="text-xs font-bold text-[#171522]">{p.title}</span>
+                    <div>
+                      <span className="text-xs font-bold text-[#0F0E17] block mb-0.5">{p.title}</span>
+                      <span className="text-[10px] text-[#524E5E] leading-tight block">{p.items.length} rule sets</span>
+                    </div>
                   </button>
                 );
               })}
             </div>
 
-            {/* Connector Arrow Down */}
-            <div className="flex flex-col items-center justify-center my-3">
-              <div className="w-0.5 h-6 bg-[#7657E8]/40" />
-              <ArrowDown className="w-5 h-5 text-[#7657E8] -mt-1 animate-bounce" />
+            {/* Ingestion Pipeline Bar */}
+            <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-[#E4E2EB]">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-[#FAF9FD] border border-[#E4E2EB] flex items-center justify-center text-[#0F0E17]">
+                  <Database className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-[#0F0E17] block">Hybrid Vector Embedding Pipeline (RAG)</span>
+                  <span className="text-[11px] text-[#524E5E]">Semantic chunking + strict policy guardrails</span>
+                </div>
+              </div>
+              <span className="text-xs font-mono font-semibold text-[#10B981] bg-[#10B981]/10 px-2.5 py-1 rounded border border-[#10B981]/20">
+                100% Grounded
+              </span>
             </div>
-
-            {/* Target Brain Node: AI EMPLOYEE */}
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-[#7657E8] to-[#9B7BF7] text-white font-extrabold text-sm tracking-wider uppercase shadow-lg shadow-[#7657E8]/30">
-              <Bot className="w-4 h-4" />
-              <span>AI EMPLOYEE BRAIN</span>
-              <span className="text-xs font-mono bg-white/20 px-2 py-0.5 rounded-full">Active Ingestion</span>
-            </div>
-
           </div>
         </div>
 
         {/* Interactive Ingestion Inspector */}
-        <div className="max-w-4xl mx-auto bg-[#171522] text-white rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl">
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 mb-6 border-b border-white/10">
+        <div className="max-w-5xl bg-[#111019] text-white rounded-2xl p-6 sm:p-7 border border-white/10 shadow-craft-lg">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 mb-5 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#7657E8] text-white flex items-center justify-center">
-                <Brain className="w-5 h-5" />
+              <div className="w-9 h-9 rounded-xl bg-white/10 border border-white/10 text-white flex items-center justify-center">
+                <Brain className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="text-base font-bold text-white">
+                <h4 className="text-sm font-bold text-white">
                   Ingested Context: {selected.title}
                 </h4>
                 <p className="text-xs text-white/50">{selected.desc}</p>
               </div>
             </div>
-            <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#20B486]/20 text-[#20B486] border border-[#20B486]/30 flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5" /> 100% Grounded
+            <span className="text-[11px] font-mono font-semibold px-2.5 py-1 rounded bg-white/10 text-[#10B981] border border-white/15 flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5" /> Strict RAG Enabled
             </span>
           </div>
 
-          <div className="space-y-3">
-            <span className="text-xs font-bold text-white/40 uppercase tracking-wider block">
-              Active Documents & Rule Sets:
+          <div className="space-y-2.5">
+            <span className="text-[10px] font-mono font-bold text-white/40 uppercase tracking-wider block">
+              Active Documents & Verification Rules:
             </span>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 font-mono">
               {selected.items.map((item, i) => (
-                <div key={i} className="bg-white/5 p-3.5 rounded-xl border border-white/5 flex items-start gap-2.5">
-                  <span className="text-sm">📄</span>
-                  <span className="text-xs font-medium text-white/90 leading-relaxed">{item}</span>
+                <div key={i} className="bg-black/30 p-3 rounded-xl border border-white/5 flex items-center gap-2.5">
+                  <FileText className="w-3.5 h-3.5 text-white/40 shrink-0" />
+                  <span className="text-xs text-[#FAF9FD] truncate">{item}</span>
                 </div>
               ))}
             </div>

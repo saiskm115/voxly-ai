@@ -290,42 +290,38 @@ export function Hero({
   return (
     <section
       ref={heroRef}
-      className="relative min-h-[90vh] pt-28 pb-16 overflow-hidden subtle-mesh-bg flex items-center"
+      className="relative min-h-[90vh] pt-28 pb-16 overflow-hidden flex items-center bg-[#FAF9FD]"
     >
-      {/* Decorative ambient background glows */}
-      <div className="absolute top-24 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-gradient-to-br from-[#EDE7FF]/70 via-[#E4DCFF]/40 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-48 right-10 w-96 h-96 bg-[#9B7BF7]/15 rounded-full blur-3xl pointer-events-none -z-10" />
-
       <div className="max-w-7xl mx-auto px-6 sm:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           
-          {/* LEFT COLUMN: Typography & CTAs matching reference */}
+          {/* LEFT COLUMN: Solid typography & tactile CTAs */}
           <div className="lg:col-span-6 flex flex-col items-start z-10">
-            {/* Eyebrow badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDE7FF] border border-[#7657E8]/15 text-[#7657E8] text-xs font-bold tracking-widest uppercase mb-5 shadow-xs">
-              <Sparkles className="w-3.5 h-3.5" />
+            {/* Eyebrow badge: Clean restrained label */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white border border-[#E4E2EB] text-[#6344E7] text-xs font-bold tracking-wider uppercase mb-5 shadow-craft-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
               <span>{HERO_CONTENT.eyebrow}</span>
             </div>
 
-            {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#171522] leading-[1.08] tracking-tight mb-5">
+            {/* Main Headline: Solid high-contrast text */}
+            <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0F0E17] leading-[1.08] tracking-tight mb-5">
               {HERO_CONTENT.titleLine1}{' '}
-              <span className="block gradient-text-lavender">
+              <span className="block text-[#0F0E17]">
                 {HERO_CONTENT.titleHighlight}
               </span>
             </h1>
 
             {/* Supporting Copy */}
-            <p className="text-sm sm:text-base text-[#6F6B7D] leading-relaxed max-w-xl mb-7">
+            <p className="text-sm sm:text-base text-[#524E5E] leading-relaxed max-w-xl mb-7">
               {HERO_CONTENT.subtitle}
             </p>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons: Emil Kowalski tactile buttons */}
             <div className="flex flex-wrap items-center gap-3.5 sm:gap-4 mb-8 w-full sm:w-auto">
               {/* Primary CTA */}
               <button
                 onClick={onGetStarted}
-                className="group relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-[#7657E8] to-[#9B7BF7] hover:from-[#6A47E5] hover:to-[#8E6DF5] shadow-md shadow-[#7657E8]/35 hover:shadow-lg hover:shadow-[#7657E8]/45 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-white bg-[#0F0E17] hover:bg-[#232130] active:scale-[0.98] shadow-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6344E7]"
               >
                 <span>{HERO_CONTENT.ctaPrimary}</span>
               </button>
@@ -333,20 +329,20 @@ export function Hero({
               {/* Secondary CTA: Talk to AI */}
               <button
                 onClick={onTalkToMe}
-                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-bold text-[#171522] bg-white hover:bg-[#F9F8FD] border border-[#7657E8]/20 shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl text-sm font-semibold text-[#0F0E17] bg-white hover:bg-[#F9F8FD] border border-[#E4E2EB] active:scale-[0.98] shadow-xs transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6344E7]"
               >
-                <div className="w-7 h-7 rounded-full bg-[#7657E8] flex items-center justify-center text-white shadow-xs">
+                <div className="w-6 h-6 rounded-lg bg-[#FAF9FD] border border-[#E4E2EB] flex items-center justify-center text-[#6344E7]">
                   <Mic className="w-3.5 h-3.5" />
                 </div>
                 <span>{HERO_CONTENT.ctaSecondary}</span>
               </button>
             </div>
 
-            {/* Value Props / Checkmarks matching reference */}
-            <div className="flex flex-wrap items-center gap-y-2 gap-x-5 text-xs font-semibold text-[#6F6B7D]">
+            {/* Value Props / Checkmarks */}
+            <div className="flex flex-wrap items-center gap-y-2 gap-x-5 text-xs font-semibold text-[#524E5E]">
               {HERO_CONTENT.perks.map((perk) => (
                 <div key={perk} className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-[#7657E8] flex items-center justify-center text-white text-[9px]">
+                  <div className="w-4 h-4 rounded-full bg-[#EFECE6] flex items-center justify-center text-[#0F0E17] text-[9px]">
                     <Check className="w-2.5 h-2.5 stroke-[3]" />
                   </div>
                   <span>{perk}</span>
@@ -372,44 +368,45 @@ export function Hero({
                   setBotExpression(expr);
                 }}
                 externalPointer={heroPointer}
+                isInView={isHeroInView}
                 onControllerReady={(ctrl) => {
                   botControllerRef.current = ctrl;
                 }}
               />
 
-              {/* Dynamic Interactive Dialogue Box on Click — positioned on the RIGHT side of the robot */}
+              {/* Dynamic Interactive Dialogue Box on Click */}
               {activePopup && (
                 <div
                   onClick={(e) => e.stopPropagation()}
                   onMouseEnter={handleMouseEnterPopup}
                   onMouseLeave={handleMouseLeavePopup}
-                  className={`absolute top-2 right-2 sm:right-4 lg:-right-4 max-w-[280px] sm:max-w-[310px] p-4 rounded-2xl shadow-xl border animate-in fade-in zoom-in-95 duration-200 z-30 transition-all ${
+                  className={`absolute top-2 right-2 sm:right-4 lg:-right-4 max-w-[280px] sm:max-w-[310px] p-4 rounded-2xl shadow-xl border z-30 transition-all ${
                     activePopup.mood === 'angry'
-                      ? 'bg-[#171522]/95 text-white border-[#FF3366]/50 shadow-[#FF3366]/20'
-                      : 'bg-white/95 text-[#171522] border-[#7657E8]/25 shadow-[#7657E8]/15'
+                      ? 'bg-[#111019] text-white border-red-500/40 shadow-xl'
+                      : 'bg-white text-[#0F0E17] border-[#E4E2EB] shadow-craft-md'
                   }`}
                 >
-                  {/* Subtle speech pointer pointing to the robot on the left */}
+                  {/* Speech pointer */}
                   <div
                     className={`absolute top-6 -left-1.5 w-3 h-3 rotate-45 border-l border-b hidden sm:block ${
                       activePopup.mood === 'angry'
-                        ? 'bg-[#171522] border-[#FF3366]/50'
-                        : 'bg-white border-[#7657E8]/25'
+                        ? 'bg-[#111019] border-red-500/40'
+                        : 'bg-white border-[#E4E2EB]'
                     }`}
                   />
 
                   <div className="flex items-center justify-between gap-2 mb-1.5">
                     <div className="flex items-center gap-1.5">
                       <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#20B486] opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#20B486]"></span>
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
                       </span>
                       <span
-                        className={`text-[11px] font-bold uppercase tracking-wider flex items-center gap-1 ${
-                          activePopup.mood === 'angry' ? 'text-[#FF3366]' : 'text-[#7657E8]'
+                        className={`text-[11px] font-bold uppercase tracking-wider ${
+                          activePopup.mood === 'angry' ? 'text-red-400' : 'text-[#6344E7]'
                         }`}
                       >
-                        <Sparkles className="w-3.5 h-3.5" /> {activePopup.title}
+                        {activePopup.title}
                       </span>
                     </div>
                     <button
@@ -424,45 +421,45 @@ export function Hero({
                     </button>
                   </div>
 
-                  <p className="text-xs font-semibold leading-relaxed mb-3">
+                  <p className="text-xs font-medium text-[#524E5E] leading-relaxed mb-3">
                     {activePopup.message}
                   </p>
 
-                  {/* Quick Interactive Action Buttons right inside dialogue box */}
+                  {/* Quick Interactive Action Buttons */}
                   <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         triggerBotAction('WAVE');
                       }}
-                      className="px-2 py-1 bg-[#EDE7FF] hover:bg-[#E2D8FF] text-[#7657E8] text-[10px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-xs"
+                      className="px-2 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[10px] font-bold rounded-md transition-colors shadow-xs"
                       title="Make Voxly wave"
                     >
-                      👋 Wave
+                      Wave
                     </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         triggerBotAction('ROLL');
                       }}
-                      className="px-2 py-1 bg-[#EDE7FF] hover:bg-[#E2D8FF] text-[#7657E8] text-[10px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-xs"
+                      className="px-2 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[10px] font-bold rounded-md transition-colors shadow-xs"
                       title="Make Voxly roll 360"
                     >
-                      🤸 Roll & Wave
+                      Roll & Wave
                     </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         triggerBotAction('REPLAY');
                       }}
-                      className="px-2 py-1 bg-[#FAF9FD] hover:bg-[#EDE7FF] text-[#6F6B7D] hover:text-[#171522] border border-[#7657E8]/10 text-[10px] font-bold rounded-lg transition-colors flex items-center gap-1"
+                      className="px-2 py-1 bg-[#FAF9FD] hover:bg-[#F0EEF6] text-[#524E5E] hover:text-[#0F0E17] border border-[#E4E2EB] text-[10px] font-bold rounded-md transition-colors flex items-center gap-1"
                       title="Replay speech"
                     >
                       <Volume2 className="w-2.5 h-2.5" /> Replay
                     </button>
                   </div>
 
-                  <div className="pt-2 border-t border-[#7657E8]/10 flex items-center justify-between gap-2">
+                  <div className="pt-2 border-t border-[#E4E2EB] flex items-center justify-between gap-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();

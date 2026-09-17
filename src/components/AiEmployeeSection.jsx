@@ -9,14 +9,11 @@ import {
   HelpCircle,
   UserCheck,
   ArrowRight,
-  Bot,
-  Mic,
   Cpu,
-  Database,
-  Layers,
-  ShieldCheck,
+  Volume2,
   Play,
-  Volume2
+  Check,
+  ShieldCheck
 } from 'lucide-react';
 import { AI_EMPLOYEE_CAPABILITIES, BUILD_AI_EMPLOYEE_STEPS } from '../data/siteContent';
 
@@ -38,285 +35,339 @@ export function AiEmployeeSection({ onGetStarted }) {
   const stepPreviews = [
     {
       title: "Senior Inbound Lead Specialist",
-      role: "Maya Chen • Lead Qualification Specialist",
-      instructions: "Greet caller, identify company size, qualify budget >$25k, and propose demo slot with account executive.",
-      voice: "Alloy Warm (Female, 310ms latency)",
+      role: "Lead Qualification Specialist",
+      instructions: "Greet caller within 300ms, identify company size, qualify budget >$25k, and schedule discovery demo with account executive.",
+      voice: "Elena Smooth (Neural 48kHz, 310ms latency)",
       knowledge: ["Acme_Product_Catalog_2026.pdf", "Pricing_Matrix_Enterprise.xlsx", "FAQ_Knowledge_Base.url"],
       tools: ["Salesforce CRM Sync", "Google Calendar Booking", "Slack Alert #leads"],
-      status: "Configuring Role",
+      status: "Role Configured",
     },
     {
       title: "Instruction & Tone Engineering",
       role: "Empathetic, consultative, decisive",
-      instructions: "Never talk over caller. Acknowledge objections with 'I understand that timeline is tight...' before offering solution.",
-      voice: "Alloy Warm (Cadence 1.05x)",
+      instructions: "Never talk over caller. Acknowledge objections with 'I understand that timeline is tight...' before presenting enterprise SLA.",
+      voice: "Elena Smooth (Pacing 148 wpm)",
       knowledge: ["Objection_Playbook_v4.pdf", "Competitive_Battlecard.pdf"],
-      tools: ["Webhook Telemetry", "Sentiment Real-Time Scoring"],
-      status: "Synthesizing Prompts",
+      tools: ["Webhook Telemetry", "Real-Time Sentiment Scoring"],
+      status: "Prompts Synthesized",
     },
     {
       title: "Voice & Accent Selection",
       role: "40+ Neural High-Fidelity Voices",
-      instructions: "Accent: Neutral American • Pacing: Natural 148 wpm • Breathing & micro-pauses active",
+      instructions: "Accent: Neutral North American • Cadence: Natural conversational with breathing & micro-pauses active.",
       voice: "Elena Smooth (Studio Quality • 48kHz)",
       knowledge: ["Pronunciation_Glossary_Tech.json"],
       tools: ["Opus Codec Direct Audio Stream"],
-      status: "Voice Configured",
+      status: "Acoustics Tuned",
     },
     {
       title: "Enterprise Knowledge Grounding",
-      role: "Zero Hallucination Guaranteed",
-      instructions: "Answer strictly based on ingested knowledge. If price tier is unlisted, offer sales specialist callback.",
+      role: "Strict RAG • Zero Hallucination Policy",
+      instructions: "Answer strictly based on ingested knowledge documents. If pricing tier is unlisted, trigger warm callback dispatch.",
       voice: "Elena Smooth",
       knowledge: ["Enterprise_SLA_Terms.pdf", "Security_Compliance_SOC2.pdf", "Product_API_v3_Docs.url"],
-      tools: ["Vector Embeddings Search (Hybrid RAG)"],
-      status: "Knowledge Ingested (3,420 pages)",
+      tools: ["Hybrid Vector Retrieval (Sub-50ms)"],
+      status: "3,420 Pages Ingested",
     },
     {
       title: "Tool Connectors & API Webhooks",
       role: "Real-Time Bidirectional Data Sync",
-      instructions: "POST https://api.yourcompany.com/lead-qualified on successful call disposition.",
+      instructions: "POST https://api.yourcompany.com/lead-qualified on call disposition with extracted JSON payload.",
       voice: "Elena Smooth",
       knowledge: ["HubSpot 2-Way Sync", "Twilio SIP Trunk", "PostgreSQL Database"],
       tools: ["Sub-50ms Webhook Execution"],
-      status: "Connected (All 4 green)",
+      status: "All Webhooks Active",
     },
     {
       title: "Live Production Deployment",
       role: "Phone Line +1 (800) 529-VOXLY",
-      instructions: "Ready to answer calls concurrently across 10,000+ lines with 99.99% uptime SLA.",
+      instructions: "Concurrent line scaling ready for up to 100,000 parallel calls with 99.99% carrier availability SLA.",
       voice: "Elena Smooth (Active Live)",
-      knowledge: ["Fleet Auto-Scaling Enabled"],
-      tools: ["Live Call Telemetry Dashboard"],
-      status: "Live & Taking Calls (Ready)",
+      knowledge: ["Carrier SIP Direct Route"],
+      tools: ["Live Telemetry Monitor"],
+      status: "Live & Taking Calls",
     },
   ];
 
   const currentPreview = stepPreviews[activeStep];
+  const activeCap = AI_EMPLOYEE_CAPABILITIES[selectedCapability];
+  const ActiveCapIcon = ICONS[activeCap.icon] || CheckCircle2;
 
   return (
-    <section id="capabilities" className="py-24 sm:py-32 bg-[#FAF9FD] relative overflow-hidden">
-      {/* Decorative gradient blur background */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-tr from-[#7657E8]/10 via-[#EDE7FF]/40 to-transparent blur-3xl pointer-events-none -z-10" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="capabilities" className="py-20 sm:py-28 bg-[#FAF9FD] relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
         
         {/* ================================================================= */}
-        {/* PART 1: What Can Your AI Employee Do? */}
+        {/* PART 1: What Can Your AI Employee Do? — Asymmetric Workbench */}
         {/* ================================================================= */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDE7FF] border border-[#7657E8]/15 text-[#7657E8] text-xs font-bold tracking-widest uppercase mb-4 shadow-xs">
-            <Bot className="w-3.5 h-3.5" />
-            <span>AI Employee Capabilities</span>
+        <div className="max-w-3xl mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white border border-[#E4E2EB] text-[#6344E7] text-xs font-bold tracking-wider uppercase mb-4 shadow-craft-xs">
+            <span>Capabilities Matrix</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#171522] tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0F0E17] tracking-tight leading-[1.12] mb-4">
             More than a voice bot.{' '}
-            <span className="block gradient-text-lavender">Your AI employee.</span>
+            <span className="block text-[#0F0E17]">Your AI employee.</span>
           </h2>
-          <p className="text-base sm:text-lg text-[#6F6B7D] leading-relaxed">
-            Voxly doesn't just read scripts. It understands context, remembers customer history, makes autonomous decisions, and completes real business tasks over the phone.
+          <p className="text-base sm:text-lg text-[#524E5E] leading-relaxed">
+            Voxly doesn't read static scripts. It evaluates intent, checks live team availability, handles objections, and completes multi-step business transactions directly over the phone.
           </p>
         </div>
 
-        {/* 8 Capability Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-28">
-          {AI_EMPLOYEE_CAPABILITIES.map((cap, idx) => {
-            const IconComponent = ICONS[cap.icon] || Bot;
-            const isSelected = selectedCapability === idx;
+        {/* Asymmetric Workbench Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-28 items-stretch">
+          
+          {/* Left Column: 8 Selectable Capabilities Grid */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {AI_EMPLOYEE_CAPABILITIES.map((cap, idx) => {
+              const IconComponent = ICONS[cap.icon] || CheckCircle2;
+              const isSelected = selectedCapability === idx;
 
-            return (
-              <div
-                key={cap.id}
-                onClick={() => setSelectedCapability(idx)}
-                className={`group relative p-6 rounded-2xl transition-all duration-300 cursor-pointer border ${
-                  isSelected
-                    ? 'bg-white border-[#7657E8] shadow-xl shadow-[#7657E8]/12 -translate-y-1'
-                    : 'bg-white/80 hover:bg-white border-[#7657E8]/15 hover:border-[#7657E8]/40 shadow-sm hover:shadow-md hover:-translate-y-1'
-                }`}
-              >
-                {/* Top icon and badge */}
-                <div className="flex items-center justify-between mb-4">
-                  <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
-                      isSelected
-                        ? 'bg-[#7657E8] text-white'
-                        : 'bg-[#EDE7FF] text-[#7657E8] group-hover:bg-[#7657E8] group-hover:text-white'
-                    }`}
-                  >
-                    <IconComponent className="w-6 h-6" />
+              return (
+                <div
+                  key={cap.id}
+                  onClick={() => setSelectedCapability(idx)}
+                  className={`p-5 rounded-xl transition-all duration-150 cursor-pointer border text-left flex flex-col justify-between ${
+                    isSelected
+                      ? 'bg-white border-[#0F0E17] shadow-craft-sm ring-1 ring-[#0F0E17]'
+                      : 'bg-white/80 hover:bg-white border-[#E4E2EB] hover:border-[#D1CFDB] shadow-craft-xs'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                        isSelected ? 'bg-[#0F0E17] text-white' : 'bg-[#FAF9FD] text-[#524E5E] border border-[#E4E2EB]'
+                      }`}>
+                        <IconComponent className="w-4 h-4" />
+                      </div>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-[#FAF9FD] border border-[#E4E2EB] text-[#524E5E]">
+                        {cap.badge}
+                      </span>
+                    </div>
+
+                    <h3 className="text-sm font-bold text-[#0F0E17] mb-1.5">
+                      {cap.title}
+                    </h3>
+                    <p className="text-xs text-[#524E5E] leading-relaxed">
+                      {cap.desc}
+                    </p>
                   </div>
-                  <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#EDE7FF]/60 text-[#7657E8] border border-[#7657E8]/10">
-                    {cap.badge}
-                  </span>
+
+                  <div className="pt-3 mt-3 border-t border-[#E4E2EB] flex items-center justify-between text-[11px] font-medium text-[#6344E7]">
+                    <span>{cap.highlight}</span>
+                    {isSelected && <span className="text-xs text-[#0F0E17]">Active preview →</span>}
+                  </div>
                 </div>
+              );
+            })}
+          </div>
 
-                {/* Title and description */}
-                <h3 className="text-lg font-bold text-[#171522] mb-2 group-hover:text-[#7657E8] transition-colors">
-                  {cap.title}
-                </h3>
-                <p className="text-xs sm:text-sm text-[#6F6B7D] leading-relaxed mb-4">
-                  {cap.desc}
+          {/* Right Column: Live Operational Telemetry Console */}
+          <div className="lg:col-span-5 bg-[#111019] text-white rounded-2xl p-6 sm:p-7 border border-white/10 shadow-craft-lg flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between pb-4 mb-5 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
+                  <span className="text-xs font-mono text-white/70">telemetry / live-execution</span>
+                </div>
+                <span className="text-[11px] font-mono text-[#10B981] bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/20">
+                  Sub-350ms Latency
+                </span>
+              </div>
+
+              {/* Active Capability Summary Card */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10 mb-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white">
+                    <ActiveCapIcon className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white">
+                      {activeCap.title}
+                    </h4>
+                    <p className="text-[11px] text-white/60">
+                      Standard Operational Protocol • Ready
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-[#D1CFDB] leading-relaxed mt-2 pt-2 border-t border-white/10">
+                  {activeCap.desc}
                 </p>
+              </div>
 
-                {/* Micro highlight tag */}
-                <div className="pt-3 border-t border-[#171522]/5 flex items-center gap-1.5 text-xs font-semibold text-[#7657E8]">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>{cap.highlight}</span>
+              {/* Real-time Field Extractions */}
+              <div className="space-y-2 text-xs font-mono">
+                <div className="text-[11px] uppercase tracking-wider text-white/40 font-sans font-bold">
+                  Simulated Output Stream:
+                </div>
+                <div className="bg-black/40 rounded-lg p-3 border border-white/5 space-y-1.5 text-[11px]">
+                  <div className="flex justify-between text-white/70">
+                    <span className="text-white/40">Status:</span>
+                    <span className="text-[#10B981]">200 OK (Instant Response)</span>
+                  </div>
+                  <div className="flex justify-between text-white/70">
+                    <span className="text-white/40">Speech Cadence:</span>
+                    <span>148 wpm (Human Natural)</span>
+                  </div>
+                  <div className="flex justify-between text-white/70">
+                    <span className="text-white/40">Action Triggered:</span>
+                    <span className="text-[#6344E7] font-semibold">{activeCap.highlight}</span>
+                  </div>
+                  <div className="flex justify-between text-white/70">
+                    <span className="text-white/40">CRM Synchronization:</span>
+                    <span>Direct Webhook Emitted</span>
+                  </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+
+            <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-xs text-white/60">
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" />
+                Zero Hallucination Guaranteed
+              </span>
+              <button
+                onClick={onGetStarted}
+                className="text-white hover:text-[#6344E7] font-semibold text-xs transition-colors"
+              >
+                Deploy Capability →
+              </button>
+            </div>
+          </div>
+
         </div>
 
         {/* ================================================================= */}
         {/* PART 2: Build Your AI Employee in Minutes */}
         {/* ================================================================= */}
-        <div id="build" className="pt-8 border-t border-[#7657E8]/15">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDE7FF] border border-[#7657E8]/15 text-[#7657E8] text-xs font-bold tracking-widest uppercase mb-4 shadow-xs">
-              <Layers className="w-3.5 h-3.5" />
-              <span>Studio Workflow</span>
+        <div id="build" className="pt-12 border-t border-[#E4E2EB]">
+          <div className="max-w-3xl mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white border border-[#E4E2EB] text-[#6344E7] text-xs font-bold tracking-wider uppercase mb-4 shadow-craft-xs">
+              <span>Studio Blueprint</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#171522] tracking-tight mb-4">
-              Create an AI employee <span className="gradient-text-lavender">in minutes.</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0F0E17] tracking-tight leading-[1.12] mb-4">
+              Create an AI employee in minutes.
             </h2>
-            <p className="text-base sm:text-lg text-[#6F6B7D] leading-relaxed">
-              From defining its persona and tone to connecting live phone lines and CRM webhooks, build your custom voice workforce through a simple visual studio.
+            <p className="text-base sm:text-lg text-[#524E5E] leading-relaxed">
+              Configure persona parameters, upload business documentation, connect telephony trunks, and begin handling calls without writing a single line of backend code.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* LEFT COLUMN: Interactive Agent Studio Dashboard Mockup */}
-            <div className="lg:col-span-6 order-2 lg:order-1">
-              <div className="bg-[#171522] text-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/10 relative overflow-hidden">
-                {/* Top window bar */}
-                <div className="flex items-center justify-between pb-5 mb-6 border-b border-white/10">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
-                    <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-                    <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
-                    <span className="text-xs font-mono text-white/50 ml-2">voxly-studio / agent-config</span>
+            {/* LEFT COLUMN: Agent Studio Console Preview */}
+            <div className="lg:col-span-6 bg-[#111019] text-white rounded-2xl p-6 sm:p-7 border border-white/10 shadow-craft-lg">
+              {/* Header */}
+              <div className="flex items-center justify-between pb-4 mb-5 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-white/20" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-white/20" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-white/20" />
+                  <span className="text-xs font-mono text-white/50 ml-2">voxly-builder / v3.2</span>
+                </div>
+                <span className="text-[11px] font-mono text-[#10B981] bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/20">
+                  {currentPreview.status}
+                </span>
+              </div>
+
+              {/* Agent Overview */}
+              <div className="bg-white/5 rounded-xl p-5 border border-white/10 space-y-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <h4 className="text-base font-bold text-white">
+                      {currentPreview.title}
+                    </h4>
+                    <p className="text-xs text-white/60">
+                      {currentPreview.role}
+                    </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#20B486] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#20B486]"></span>
-                    </span>
-                    <span className="text-[11px] font-semibold text-[#20B486]">
-                      {currentPreview.status}
-                    </span>
-                  </div>
+                  <span className="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold bg-white/10 text-white border border-white/10">
+                    Step {activeStep + 1} of 6
+                  </span>
                 </div>
 
-                {/* Agent Identity Card */}
-                <div className="bg-white/5 rounded-2xl p-5 mb-5 border border-white/10">
-                  <div className="flex items-center justify-between gap-4 mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#7657E8] to-[#9B7BF7] flex items-center justify-center text-xl shadow-md">
-                        🤖
-                      </div>
-                      <div>
-                        <h4 className="text-base font-bold text-white flex items-center gap-2">
-                          {currentPreview.title}
-                        </h4>
-                        <p className="text-xs text-white/60">
-                          {currentPreview.role}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#7657E8]/20 text-[#EDE7FF] border border-[#7657E8]/40">
-                      Step {activeStep + 1} of 6
+                <div className="pt-3 border-t border-white/10 space-y-3 text-xs">
+                  <div>
+                    <span className="text-white/40 block text-[10px] uppercase font-bold tracking-wider mb-1">
+                      Current Prompt & Directives:
                     </span>
+                    <p className="font-mono text-[#FAF9FD] bg-black/40 p-3 rounded-lg border border-white/5 leading-relaxed text-xs">
+                      "{currentPreview.instructions}"
+                    </p>
                   </div>
 
-                  {/* Dynamic Active Step Parameter Box */}
-                  <div className="mt-4 pt-4 border-t border-white/10 space-y-3 text-xs">
-                    <div>
-                      <span className="text-white/40 block text-[10px] uppercase font-bold tracking-wider mb-1">
-                        Active Prompt & Guidelines:
+                  <div className="grid grid-cols-2 gap-3 pt-1">
+                    <div className="bg-black/30 p-2.5 rounded-lg border border-white/5">
+                      <span className="text-white/40 text-[10px] uppercase font-bold block mb-1">Acoustic Model:</span>
+                      <span className="text-white font-semibold text-xs flex items-center gap-1.5">
+                        <Volume2 className="w-3.5 h-3.5 text-[#6344E7]" />
+                        {currentPreview.voice}
                       </span>
-                      <p className="font-mono text-[#EDE7FF] bg-black/30 p-2.5 rounded-lg border border-white/5 leading-relaxed">
-                        "{currentPreview.instructions}"
-                      </p>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-3 pt-1">
-                      <div className="bg-black/20 p-2.5 rounded-lg border border-white/5">
-                        <span className="text-white/40 text-[10px] uppercase font-bold block mb-1">Neural Voice:</span>
-                        <span className="text-white font-semibold flex items-center gap-1.5">
-                          <Volume2 className="w-3.5 h-3.5 text-[#7657E8]" />
-                          {currentPreview.voice}
-                        </span>
-                      </div>
-                      <div className="bg-black/20 p-2.5 rounded-lg border border-white/5">
-                        <span className="text-white/40 text-[10px] uppercase font-bold block mb-1">Telemetry Latency:</span>
-                        <span className="text-[#20B486] font-semibold flex items-center gap-1.5">
-                          <Cpu className="w-3.5 h-3.5" />
-                          320ms Round-Trip
-                        </span>
-                      </div>
+                    <div className="bg-black/30 p-2.5 rounded-lg border border-white/5">
+                      <span className="text-white/40 text-[10px] uppercase font-bold block mb-1">Response Speed:</span>
+                      <span className="text-[#10B981] font-semibold text-xs flex items-center gap-1.5">
+                        <Cpu className="w-3.5 h-3.5" />
+                        Sub-350ms Round-Trip
+                      </span>
                     </div>
+                  </div>
 
-                    {/* Attached Knowledge & Tools */}
-                    <div className="pt-2">
-                      <span className="text-white/40 text-[10px] uppercase font-bold block mb-1.5">Active Ingested Context:</span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {currentPreview.knowledge.map((item, i) => (
-                          <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white/80 border border-white/5">
-                            📄 {item}
-                          </span>
-                        ))}
-                        {currentPreview.tools.map((tool, i) => (
-                          <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#7657E8]/20 text-[#EDE7FF] border border-[#7657E8]/30">
-                            ⚡ {tool}
-                          </span>
-                        ))}
-                      </div>
+                  {/* Context chips */}
+                  <div className="pt-2">
+                    <span className="text-white/40 text-[10px] uppercase font-bold block mb-1.5">Active Context & Connectors:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {currentPreview.knowledge.map((item, i) => (
+                        <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white/80 border border-white/5">
+                          {item}
+                        </span>
+                      ))}
+                      {currentPreview.tools.map((tool, i) => (
+                        <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#6344E7]/20 text-white border border-[#6344E7]/40">
+                          {tool}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Audio Waveform Simulation Bar */}
-                <div className="flex items-center justify-between gap-4 px-4 py-3 rounded-xl bg-white/5 border border-white/10">
-                  <div className="flex items-center gap-2">
-                    <button className="w-8 h-8 rounded-full bg-[#7657E8] text-white flex items-center justify-center hover:bg-[#6A47E5] transition-colors shadow-sm">
-                      <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
-                    </button>
-                    <span className="text-xs font-semibold text-white/80">Test Voice Synthesis</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    {[16, 28, 12, 36, 20, 32, 14, 24, 38, 18, 26, 12].map((h, i) => (
-                      <span
-                        key={i}
-                        className="w-1 bg-[#7657E8] rounded-full animate-pulse"
-                        style={{ height: `${h}px`, animationDelay: `${i * 120}ms` }}
-                      />
-                    ))}
-                  </div>
+              {/* Physical audio waveform indicator */}
+              <div className="mt-4 flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                <div className="flex items-center gap-2 text-xs font-semibold text-white/80">
+                  <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+                  <span>Real-Time Synthesizer Output</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  {[12, 22, 10, 28, 16, 24, 11, 20, 30, 14, 20, 10].map((h, i) => (
+                    <span
+                      key={i}
+                      className="w-1 bg-[#6344E7] rounded-full"
+                      style={{ height: `${h}px` }}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
 
-            {/* RIGHT COLUMN: 6 Step Roadmap */}
-            <div className="lg:col-span-6 order-1 lg:order-2 space-y-3.5">
+            {/* RIGHT COLUMN: 6 Step Roadmap & Single CTA */}
+            <div className="lg:col-span-6 space-y-3">
               {BUILD_AI_EMPLOYEE_STEPS.map((stepItem, idx) => {
                 const isActive = activeStep === idx;
                 return (
                   <div
                     key={stepItem.step}
                     onClick={() => setActiveStep(idx)}
-                    className={`p-4 sm:p-5 rounded-2xl cursor-pointer transition-all duration-200 border flex items-start gap-4 ${
+                    className={`p-4 rounded-xl cursor-pointer transition-all duration-150 border flex items-start gap-4 ${
                       isActive
-                        ? 'bg-white border-[#7657E8] shadow-lg shadow-[#7657E8]/10 scale-[1.01]'
-                        : 'bg-white/60 hover:bg-white border-[#7657E8]/15 hover:border-[#7657E8]/30'
+                        ? 'bg-white border-[#0F0E17] shadow-craft-sm ring-1 ring-[#0F0E17]'
+                        : 'bg-white/80 hover:bg-white border-[#E4E2EB] hover:border-[#D1CFDB]'
                     }`}
                   >
                     <div
-                      className={`w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center font-extrabold text-sm transition-colors ${
+                      className={`w-9 h-9 rounded-lg flex-shrink-0 flex items-center justify-center font-bold text-xs transition-colors ${
                         isActive
-                          ? 'bg-gradient-to-r from-[#7657E8] to-[#9B7BF7] text-white shadow-sm'
-                          : 'bg-[#EDE7FF] text-[#7657E8]'
+                          ? 'bg-[#0F0E17] text-white'
+                          : 'bg-[#FAF9FD] text-[#524E5E] border border-[#E4E2EB]'
                       }`}
                     >
                       {stepItem.step}
@@ -324,14 +375,14 @@ export function AiEmployeeSection({ onGetStarted }) {
 
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-2 mb-1">
-                        <h4 className={`text-base font-bold transition-colors ${isActive ? 'text-[#7657E8]' : 'text-[#171522]'}`}>
+                        <h4 className={`text-sm font-bold transition-colors ${isActive ? 'text-[#0F0E17]' : 'text-[#524E5E]'}`}>
                           {stepItem.title}
                         </h4>
-                        <span className="text-[11px] font-semibold text-[#6F6B7D] bg-[#171522]/5 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] font-semibold text-[#524E5E] bg-[#FAF9FD] border border-[#E4E2EB] px-2 py-0.5 rounded">
                           {stepItem.tag}
                         </span>
                       </div>
-                      <p className="text-xs sm:text-sm text-[#6F6B7D] leading-relaxed">
+                      <p className="text-xs text-[#524E5E] leading-relaxed">
                         {stepItem.desc}
                       </p>
                     </div>
@@ -339,13 +390,13 @@ export function AiEmployeeSection({ onGetStarted }) {
                 );
               })}
 
-              {/* Call to action */}
+              {/* Standard Primary CTA */}
               <div className="pt-4">
                 <button
                   onClick={onGetStarted}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full text-sm font-bold text-white bg-gradient-to-r from-[#7657E8] to-[#9B7BF7] hover:from-[#6A47E5] hover:to-[#8E6DF5] shadow-md shadow-[#7657E8]/30 hover:shadow-lg hover:shadow-[#7657E8]/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-white bg-[#0F0E17] hover:bg-[#232130] active:scale-[0.98] shadow-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6344E7]"
                 >
-                  <span>Create your AI employee</span>
+                  <span>Build Your Agent</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>

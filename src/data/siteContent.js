@@ -25,7 +25,6 @@ export const NAV_LINKS = [
     dropdown: [
       { title: 'Call History', desc: 'Transcripts & sentiment analysis', href: '#conversations' },
       { title: 'Performance', desc: '12k+ calls, resolution & funnels', href: '#analytics' },
-      { title: 'Phone Numbers', desc: 'Global DIDs & human handoff', href: '#numbers' },
       { title: 'Industries', desc: 'Solutions for every vertical', href: '#industries' },
     ],
   },
@@ -300,7 +299,7 @@ export const AI_TEAM_MEMBERS = [
     name: 'Harish Patel',
     role: 'Sales Agent',
     title: 'Senior Outbound Lead Qualifier',
-    avatar: '👨‍💼',
+    avatar: 'HP',
     desc: 'Qualifies new leads, handles pricing and objection questions, and books qualified discovery meetings with your sales team.',
     badge: 'Revenue Engine',
     voice: 'Marcus Bold (Male)',
@@ -313,7 +312,7 @@ export const AI_TEAM_MEMBERS = [
     name: 'Swathi Reddy',
     role: 'Support Agent',
     title: '24/7 Tier-1 Technical Support Specialist',
-    avatar: '👩‍💻',
+    avatar: 'SR',
     desc: 'Handles customer questions, verifies account details, troubleshoots issues, and processes refund or billing requests without human delay.',
     badge: 'Customer Care',
     voice: 'Priya Warm (Female)',
@@ -326,7 +325,7 @@ export const AI_TEAM_MEMBERS = [
     name: 'Maya Chen',
     role: 'Receptionist',
     title: 'Executive FrontDesk Coordinator',
-    avatar: '👩‍💼',
+    avatar: 'MC',
     desc: 'Answers calls, provides company information, screens inquiries, and schedules appointments with the right team members.',
     badge: 'FrontDesk',
     voice: 'Elena Smooth (Female)',
@@ -339,7 +338,7 @@ export const AI_TEAM_MEMBERS = [
     name: 'Alex Vance',
     role: 'Follow-up Agent',
     title: 'Customer Retention & Re-engagement',
-    avatar: '👨‍🔧',
+    avatar: 'AV',
     desc: 'Reconnects with prospects after demos, follows up on pending proposals, sends policy renewal alerts, and surveys client satisfaction.',
     badge: 'Retention',
     voice: 'Julian Crisp (Male)',
@@ -409,32 +408,6 @@ export const PERFORMANCE_STATS = {
       { label: 'Human Transfer', pct: 6, color: '#F59E0B' },
     ],
   },
-};
-
-export const PHONE_NUMBERS_DATA = {
-  headline: "Give your AI its own number.",
-  subtitle: "Get a number, connect your AI and start taking calls in over 100+ countries with local, toll-free, and SIP connectivity.",
-  sampleNumber: "+1 (800) 123-4567",
-  visual: {
-    number: "+1 (800) 123-4567",
-    center: "AI EMPLOYEE",
-    left: "Answer Call",
-    right: "Make Call",
-  },
-  handoverHeadline: "AI handles the conversation. Humans handle the exceptions.",
-  handoverSubtitle: "Not every call needs a human, and not every call should stay with AI. Voxly handles 80%+ of volume and warms-transfers the rest seamlessly.",
-  flowSteps: [
-    { step: '1', title: 'Customer calls in', desc: 'Customer connects with zero wait time.' },
-    { step: '2', title: 'AI Employee greets', desc: 'Understands request, checks knowledge base & CRM.' },
-    { step: '3', title: 'Can AI resolve?', desc: 'Evaluates intent against confidence thresholds.' },
-    { step: '4A', title: 'YES → Done', desc: 'Instant resolution, booking confirmed, notes logged to CRM.' },
-    { step: '4B', title: 'NO → Human Team', desc: 'Warm transfer to human specialist with live audio transcript briefing.' },
-  ],
-  numberTypes: [
-    { type: 'Toll-Free 800 / 888', region: 'US & Canada', desc: 'Nationwide presence for enterprise customer support & inbound sales.' },
-    { type: 'Local DID (+1 / +44 / +91)', region: '100+ Countries', desc: 'Boost pickup rates by calling from matching local area codes.' },
-    { type: 'Bring Your Own SIP', region: 'Global BYO Trunk', desc: 'Connect Twilio, Telnyx, Plivo, or your on-premise PBX in minutes.' },
-  ],
 };
 
 export const INDUSTRIES_DATA = [
@@ -567,7 +540,7 @@ export const PRICING_TIERS = [
       'Do-Not-Call (DNC) Registry Scrubbing',
       'Priority 24/7 Slack support',
     ],
-    cta: 'Deploy Pro Fleet',
+    cta: 'Build Your Agent',
     highlighted: true,
   },
   {
@@ -586,7 +559,7 @@ export const PRICING_TIERS = [
       'SOC2 Type II, HIPAA BAA & GDPR SLA',
       'Dedicated Telephony Solution Architect',
     ],
-    cta: 'Contact Enterprise Sales',
+    cta: 'Build Your Agent',
     highlighted: false,
   },
 ];

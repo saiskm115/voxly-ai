@@ -10,7 +10,6 @@ import { TrainingSection } from './components/TrainingSection';
 import { AiTeamSection } from './components/AiTeamSection';
 import { ConversationHistorySection } from './components/ConversationHistorySection';
 import { AnalyticsSection } from './components/AnalyticsSection';
-import { PhoneNumbersSection } from './components/PhoneNumbersSection';
 import { IndustriesSection } from './components/IndustriesSection';
 import { HowItWorksSection } from './components/HowItWorksSection';
 import { PricingSection } from './components/PricingSection';
@@ -19,11 +18,14 @@ import { FinalCTA } from './components/FinalCTA';
 import { Footer } from './components/Footer';
 import { WatchDemoModal } from './components/WatchDemoModal';
 import { TalkToMeModal } from './components/TalkToMeModal';
+import { LegalModals } from './components/LegalModals';
 
 export function App() {
   const [botState, setBotState] = useState('IDLE');
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isTalkModalOpen, setIsTalkModalOpen] = useState(false);
+  const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
+  const [legalModalTab, setLegalModalTab] = useState('privacy');
   const botControllerRef = useRef(null);
 
   const handleGetStarted = () => {
@@ -37,15 +39,20 @@ export function App() {
     alert(`Thank you for selecting the ${planName} plan! In production, this redirects to your onboarding workspace.`);
   };
 
+  const handleOpenLegal = (tab = 'privacy') => {
+    setLegalModalTab(tab);
+    setIsLegalModalOpen(true);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF9FD] selection:bg-[#EDE7FF] selection:text-[#7657E8]">
+    <div className="min-h-screen flex flex-col bg-[#FAF9FD] selection:bg-[#EDE7FF] selection:text-[#6344E7]">
       {/* Navigation Header */}
       <Navbar
         onGetStarted={handleGetStarted}
         onWatchDemo={() => setIsDemoModalOpen(true)}
       />
 
-      {/* Main Content Sections: Exact 16-Stage Ordered Architecture */}
+      {/* Main Content Sections: Exact 15-Stage Ordered Architecture */}
       <main className="flex-1">
         {/* 01: Hero — AI Voice Agent */}
         <Hero
@@ -97,30 +104,25 @@ export function App() {
         {/* 10: AI Performance Dashboard (12k+ Calls & Telemetry) */}
         <AnalyticsSection />
 
-        {/* 11: Phone Numbers & AI + Human Handover */}
-        <PhoneNumbersSection
-          onGetStarted={handleGetStarted}
-        />
-
-        {/* 12: Industries / Use Cases (6 Vertical Solutions) */}
+        {/* 11: Industries / Use Cases (6 Vertical Solutions) */}
         <IndustriesSection
           onGetStarted={handleGetStarted}
         />
 
-        {/* 13: Simple Setup (5 Steps) & Transparent Usage Billing */}
+        {/* 12: Simple Setup (5 Steps) & Transparent Usage Billing */}
         <HowItWorksSection
           onGetStarted={handleGetStarted}
         />
 
-        {/* 14: Pricing (Plans & Minutes) */}
+        {/* 13: Pricing (Plans & Minutes) */}
         <PricingSection
           onSelectPlan={handleSelectPlan}
         />
 
-        {/* 15: Frequently Asked Questions */}
+        {/* 14: Frequently Asked Questions */}
         <FAQSection />
 
-        {/* 16: Final Call to Action */}
+        {/* 15: Final Call to Action */}
         <FinalCTA
           onGetStarted={handleGetStarted}
           onTalkToMe={() => setIsTalkModalOpen(true)}
@@ -128,7 +130,7 @@ export function App() {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer onOpenLegal={handleOpenLegal} />
 
       {/* Modals */}
       <WatchDemoModal
@@ -141,6 +143,12 @@ export function App() {
         isOpen={isTalkModalOpen}
         onClose={() => setIsTalkModalOpen(false)}
         onSelectBotState={(st) => setBotState(st)}
+      />
+
+      <LegalModals
+        isOpen={isLegalModalOpen}
+        onClose={() => setIsLegalModalOpen(false)}
+        defaultTab={legalModalTab}
       />
     </div>
   );

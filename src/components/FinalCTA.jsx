@@ -1,42 +1,42 @@
 import React from 'react';
-import { ArrowRight, Mic, Sparkles, Bot } from 'lucide-react';
+import { ArrowRight, Mic } from 'lucide-react';
 
 export function FinalCTA({ onGetStarted, onTalkToMe }) {
   return (
-    <section className="py-24 sm:py-32 bg-[#FAF9FD] relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-[36px] bg-gradient-to-br from-[#171522] via-[#241E3B] to-[#4C3A91] p-8 sm:p-16 text-center text-white shadow-2xl shadow-[#7657E8]/20 overflow-hidden">
+    <section className="py-20 sm:py-28 bg-[#FAF9FD] relative overflow-hidden">
+      <div className="max-w-5xl mx-auto px-6 sm:px-8">
+        <div className="relative rounded-2xl bg-[#0F0E17] p-8 sm:p-14 text-center text-white border border-[#E4E2EB]/10 shadow-craft-lg">
           
-          {/* Subtle decorative background glow circles */}
-          <div className="absolute -top-32 -left-32 w-80 h-80 bg-[#7657E8]/30 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-[#9B7BF7]/25 rounded-full blur-3xl pointer-events-none" />
-
           <div className="relative z-10 max-w-2xl mx-auto">
-            {/* Robot mascot avatar circle */}
-            <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-[#7657E8] to-[#9B7BF7] mx-auto flex items-center justify-center text-3xl shadow-xl shadow-[#7657E8]/40 mb-6 border border-white/20">
-              🤖
+            {/* Mascot Avatar Icon */}
+            <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/15 mx-auto flex items-center justify-center text-white mb-6">
+              <svg
+                className="w-6 h-6 text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+              </svg>
             </div>
 
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-[#EDE7FF] text-xs font-bold tracking-widest uppercase mb-4 border border-white/15">
-              <Sparkles className="w-3.5 h-3.5 text-[#9B7BF7]" />
-              <span>Bring Voxly to Your Team</span>
-            </div>
-
-            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-[1.15] mb-5">
-              Build your AI employee{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EDE7FF] via-[#B18CFE] to-[#9B7BF7]">
-                today.
-              </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.12] mb-4 text-white">
+              Build your AI employee today.
             </h2>
 
-            <p className="text-base sm:text-lg text-[#EDE7FF]/80 leading-relaxed mb-10 max-w-xl mx-auto">
-              Give your business an AI that can talk, listen, learn and work around the clock.
+            <p className="text-sm sm:text-base text-[#D1CFDB] leading-relaxed mb-8 max-w-lg mx-auto">
+              Give your business an AI that can talk, listen, learn and work around the clock with sub-500ms voice intelligence.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-3">
               <button
                 onClick={onGetStarted}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-base font-bold text-white bg-gradient-to-r from-[#7657E8] to-[#9B7BF7] hover:from-[#6B46E5] hover:to-[#8E6DF5] shadow-lg shadow-[#7657E8]/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-[#0F0E17] bg-white hover:bg-[#FAF9FD] active:scale-[0.98] transition-all duration-150 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6344E7]"
               >
                 <span>Build Your Agent</span>
                 <ArrowRight className="w-4 h-4" />
@@ -44,9 +44,9 @@ export function FinalCTA({ onGetStarted, onTalkToMe }) {
 
               <button
                 onClick={onTalkToMe}
-                className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-base font-bold text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/20 active:scale-[0.98] transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6344E7]"
               >
-                <Mic className="w-4 h-4 text-[#B18CFE]" />
+                <Mic className="w-4 h-4" />
                 <span>Talk to AI</span>
               </button>
             </div>

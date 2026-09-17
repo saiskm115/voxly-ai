@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import {
   Users,
-  Briefcase,
-  Headphones,
-  Calendar,
-  RotateCcw,
-  Sparkles,
   Volume2,
   CheckCircle2,
   Play,
@@ -28,53 +23,24 @@ export function AiTeamSection({ onGetStarted }) {
   };
 
   return (
-    <section id="team" className="py-24 sm:py-32 bg-[#FAF9FD] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="team" className="py-20 sm:py-28 bg-[#FAF9FD] relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EDE7FF] border border-[#7657E8]/15 text-[#7657E8] text-xs font-bold tracking-widest uppercase mb-4 shadow-xs">
-            <Users className="w-3.5 h-3.5" />
-            <span>Multi-Agent Architecture</span>
+        <div className="max-w-3xl mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white border border-[#E4E2EB] text-[#6344E7] text-xs font-bold tracking-wider uppercase mb-4 shadow-craft-xs">
+            <span>Specialized Agents</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#171522] tracking-tight mb-4">
-            Build an AI team,{' '}
-            <span className="gradient-text-lavender">not just one agent.</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0F0E17] tracking-tight leading-[1.12] mb-4">
+            Build an AI team, not just one agent.
           </h2>
-          <p className="text-base sm:text-lg text-[#6F6B7D] leading-relaxed">
-            Give every agent a different role, voice, knowledge set, and objective. Deploy specialized employees that collaborate across your entire customer lifecycle.
+          <p className="text-base sm:text-lg text-[#524E5E] leading-relaxed">
+            Assign each voice employee a distinct role, acoustic persona, knowledge boundary, and operational objective across sales, support, frontdesk, and retention.
           </p>
         </div>
 
-        {/* Visual Architecture Banner: YOUR AI TEAM */}
-        <div className="max-w-4xl mx-auto mb-16 text-center">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-[#7657E8] block mb-4">
-            YOUR AI WORKFORCE FLEET
-          </span>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
-            {AI_TEAM_MEMBERS.map((m) => {
-              const isSelected = activeMemberId === m.id;
-              return (
-                <button
-                  key={m.id}
-                  onClick={() => setActiveMemberId(m.id)}
-                  className={`p-4 rounded-2xl border transition-all text-center flex flex-col items-center ${
-                    isSelected
-                      ? 'bg-white border-[#7657E8] shadow-md shadow-[#7657E8]/15 scale-105'
-                      : 'bg-white/60 hover:bg-white border-[#7657E8]/15'
-                  }`}
-                >
-                  <span className="text-2xl mb-1">{m.avatar}</span>
-                  <span className="text-xs font-extrabold text-[#171522]">{m.role}</span>
-                  <span className="text-[10px] text-[#7657E8] font-bold">{m.name}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
         {/* 4 Specialized Employee Profile Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           {AI_TEAM_MEMBERS.map((member) => {
             const isSelected = activeMemberId === member.id;
             const isSpeaking = playingId === member.id;
@@ -83,34 +49,36 @@ export function AiTeamSection({ onGetStarted }) {
               <div
                 key={member.id}
                 onClick={() => setActiveMemberId(member.id)}
-                className={`p-6 rounded-3xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
+                className={`p-6 rounded-2xl border transition-all duration-150 cursor-pointer flex flex-col justify-between text-left ${
                   isSelected
-                    ? 'bg-white border-[#7657E8] shadow-xl shadow-[#7657E8]/12 -translate-y-1'
-                    : 'bg-white/75 hover:bg-white border-[#7657E8]/15 hover:border-[#7657E8]/40'
+                    ? 'bg-white border-[#0F0E17] shadow-craft-sm ring-1 ring-[#0F0E17]'
+                    : 'bg-white/80 hover:bg-white border-[#E4E2EB] hover:border-[#D1CFDB]'
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-3xl">{member.avatar}</span>
-                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#EDE7FF] text-[#7657E8]">
+                    <div className="w-10 h-10 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] text-[#0F0E17] font-mono font-bold text-xs flex items-center justify-center">
+                      {member.avatar}
+                    </div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[#FAF9FD] border border-[#E4E2EB] text-[#524E5E]">
                       {member.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-bold text-[#171522] mb-0.5">
+                  <h3 className="text-base font-bold text-[#0F0E17] mb-0.5">
                     {member.name}
                   </h3>
-                  <h4 className="text-xs font-bold text-[#7657E8] mb-3">
+                  <h4 className="text-xs font-semibold text-[#6344E7] mb-2.5">
                     {member.role}
                   </h4>
-                  <p className="text-xs sm:text-sm text-[#6F6B7D] leading-relaxed mb-4">
+                  <p className="text-xs text-[#524E5E] leading-relaxed mb-4">
                     {member.desc}
                   </p>
 
                   {/* Skill tags */}
-                  <div className="flex flex-wrap gap-1.5 mb-5">
+                  <div className="flex flex-wrap gap-1.5 mb-4">
                     {member.tags.map((tag, i) => (
-                      <span key={i} className="text-[10px] font-semibold bg-[#171522]/5 text-[#171522]/80 px-2 py-0.5 rounded-md">
+                      <span key={i} className="text-[10px] font-mono bg-[#FAF9FD] text-[#524E5E] border border-[#E4E2EB] px-2 py-0.5 rounded">
                         {tag}
                       </span>
                     ))}
@@ -118,20 +86,20 @@ export function AiTeamSection({ onGetStarted }) {
                 </div>
 
                 {/* Voice button */}
-                <div className="pt-4 border-t border-[#171522]/5">
+                <div className="pt-3 border-t border-[#E4E2EB]">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       handlePlayVoice(member);
                     }}
-                    className={`w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all ${
+                    className={`w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold transition-all duration-150 ${
                       isSpeaking
-                        ? 'bg-[#20B486] text-white animate-pulse'
-                        : 'bg-[#EDE7FF] hover:bg-[#7657E8] text-[#7657E8] hover:text-white'
+                        ? 'bg-[#10B981] text-white animate-pulse'
+                        : 'bg-[#FAF9FD] hover:bg-[#F0EEF6] border border-[#E4E2EB] text-[#0F0E17]'
                     }`}
                   >
                     <Volume2 className="w-3.5 h-3.5" />
-                    <span>{isSpeaking ? 'Playing Voice...' : `Sample ${member.voice.split(' ')[0]}`}</span>
+                    <span>{isSpeaking ? 'Playing Voice...' : `Sample Voice`}</span>
                   </button>
                 </div>
               </div>
@@ -140,42 +108,44 @@ export function AiTeamSection({ onGetStarted }) {
         </div>
 
         {/* Active Employee Deep-Dive Spotlight Card */}
-        <div className="max-w-4xl mx-auto bg-white rounded-3xl border border-[#7657E8]/20 shadow-xl p-6 sm:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-[#7657E8]/10">
+        <div className="max-w-4xl bg-white rounded-2xl border border-[#E4E2EB] shadow-craft-md p-6 sm:p-8">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-5 mb-5 border-b border-[#E4E2EB]">
             <div className="flex items-center gap-3.5">
-              <span className="text-4xl">{activeAgent.avatar}</span>
+              <div className="w-12 h-12 rounded-xl bg-[#0F0E17] text-white font-mono font-bold text-sm flex items-center justify-center">
+                {activeAgent.avatar}
+              </div>
               <div>
-                <h4 className="text-lg font-extrabold text-[#171522] flex items-center gap-2">
+                <h4 className="text-base font-bold text-[#0F0E17] flex items-center gap-2">
                   {activeAgent.name} • {activeAgent.title}
                 </h4>
-                <p className="text-xs text-[#6F6B7D]">Neural Voice: {activeAgent.voice}</p>
+                <p className="text-xs font-mono text-[#524E5E]">Acoustic Profile: {activeAgent.voice}</p>
               </div>
             </div>
             <button
               onClick={() => handlePlayVoice(activeAgent)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-[#7657E8] text-white hover:bg-[#6A47E5] shadow-sm transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-[#0F0E17] text-white hover:bg-[#232130] active:scale-[0.98] shadow-xs transition-all"
             >
-              <Play className="w-3 h-3 fill-current ml-0.5" />
-              <span>Listen to Persona</span>
+              <Play className="w-3 h-3 fill-current" />
+              <span>Preview Voice Sample</span>
             </button>
           </div>
 
-          <div className="bg-[#FAF9FD] p-4 rounded-2xl border border-[#7657E8]/10 text-xs sm:text-sm text-[#171522] mb-6">
-            <span className="text-[10px] font-bold text-[#7657E8] uppercase tracking-wider block mb-1">
+          <div className="bg-[#FAF9FD] p-4 rounded-xl border border-[#E4E2EB] text-xs mb-5">
+            <span className="text-[10px] font-mono font-bold text-[#524E5E] uppercase tracking-wider block mb-1">
               Sample Live Phone Greeting:
             </span>
-            <p className="font-mono text-[#171522] leading-relaxed">
+            <p className="font-mono text-[#0F0E17] leading-relaxed text-xs">
               "{activeAgent.sampleDialogue}"
             </p>
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-4 text-xs">
-            <span className="text-[#6F6B7D]">Ready to deploy as an autonomous phone agent</span>
+            <span className="text-[#524E5E]">Ready to deploy as an autonomous phone agent</span>
             <button
               onClick={onGetStarted}
-              className="inline-flex items-center gap-2 text-[#7657E8] font-bold hover:underline"
+              className="inline-flex items-center gap-1.5 text-[#0F0E17] font-semibold hover:underline"
             >
-              <span>Deploy {activeAgent.role} to your number</span>
+              <span>Build Your Agent with {activeAgent.name}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

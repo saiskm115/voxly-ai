@@ -167,7 +167,7 @@ export function AiEmployeeSection({ onGetStarted }) {
               <div className="flex items-center justify-between pb-4 mb-5 border-b border-white/10">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
-                  <span className="text-xs font-mono text-white/70">telemetry / live-execution</span>
+                  <span className="text-xs font-mono text-[#D1CFDB]">telemetry / live-execution</span>
                 </div>
                 <span className="text-[11px] font-mono text-[#10B981] bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/20">
                   Sub-350ms Latency
@@ -184,7 +184,7 @@ export function AiEmployeeSection({ onGetStarted }) {
                     <h4 className="text-sm font-bold text-white">
                       {activeCap.title}
                     </h4>
-                    <p className="text-[11px] text-white/60">
+                    <p className="text-[11px] text-[#D1CFDB]">
                       Standard Operational Protocol • Ready
                     </p>
                   </div>
@@ -196,38 +196,38 @@ export function AiEmployeeSection({ onGetStarted }) {
 
               {/* Real-time Field Extractions */}
               <div className="space-y-2 text-xs font-mono">
-                <div className="text-[11px] uppercase tracking-wider text-white/40 font-sans font-bold">
+                <div className="text-[11px] uppercase tracking-wider text-[#A19EAD] font-sans font-bold">
                   Simulated Output Stream:
                 </div>
                 <div className="bg-black/40 rounded-lg p-3 border border-white/5 space-y-1.5 text-[11px]">
-                  <div className="flex justify-between text-white/70">
-                    <span className="text-white/40">Status:</span>
+                  <div className="flex justify-between text-[#D1CFDB]">
+                    <span className="text-[#A19EAD]">Status:</span>
                     <span className="text-[#10B981]">200 OK (Instant Response)</span>
                   </div>
-                  <div className="flex justify-between text-white/70">
-                    <span className="text-white/40">Speech Cadence:</span>
+                  <div className="flex justify-between text-[#D1CFDB]">
+                    <span className="text-[#A19EAD]">Speech Cadence:</span>
                     <span>148 wpm (Human Natural)</span>
                   </div>
-                  <div className="flex justify-between text-white/70">
-                    <span className="text-white/40">Action Triggered:</span>
-                    <span className="text-[#6344E7] font-semibold">{activeCap.highlight}</span>
+                  <div className="flex justify-between text-[#D1CFDB]">
+                    <span className="text-[#A19EAD]">Action Triggered:</span>
+                    <span className="text-[#8369F5] font-semibold">{activeCap.highlight}</span>
                   </div>
-                  <div className="flex justify-between text-white/70">
-                    <span className="text-white/40">CRM Synchronization:</span>
+                  <div className="flex justify-between text-[#D1CFDB]">
+                    <span className="text-[#A19EAD]">CRM Synchronization:</span>
                     <span>Direct Webhook Emitted</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-xs text-white/60">
+            <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-xs text-[#D1CFDB]">
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" />
                 Zero Hallucination Guaranteed
               </span>
               <button
                 onClick={onGetStarted}
-                className="text-white hover:text-[#6344E7] font-semibold text-xs transition-colors"
+                className="text-white hover:text-[#8369F5] font-semibold text-xs transition-colors"
               >
                 Deploy Capability →
               </button>
@@ -262,7 +262,7 @@ export function AiEmployeeSection({ onGetStarted }) {
                   <span className="w-2.5 h-2.5 rounded-full bg-white/20" />
                   <span className="w-2.5 h-2.5 rounded-full bg-white/20" />
                   <span className="w-2.5 h-2.5 rounded-full bg-white/20" />
-                  <span className="text-xs font-mono text-white/50 ml-2">voxly-builder / v3.2</span>
+                  <span className="text-xs font-mono text-[#A19EAD] ml-2">voxly-builder / v3.2</span>
                 </div>
                 <span className="text-[11px] font-mono text-[#10B981] bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/20">
                   {currentPreview.status}
@@ -276,7 +276,7 @@ export function AiEmployeeSection({ onGetStarted }) {
                     <h4 className="text-base font-bold text-white">
                       {currentPreview.title}
                     </h4>
-                    <p className="text-xs text-white/60">
+                    <p className="text-xs text-[#D1CFDB]">
                       {currentPreview.role}
                     </p>
                   </div>
@@ -287,7 +287,7 @@ export function AiEmployeeSection({ onGetStarted }) {
 
                 <div className="pt-3 border-t border-white/10 space-y-3 text-xs">
                   <div>
-                    <span className="text-white/40 block text-[10px] uppercase font-bold tracking-wider mb-1">
+                    <span className="text-[#A19EAD] block text-[10px] uppercase font-bold tracking-wider mb-1">
                       Current Prompt & Directives:
                     </span>
                     <p className="font-mono text-[#FAF9FD] bg-black/40 p-3 rounded-lg border border-white/5 leading-relaxed text-xs">
@@ -297,14 +297,14 @@ export function AiEmployeeSection({ onGetStarted }) {
 
                   <div className="grid grid-cols-2 gap-3 pt-1">
                     <div className="bg-black/30 p-2.5 rounded-lg border border-white/5">
-                      <span className="text-white/40 text-[10px] uppercase font-bold block mb-1">Acoustic Model:</span>
+                      <span className="text-[#A19EAD] text-[10px] uppercase font-bold block mb-1">Acoustic Model:</span>
                       <span className="text-white font-semibold text-xs flex items-center gap-1.5">
-                        <Volume2 className="w-3.5 h-3.5 text-[#6344E7]" />
+                        <Volume2 className="w-3.5 h-3.5 text-[#8369F5]" />
                         {currentPreview.voice}
                       </span>
                     </div>
                     <div className="bg-black/30 p-2.5 rounded-lg border border-white/5">
-                      <span className="text-white/40 text-[10px] uppercase font-bold block mb-1">Response Speed:</span>
+                      <span className="text-[#A19EAD] text-[10px] uppercase font-bold block mb-1">Response Speed:</span>
                       <span className="text-[#10B981] font-semibold text-xs flex items-center gap-1.5">
                         <Cpu className="w-3.5 h-3.5" />
                         Sub-350ms Round-Trip
@@ -314,15 +314,15 @@ export function AiEmployeeSection({ onGetStarted }) {
 
                   {/* Context chips */}
                   <div className="pt-2">
-                    <span className="text-white/40 text-[10px] uppercase font-bold block mb-1.5">Active Context & Connectors:</span>
+                    <span className="text-[#A19EAD] text-[10px] uppercase font-bold block mb-1.5">Active Context & Connectors:</span>
                     <div className="flex flex-wrap gap-1.5">
                       {currentPreview.knowledge.map((item, i) => (
-                        <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white/80 border border-white/5">
+                        <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white/90 border border-white/5">
                           {item}
                         </span>
                       ))}
                       {currentPreview.tools.map((tool, i) => (
-                        <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#6344E7]/20 text-white border border-[#6344E7]/40">
+                        <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#6344E7]/30 text-white border border-[#6344E7]/50">
                           {tool}
                         </span>
                       ))}

@@ -14,12 +14,15 @@ export default {
         text: {
           primary: '#0F0E17',
           secondary: '#524E5E',
-          muted: '#8C8899',
+          muted: '#524E5E',
           light: '#F0EEF6',
+          darkMuted: '#A19EAD',
+          darkSecondary: '#D1CFDB',
         },
         brand: {
           DEFAULT: '#6344E7',
           hover: '#5234D4',
+          accent: '#8369F5',
           light: '#F0EEF6',
           dark: '#0F0E17',
         },

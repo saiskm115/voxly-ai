@@ -127,10 +127,10 @@ export function ConversationHistorySection() {
                     <span className="text-xs font-bold px-2 py-0.5 rounded bg-white text-[#0F0E17]">
                       {CONVERSATIONS_DATA.callNumber}
                     </span>
-                    <span className="text-xs text-white/50">Duration: {CONVERSATIONS_DATA.duration}</span>
+                    <span className="text-xs text-[#D1CFDB]">Duration: {CONVERSATIONS_DATA.duration}</span>
                   </div>
                   <h4 className="text-sm font-sans font-bold text-white">{CONVERSATIONS_DATA.caller}</h4>
-                  <p className="text-xs text-white/50 font-sans">Handling Agent: {CONVERSATIONS_DATA.agent}</p>
+                  <p className="text-xs text-[#D1CFDB] font-sans">Handling Agent: {CONVERSATIONS_DATA.agent}</p>
                 </div>
 
                 <span className="px-2.5 py-1 rounded text-xs font-semibold bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30">
@@ -156,7 +156,7 @@ export function ConversationHistorySection() {
                             : 'bg-[#6344E7] text-white rounded-tr-xs shadow-xs'
                         }`}
                       >
-                        <span className="text-[10px] font-mono uppercase font-bold text-white/50 block mb-1">
+                        <span className="text-[10px] font-mono uppercase font-bold text-[#D1CFDB] block mb-1">
                           {msg.speaker}
                         </span>
                         <p>{msg.text}</p>
@@ -168,14 +168,14 @@ export function ConversationHistorySection() {
 
               {/* Verified Outcome Checklist */}
               <div className="pt-4 border-t border-white/10 space-y-2">
-                <span className="text-[10px] font-mono font-bold text-white/40 uppercase tracking-wider block mb-1">
+                <span className="text-[10px] font-mono font-bold text-[#A19EAD] uppercase tracking-wider block mb-1">
                   Automated Dispositions:
                 </span>
                 {CONVERSATIONS_DATA.outcomes.map((out, i) => (
                   <div key={i} className="flex items-center gap-2.5 text-xs">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#10B981] flex-shrink-0" />
                     <span className="font-semibold text-white">{out.label}:</span>
-                    <span className="text-white/70 font-mono text-[11px]">{out.status}</span>
+                    <span className="text-[#D1CFDB] font-mono text-[11px]">{out.status}</span>
                   </div>
                 ))}
               </div>

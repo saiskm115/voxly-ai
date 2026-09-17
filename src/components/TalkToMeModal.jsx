@@ -125,7 +125,7 @@ export function TalkToMeModal({ isOpen, onClose, onSelectBotState }) {
                     : 'bg-[#0F0E17] text-white ml-5 text-right'
                 }`}
               >
-                <div className={`text-[10px] font-mono uppercase font-bold mb-1 ${isVoxly ? 'text-[#6344E7]' : 'text-white/60'}`}>
+                <div className={`text-[10px] font-mono uppercase font-bold mb-1 ${isVoxly ? 'text-[#6344E7]' : 'text-[#D1CFDB]'}`}>
                   {item.speaker}
                 </div>
                 <p>{item.text}</p>

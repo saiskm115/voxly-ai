@@ -164,7 +164,7 @@ export function Footer({ onOpenLegal }) {
                     }}
                     placeholder="work@company.com"
                     aria-label="Work email address"
-                    className="w-full text-xs px-3 py-2 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] focus:outline-none focus:border-[#0F0E17] text-[#0F0E17] placeholder:text-[#8C8899]"
+                    className="w-full text-xs px-3 py-2 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] focus:outline-none focus:border-[#0F0E17] text-[#0F0E17] placeholder:text-[#635F70]"
                   />
                   <button
                     type="submit"

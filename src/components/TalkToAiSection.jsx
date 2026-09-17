@@ -102,7 +102,7 @@ export function TalkToAiSection({ onOpenTalkModal }) {
                   <span className="text-xs font-bold uppercase tracking-wider text-[#10B981] flex items-center gap-1.5">
                     <Mic className="w-3.5 h-3.5" /> LISTEN
                   </span>
-                  <span className="text-[10px] font-mono text-white/50">Audio Input • STT</span>
+                  <span className="text-[10px] font-mono text-[#D1CFDB]">Audio Input • STT</span>
                 </div>
                 <p className="text-xs text-[#D1CFDB] leading-relaxed mb-3">
                   Stream speech packets, detect pauses, and tokenize intent in &lt;120ms.
@@ -116,17 +116,17 @@ export function TalkToAiSection({ onOpenTalkModal }) {
                       style={{ height: `${h}px` }}
                     />
                   ))}
-                  <span className="text-[9px] font-mono text-white/40 ml-auto">Live Input Frequency</span>
+                  <span className="text-[9px] font-mono text-[#A19EAD] ml-auto">Live Input Frequency</span>
                 </div>
               </div>
 
               {/* RESPOND NODE */}
               <div className="bg-[#111019] border border-white/10 rounded-xl p-5 text-left">
                 <div className="flex items-center justify-between mb-2.5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#6344E7] flex items-center gap-1.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#8369F5] flex items-center gap-1.5">
                     <Volume2 className="w-3.5 h-3.5 text-white" /> RESPOND
                   </span>
-                  <span className="text-[10px] font-mono text-white/50">Neural TTS • 320ms</span>
+                  <span className="text-[10px] font-mono text-[#D1CFDB]">Neural TTS • 320ms</span>
                 </div>
                 <p className="text-xs text-[#D1CFDB] leading-relaxed mb-3">
                   Synthesize personalized acoustic speech with cadence and pitch modulation.
@@ -140,7 +140,7 @@ export function TalkToAiSection({ onOpenTalkModal }) {
                       style={{ height: `${h}px` }}
                     />
                   ))}
-                  <span className="text-[9px] font-mono text-white/40 ml-auto">Neural Output</span>
+                  <span className="text-[9px] font-mono text-[#A19EAD] ml-auto">Neural Output</span>
                 </div>
               </div>
             </div>
@@ -156,11 +156,11 @@ export function TalkToAiSection({ onOpenTalkModal }) {
             {/* Interactive Live Speech Box */}
             <div className="mt-7 bg-[#111019] border border-white/10 rounded-xl p-5 sm:p-6 text-left">
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-white/60">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#D1CFDB]">
                   Acoustic Speech Player:
                 </span>
                 <span className={`text-[11px] font-mono px-2 py-0.5 rounded ${
-                  isPlaying ? 'bg-[#10B981]/20 text-[#10B981] border border-[#10B981]/30' : 'bg-white/10 text-white/50'
+                  isPlaying ? 'bg-[#10B981]/20 text-[#10B981] border border-[#10B981]/30' : 'bg-white/10 text-[#D1CFDB]'
                 }`}>
                   {isPlaying ? '● Audio Active' : 'Ready'}
                 </span>
@@ -172,7 +172,7 @@ export function TalkToAiSection({ onOpenTalkModal }) {
 
               {/* Sample Prompt Chips */}
               <div className="mb-5">
-                <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider block mb-2 font-mono">
+                <span className="text-[10px] font-bold text-[#A19EAD] uppercase tracking-wider block mb-2 font-mono">
                   Select a live scenario to test synthesized response:
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -187,7 +187,7 @@ export function TalkToAiSection({ onOpenTalkModal }) {
                       }`}
                     >
                       <span className="font-semibold block text-white">{sc.label}</span>
-                      <span className="text-[11px] text-white/50 truncate block mt-0.5">"{sc.question}"</span>
+                      <span className="text-[11px] text-[#D1CFDB] truncate block mt-0.5">"{sc.question}"</span>
                     </button>
                   ))}
                 </div>

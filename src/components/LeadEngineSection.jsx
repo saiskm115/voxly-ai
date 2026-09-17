@@ -118,7 +118,7 @@ export function LeadEngineSection({ onGetStarted }) {
               </span>
               <div>
                 <h4 className="text-sm font-bold text-white">Live Extraction Dispatched to CRM</h4>
-                <p className="text-[11px] font-mono text-white/50">Auto-created via Call #2841 (03:42 duration)</p>
+                <p className="text-[11px] font-mono text-[#D1CFDB]">Auto-created via Call #2841 (03:42 duration)</p>
               </div>
             </div>
             <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-white/10 text-white border border-white/15">
@@ -128,30 +128,30 @@ export function LeadEngineSection({ onGetStarted }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
             <div className="bg-black/30 p-3 rounded-xl border border-white/5">
-              <span className="text-white/40 block text-[10px] uppercase mb-1">Decision Maker:</span>
+              <span className="text-[#A19EAD] block text-[10px] uppercase mb-1">Decision Maker:</span>
               <span className="text-white font-medium flex items-center gap-2">
-                <User className="w-3.5 h-3.5 text-white/60" />
+                <User className="w-3.5 h-3.5 text-[#D1CFDB]" />
                 {LEAD_PIPELINE.sampleLead.name} ({LEAD_PIPELINE.sampleLead.role})
               </span>
             </div>
 
             <div className="bg-black/30 p-3 rounded-xl border border-white/5">
-              <span className="text-white/40 block text-[10px] uppercase mb-1">Target Account:</span>
+              <span className="text-[#A19EAD] block text-[10px] uppercase mb-1">Target Account:</span>
               <span className="text-white font-medium flex items-center gap-2">
-                <Building className="w-3.5 h-3.5 text-white/60" />
+                <Building className="w-3.5 h-3.5 text-[#D1CFDB]" />
                 {LEAD_PIPELINE.sampleLead.company}
               </span>
             </div>
 
             <div className="bg-black/30 p-3 rounded-xl border border-white/5">
-              <span className="text-white/40 block text-[10px] uppercase mb-1">Detected Intent:</span>
+              <span className="text-[#A19EAD] block text-[10px] uppercase mb-1">Detected Intent:</span>
               <span className="text-[#D1CFDB] font-medium leading-relaxed block">
                 "{LEAD_PIPELINE.sampleLead.intent}"
               </span>
             </div>
 
             <div className="bg-black/30 p-3 rounded-xl border border-white/5">
-              <span className="text-white/40 block text-[10px] uppercase mb-1">Verified Budget & Authority:</span>
+              <span className="text-[#A19EAD] block text-[10px] uppercase mb-1">Verified Budget & Authority:</span>
               <span className="text-[#10B981] font-bold text-xs flex items-center gap-1.5">
                 <DollarSign className="w-3.5 h-3.5" />
                 {LEAD_PIPELINE.sampleLead.budget} (BANT Verified)

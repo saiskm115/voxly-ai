@@ -45,7 +45,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF9FD] selection:bg-[#EDE7FF] selection:text-[#6344E7]">
+    <div className="min-h-screen flex flex-col bg-[#FAF9FD] selection:bg-[#F0EEF6] selection:text-[#6344E7]">
       {/* Navigation Header */}
       <Navbar
         onGetStarted={handleGetStarted}

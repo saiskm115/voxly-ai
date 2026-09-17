@@ -63,7 +63,7 @@ export function Navbar({ onGetStarted, onWatchDemo }) {
                 {link.dropdown && (
                   <ChevronDown
                     className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                      activeDropdown === link.name ? 'rotate-180 text-[#0F0E17]' : 'text-[#8C8899]'
+                      activeDropdown === link.name ? 'rotate-180 text-[#0F0E17]' : 'text-[#524E5E]'
                     }`}
                   />
                 )}

@@ -76,7 +76,7 @@ export function HowItWorksSection({ onGetStarted }) {
           {/* 4 Usage Counters */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 font-mono">
             <div className="bg-black/30 p-3.5 rounded-xl border border-white/5">
-              <span className="text-[10px] font-sans font-bold text-white/50 uppercase tracking-wider block mb-1">
+              <span className="text-[10px] font-sans font-bold text-[#A19EAD] uppercase tracking-wider block mb-1">
                 Allocated Credits
               </span>
               <span className="text-xl font-bold text-white">
@@ -85,7 +85,7 @@ export function HowItWorksSection({ onGetStarted }) {
             </div>
 
             <div className="bg-black/30 p-3.5 rounded-xl border border-white/5">
-              <span className="text-[10px] font-sans font-bold text-white/50 uppercase tracking-wider block mb-1">
+              <span className="text-[10px] font-sans font-bold text-[#A19EAD] uppercase tracking-wider block mb-1">
                 Minutes Used
               </span>
               <span className="text-xl font-bold text-[#D1CFDB]">
@@ -94,7 +94,7 @@ export function HowItWorksSection({ onGetStarted }) {
             </div>
 
             <div className="bg-black/30 p-3.5 rounded-xl border border-white/5">
-              <span className="text-[10px] font-sans font-bold text-white/50 uppercase tracking-wider block mb-1">
+              <span className="text-[10px] font-sans font-bold text-[#A19EAD] uppercase tracking-wider block mb-1">
                 Current Spend
               </span>
               <span className="text-xl font-bold text-[#10B981]">
@@ -103,7 +103,7 @@ export function HowItWorksSection({ onGetStarted }) {
             </div>
 
             <div className="bg-black/30 p-3.5 rounded-xl border border-white/5">
-              <span className="text-[10px] font-sans font-bold text-white/50 uppercase tracking-wider block mb-1">
+              <span className="text-[10px] font-sans font-bold text-[#A19EAD] uppercase tracking-wider block mb-1">
                 Remaining
               </span>
               <span className="text-xl font-bold text-white">
@@ -114,7 +114,7 @@ export function HowItWorksSection({ onGetStarted }) {
 
           {/* Bottom Call to Action */}
           <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10 text-xs">
-            <span className="text-white/60">
+            <span className="text-[#D1CFDB]">
               Zero charges for unanswered rings, busy tones, or voicemail. You are billed strictly per connected second.
             </span>
             <button

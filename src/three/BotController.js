@@ -188,7 +188,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
   const RANDOM_IDLE_EXPRS = ['HAPPY', 'THINKING', 'SURPRISED', 'EXCITED', 'HAPPY', 'THINKING', 'SURPRISED'];
   let randomExprIndex = 0;
 
-  const defaultGlowColor = new Color('#9B7BF7');
+  const defaultGlowColor = new Color('#6344E7');
   const angryGlowColor = new Color('#FF3366');
 
   const clamp = (v) => (Number.isFinite(v) ? MathUtils.clamp(v, 0, 1) : 0);

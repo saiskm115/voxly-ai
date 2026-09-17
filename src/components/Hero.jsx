@@ -465,25 +465,25 @@ export function Hero({
                         e.stopPropagation();
                         onTalkToMe();
                       }}
-                      className="py-1 px-2.5 bg-[#7657E8] hover:bg-[#6845DF] text-white text-[10px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-xs"
+                      className="py-1 px-2.5 bg-[#6344E7] hover:bg-[#5234D4] text-white text-[10px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-xs"
                     >
                       <Mic className="w-3 h-3" /> Live Mic Chat
                     </button>
-                    <span className="text-[10px] opacity-60 flex items-center gap-1">
-                      <Volume2 className="w-3 h-3" /> Voice active
+                    <span className="text-[10px] text-[#524E5E] flex items-center gap-1 font-medium">
+                      <Volume2 className="w-3 h-3 text-[#10B981]" /> Voice active
                     </span>
                   </div>
                 </div>
               )}
 
-              {/* Handwritten Script badge matching reference: "Always On For Your Business" */}
-              <div className="absolute bottom-4 right-2 sm:right-6 pointer-events-none select-none z-10 flex flex-col items-center">
-                <span className="font-handwriting text-2xl sm:text-3xl text-[#7657E8] font-bold -rotate-6 drop-shadow-xs">
-                  Always On
-                </span>
-                <span className="font-handwriting text-2xl sm:text-3xl text-[#4C3A91] font-bold -rotate-6">
-                  For Your Business
-                </span>
+              {/* Status badge: Always On Fleet Indicator */}
+              <div className="absolute bottom-4 right-2 sm:right-6 pointer-events-none select-none z-10 flex flex-col items-end">
+                <div className="bg-white/95 backdrop-blur-xs border border-[#E4E2EB] shadow-craft-xs px-3 py-1.5 rounded-xl flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+                  <span className="text-[11px] font-mono font-semibold text-[#0F0E17] uppercase tracking-wider">
+                    Always On • 24/7 Fleet
+                  </span>
+                </div>
               </div>
             </div>
 

@@ -8,10 +8,10 @@ function CanvasLoader() {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#FAF9FD]/70 backdrop-blur-sm z-10 transition-opacity duration-500">
       <div className="relative flex items-center justify-center">
-        <div className="w-12 h-12 rounded-full border-3 border-[#EDE7FF] border-t-[#7657E8] animate-spin" />
-        <div className="absolute w-6 h-6 rounded-full bg-[#7657E8]/20 animate-pulse" />
+        <div className="w-12 h-12 rounded-full border-2 border-[#E4E2EB] border-t-[#6344E7] animate-spin" />
+        <div className="absolute w-6 h-6 rounded-full bg-[#6344E7]/20 animate-pulse" />
       </div>
-      <p className="mt-3 text-xs font-semibold text-[#6F6B7D] tracking-wide animate-pulse">
+      <p className="mt-3 text-xs font-semibold text-[#524E5E] tracking-wide animate-pulse">
         Preparing your AI employee...
       </p>
     </div>
@@ -64,6 +64,8 @@ export function VoxlyScene({
         <img
           src="/images/VoxlyBot_preview.png"
           alt="Voxly AI Employee Preview"
+          width="320"
+          height="320"
           className="max-h-[320px] object-contain drop-shadow-xl"
         />
       </div>
@@ -85,7 +87,7 @@ export function VoxlyScene({
             near: 0.1,
             far: 100,
           }}
-          dpr={[1, 2]}
+          dpr={isMobile ? [1, 1.5] : [1, 2]}
           gl={{
             antialias: true,
             alpha: true,

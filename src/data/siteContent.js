@@ -403,8 +403,8 @@ export const PERFORMANCE_STATS = {
       { stage: 'Booked Meetings', count: 1842, pct: '15%' },
     ],
     outcomes: [
-      { label: 'Resolved by AI', pct: 82, color: '#7657E8' },
-      { label: 'Follow-up Sent', pct: 12, color: '#20B486' },
+      { label: 'Resolved by AI', pct: 82, color: '#6344E7' },
+      { label: 'Follow-up Sent', pct: 12, color: '#10B981' },
       { label: 'Human Transfer', pct: 6, color: '#F59E0B' },
     ],
   },

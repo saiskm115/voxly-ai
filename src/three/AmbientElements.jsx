@@ -33,7 +33,7 @@ export function AmbientElements() {
           color="#D4C0FF"
           roughness={0.2}
           metalness={0.15}
-          emissive="#7657E8"
+          emissive="#6344E7"
           emissiveIntensity={0.25}
         />
       </mesh>
@@ -45,7 +45,7 @@ export function AmbientElements() {
           color="#D4C0FF"
           roughness={0.25}
           metalness={0.15}
-          emissive="#9B7BF7"
+          emissive="#8369F5"
           emissiveIntensity={0.3}
         />
       </mesh>
@@ -57,7 +57,7 @@ export function AmbientElements() {
           color="#E8DEFF"
           roughness={0.2}
           metalness={0.1}
-          emissive="#7657E8"
+          emissive="#6344E7"
           emissiveIntensity={0.2}
         />
       </mesh>

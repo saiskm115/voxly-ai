@@ -121,7 +121,7 @@ export function AnalyticsSection() {
                 <div key={out.label} className="bg-[#FAF9FD] p-5 rounded-xl border border-[#E4E2EB] text-center">
                   <div
                     className="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-xl font-mono font-bold text-white mb-3"
-                    style={{ backgroundColor: out.label.includes('Resolved') ? '#10B981' : out.label.includes('Transfer') ? '#6344E7' : '#8C8899' }}
+                    style={{ backgroundColor: out.label.includes('Resolved') ? '#10B981' : out.label.includes('Transfer') ? '#6344E7' : '#524E5E' }}
                   >
                     {out.pct}%
                   </div>

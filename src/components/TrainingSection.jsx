@@ -136,7 +136,7 @@ export function TrainingSection() {
                 <h4 className="text-sm font-bold text-white">
                   Ingested Context: {selected.title}
                 </h4>
-                <p className="text-xs text-white/50">{selected.desc}</p>
+                <p className="text-xs text-[#D1CFDB]">{selected.desc}</p>
               </div>
             </div>
             <span className="text-[11px] font-mono font-semibold px-2.5 py-1 rounded bg-white/10 text-[#10B981] border border-white/15 flex items-center gap-1.5">
@@ -145,13 +145,13 @@ export function TrainingSection() {
           </div>
 
           <div className="space-y-2.5">
-            <span className="text-[10px] font-mono font-bold text-white/40 uppercase tracking-wider block">
+            <span className="text-[10px] font-mono font-bold text-[#A19EAD] uppercase tracking-wider block">
               Active Documents & Verification Rules:
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 font-mono">
               {selected.items.map((item, i) => (
                 <div key={i} className="bg-black/30 p-3 rounded-xl border border-white/5 flex items-center gap-2.5">
-                  <FileText className="w-3.5 h-3.5 text-white/40 shrink-0" />
+                  <FileText className="w-3.5 h-3.5 text-[#A19EAD] shrink-0" />
                   <span className="text-xs text-[#FAF9FD] truncate">{item}</span>
                 </div>
               ))}

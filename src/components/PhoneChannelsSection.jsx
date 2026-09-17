@@ -131,11 +131,11 @@ export function PhoneChannelsSection({ onGetStarted }) {
                 {/* Call metadata cards */}
                 <div className="space-y-2 mb-5 text-xs font-mono">
                   <div className="bg-black/40 p-2.5 rounded-lg border border-white/5">
-                    <span className="text-white/40 block text-[10px] uppercase">Active Caller:</span>
+                    <span className="text-[#A19EAD] block text-[10px] uppercase">Active Caller:</span>
                     <span className="text-white font-medium">{selectedChannel.mockCaller}</span>
                   </div>
                   <div className="bg-black/40 p-2.5 rounded-lg border border-white/5">
-                    <span className="text-white/40 block text-[10px] uppercase">Target Intent:</span>
+                    <span className="text-[#A19EAD] block text-[10px] uppercase">Target Intent:</span>
                     <span className="text-[#D1CFDB] font-medium">{selectedChannel.mockGoal}</span>
                   </div>
                 </div>
@@ -145,7 +145,7 @@ export function PhoneChannelsSection({ onGetStarted }) {
                   {[10, 18, 14, 22, 12, 19, 8, 20, 15, 10].map((h, i) => (
                     <span
                       key={i}
-                      className="w-1 bg-[#6344E7] rounded-full"
+                      className="w-1 bg-[#8369F5] rounded-full"
                       style={{ height: `${h}px` }}
                     />
                   ))}

@@ -33,7 +33,7 @@ export function BotLights() {
         position={[0, -1.8, 1]}
         intensity={3.2}
         distance={6}
-        color="#9B7BF7"
+        color="#8369F5"
       />
 
       {/* Side lavender accent light */}
@@ -41,7 +41,7 @@ export function BotLights() {
         position={[2.5, 0.5, 2]}
         intensity={1.8}
         distance={5}
-        color="#7657E8"
+        color="#6344E7"
       />
     </>
   );

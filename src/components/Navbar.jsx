@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NAV_LINKS } from '../data/siteContent';
-import { ChevronDown, Menu, X, ArrowRight } from 'lucide-react';
+import { ChevronDown, Menu, X, ArrowRight, User, LogOut, Settings, LayoutDashboard, ShieldCheck } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
-export function Navbar({ onGetStarted, onWatchDemo }) {
+export function Navbar({ onGetStarted, onWatchDemo, onSignIn }) {
+  const { user, isAuthenticated, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -13,6 +17,17 @@ export function Navbar({ onGetStarted, onWatchDemo }) {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -96,12 +111,94 @@ export function Navbar({ onGetStarted, onWatchDemo }) {
 
         {/* Right CTA Actions: Tactile, high-contrast buttons */}
         <div className="hidden md:flex items-center gap-4">
-          <button
-            onClick={onWatchDemo}
-            className="text-xs font-semibold text-[#524E5E] hover:text-[#0F0E17] transition-colors px-3 py-2 rounded-lg hover:bg-[#FAF9FD]"
-          >
-            Sign in
-          </button>
+          {isAuthenticated && user ? (
+            /* User Authenticated Profile Pill & Dropdown */
+            <div className="relative" ref={userMenuRef}>
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-2 py-1.5 pl-2 pr-3 rounded-xl bg-white hover:bg-[#FAF9FD] border border-[#E4E2EB] shadow-xs active:scale-[0.98] transition-all"
+              >
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="w-6 h-6 rounded-lg object-cover"
+                  />
+                ) : (
+                  <div className="w-6 h-6 rounded-lg bg-[#0F0E17] text-white flex items-center justify-center text-[10px] font-mono font-bold">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span className="text-xs font-semibold text-[#0F0E17] max-w-[120px] truncate">
+                  {user.name}
+                </span>
+                <ChevronDown className={`w-3 h-3 text-[#524E5E] transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* User Dropdown Menu */}
+              {userMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl border border-[#E4E2EB] shadow-xl p-3 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="pb-3 border-b border-[#E4E2EB] mb-2 px-1">
+                    <div className="text-xs font-bold text-[#0F0E17] truncate">{user.name}</div>
+                    <div className="text-[11px] text-[#524E5E] truncate">{user.email}</div>
+                    <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#FAF9FD] border border-[#E4E2EB] text-[10px] font-mono font-semibold text-[#10B981]">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+                      <span>{user.plan || 'Fleet Active'}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 text-xs font-medium">
+                    <a
+                      href="#capabilities"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FAF9FD] text-[#0F0E17] transition-colors"
+                    >
+                      <LayoutDashboard className="w-3.5 h-3.5 text-[#524E5E]" />
+                      <span>Agent Fleet Studio</span>
+                    </a>
+                    <a
+                      href="#how-it-works"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FAF9FD] text-[#0F0E17] transition-colors"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#524E5E]" />
+                      <span>Usage & Minutes Meter</span>
+                    </a>
+                    <a
+                      href="#pricing"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FAF9FD] text-[#0F0E17] transition-colors"
+                    >
+                      <Settings className="w-3.5 h-3.5 text-[#524E5E]" />
+                      <span>Fleet Settings</span>
+                    </a>
+                  </div>
+
+                  <div className="pt-2 mt-2 border-t border-[#E4E2EB]">
+                    <button
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        logout();
+                      }}
+                      className="w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-red-50 text-red-600 text-xs font-semibold transition-colors"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Unauthenticated: Sign in button */
+            <button
+              onClick={onSignIn}
+              className="text-xs font-semibold text-[#524E5E] hover:text-[#0F0E17] transition-colors px-3 py-2 rounded-lg hover:bg-[#FAF9FD]"
+            >
+              Sign in
+            </button>
+          )}
+
           <button
             onClick={onGetStarted}
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-[#0F0E17] hover:bg-[#232130] active:scale-[0.98] transition-all duration-150 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6344E7]"
@@ -137,15 +234,27 @@ export function Navbar({ onGetStarted, onWatchDemo }) {
             ))}
           </div>
           <div className="pt-3 border-t border-[#E4E2EB] flex flex-col gap-2.5">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onWatchDemo();
-              }}
-              className="w-full py-2.5 text-center text-xs font-semibold text-[#524E5E] rounded-xl hover:bg-[#FAF9FD] border border-[#E4E2EB]"
-            >
-              Sign in
-            </button>
+            {isAuthenticated && user ? (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  logout();
+                }}
+                className="w-full py-2.5 text-center text-xs font-semibold text-red-600 rounded-xl hover:bg-red-50 border border-red-200"
+              >
+                Sign Out ({user.name})
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onSignIn();
+                }}
+                className="w-full py-2.5 text-center text-xs font-semibold text-[#524E5E] rounded-xl hover:bg-[#FAF9FD] border border-[#E4E2EB]"
+              >
+                Sign in
+              </button>
+            )}
             <button
               onClick={() => {
                 setMobileMenuOpen(false);

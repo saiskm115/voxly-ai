@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { AuthProvider } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AiEmployeeSection } from './components/AiEmployeeSection';
@@ -19,24 +20,29 @@ import { Footer } from './components/Footer';
 import { WatchDemoModal } from './components/WatchDemoModal';
 import { TalkToMeModal } from './components/TalkToMeModal';
 import { LegalModals } from './components/LegalModals';
+import { AuthModal } from './components/AuthModal';
 
 export function App() {
   const [botState, setBotState] = useState('IDLE');
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isTalkModalOpen, setIsTalkModalOpen] = useState(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState('signin');
   const [legalModalTab, setLegalModalTab] = useState('privacy');
   const botControllerRef = useRef(null);
 
+  const handleOpenSignIn = (mode = 'signin') => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
   const handleGetStarted = () => {
-    const pricing = document.getElementById('pricing');
-    if (pricing) {
-      pricing.scrollIntoView({ behavior: 'smooth' });
-    }
+    handleOpenSignIn('signup');
   };
 
   const handleSelectPlan = (planName) => {
-    alert(`Thank you for selecting the ${planName} plan! In production, this redirects to your onboarding workspace.`);
+    handleOpenSignIn('signup');
   };
 
   const handleOpenLegal = (tab = 'privacy') => {
@@ -45,12 +51,14 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF9FD] selection:bg-[#F0EEF6] selection:text-[#6344E7]">
-      {/* Navigation Header */}
-      <Navbar
-        onGetStarted={handleGetStarted}
-        onWatchDemo={() => setIsDemoModalOpen(true)}
-      />
+    <AuthProvider>
+      <div className="min-h-screen flex flex-col bg-[#FAF9FD] selection:bg-[#F0EEF6] selection:text-[#6344E7]">
+        {/* Navigation Header */}
+        <Navbar
+          onGetStarted={handleGetStarted}
+          onWatchDemo={() => setIsDemoModalOpen(true)}
+          onSignIn={() => handleOpenSignIn('signin')}
+        />
 
       {/* Main Content Sections: Exact 15-Stage Ordered Architecture */}
       <main className="flex-1">
@@ -150,7 +158,14 @@ export function App() {
         onClose={() => setIsLegalModalOpen(false)}
         defaultTab={legalModalTab}
       />
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        initialMode={authModalMode}
+      />
     </div>
+  </AuthProvider>
   );
 }
 

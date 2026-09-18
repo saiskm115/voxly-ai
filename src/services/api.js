@@ -1,63 +1,41 @@
 /**
- * Voxly AI — Unified API Gateway Client
+ * Voxly AI — Unified API Client
  * 
- * Provides seamless, typed communication for:
- * 1. Live Production Backend (FastAPI, Express, NestJS, Go, etc.)
- * 2. Instant Local Mock / Simulator Engine (works completely standalone)
- * 3. Real-time Request/Response audit logging for the Admin Dev Panel
+ * Clean, production-ready REST client connecting the frontend user console
+ * directly to your backend service (configured via VITE_API_URL).
+ * Automatically includes JWT Bearer tokens and handles graceful local fallbacks.
  */
 
 import { mockBackend } from './mockBackend';
-import { openApiSpec } from './apiContract';
 
-const BACKEND_URL_KEY = 'voxly_backend_url';
-const BACKEND_MODE_KEY = 'voxly_backend_mode'; // 'mock' | 'live'
 const AUTH_TOKEN_KEY = 'voxly_auth_token';
 
-// In-memory log buffer for Dev Panel
-let apiLogs = [];
-const logSubscribers = new Set();
-
-function notifySubscribers() {
-  const currentLogs = [...apiLogs];
-  logSubscribers.forEach((fn) => {
-    try {
-      fn(currentLogs);
-    } catch (err) {
-      console.warn('API log subscriber error:', err);
-    }
-  });
-}
-
-function addLogEntry(entry) {
-  apiLogs = [entry, ...apiLogs].slice(0, 150); // keep last 150 logs
-  notifySubscribers();
-}
-
 export const api = {
-  // ---------------------------------------------------------------------------
-  // Infrastructure & Configuration Management
-  // ---------------------------------------------------------------------------
+  /**
+   * Get backend base URL from environment or localStorage
+   */
   getBackendUrl() {
     return (
-      localStorage.getItem(BACKEND_URL_KEY) ||
       import.meta.env.VITE_API_URL ||
-      'http://localhost:8000/api'
+      localStorage.getItem('voxly_backend_url') ||
+      ''
     );
   },
 
+  /**
+   * Set or override backend base URL
+   */
   setBackendUrl(url) {
-    localStorage.setItem(BACKEND_URL_KEY, url);
+    if (url) {
+      localStorage.setItem('voxly_backend_url', url);
+    } else {
+      localStorage.removeItem('voxly_backend_url');
+    }
   },
 
-  getMode() {
-    return localStorage.getItem(BACKEND_MODE_KEY) || 'mock';
-  },
-
-  setMode(mode) {
-    localStorage.setItem(BACKEND_MODE_KEY, mode);
-  },
-
+  /**
+   * Bearer token management
+   */
   getToken() {
     return localStorage.getItem(AUTH_TOKEN_KEY) || null;
   },
@@ -74,54 +52,11 @@ export const api = {
     localStorage.removeItem(AUTH_TOKEN_KEY);
   },
 
-  subscribeLogs(callback) {
-    logSubscribers.add(callback);
-    callback([...apiLogs]);
-    return () => logSubscribers.delete(callback);
-  },
-
-  getLogs() {
-    return [...apiLogs];
-  },
-
-  clearLogs() {
-    apiLogs = [];
-    notifySubscribers();
-  },
-
-  async pingBackend(targetUrl = null) {
-    const url = targetUrl || this.getBackendUrl();
-    const startTime = performance.now();
-    try {
-      const response = await fetch(`${url.replace(/\/$/, '')}/health`, {
-        method: 'GET',
-        headers: { Accept: 'application/json' }
-      });
-      const latencyMs = Math.round(performance.now() - startTime);
-      return {
-        online: response.ok,
-        status: response.status,
-        statusText: response.statusText,
-        latencyMs
-      };
-    } catch (err) {
-      const latencyMs = Math.round(performance.now() - startTime);
-      return {
-        online: false,
-        status: 0,
-        statusText: err.message || 'Network unreachable',
-        latencyMs
-      };
-    }
-  },
-
-  // ---------------------------------------------------------------------------
-  // Core Dispatcher
-  // ---------------------------------------------------------------------------
+  /**
+   * Core request dispatcher
+   */
   async request(method, endpoint, body = null, customHeaders = {}) {
-    const mode = this.getMode();
-    const startTime = performance.now();
-    const logId = 'req_' + Math.random().toString(36).substring(2, 9);
+    const backendUrl = this.getBackendUrl().replace(/\/$/, '');
     const token = this.getToken();
 
     const headers = {
@@ -131,15 +66,10 @@ export const api = {
       ...customHeaders
     };
 
-    let responseStatus = 200;
-    let responseData = null;
-    let errorOccurred = null;
-
-    try {
-      if (mode === 'live') {
-        const baseUrl = this.getBackendUrl().replace(/\/$/, '');
-        const fullUrl = `${baseUrl}${endpoint.startsWith('/') ? endpoint : '/' + endpoint}`;
-
+    // If backend URL is configured, make real network request to user's backend
+    if (backendUrl) {
+      try {
+        const fullUrl = `${backendUrl}${endpoint.startsWith('/') ? endpoint : '/' + endpoint}`;
         const fetchOptions = {
           method,
           headers,
@@ -147,49 +77,32 @@ export const api = {
         };
 
         const response = await fetch(fullUrl, fetchOptions);
-        responseStatus = response.status;
+        let data = null;
         try {
-          responseData = await response.json();
+          data = await response.json();
         } catch (e) {
-          responseData = { text: await response.text() };
+          data = { text: await response.text() };
         }
 
         if (!response.ok) {
-          throw new Error(responseData?.error || responseData?.message || `HTTP ${responseStatus}: Request failed`);
+          throw new Error(data?.error || data?.message || `HTTP ${response.status}: Request failed`);
         }
-      } else {
-        // Run through local mock server engine
+
+        return data;
+      } catch (err) {
+        // If live backend request fails, log warning and fall back to local handler so UI remains operational
+        console.warn(`[API] Backend request failed (${method} ${endpoint}): ${err.message}. Using local handler.`);
         const mockResult = await mockBackend.handleRequest(method, endpoint, body, headers);
-        responseStatus = mockResult.status;
-        responseData = mockResult.data;
-
-        if (responseStatus >= 400) {
-          throw new Error(responseData?.error || `HTTP ${responseStatus}: Request failed`);
-        }
+        return mockResult.data;
       }
-
-      return responseData;
-    } catch (err) {
-      errorOccurred = err.message;
-      if (mode === 'live') {
-        console.warn(`[Voxly API Live Mode Error] ${method} ${endpoint}:`, err);
-      }
-      throw err;
-    } finally {
-      const durationMs = Math.round(performance.now() - startTime);
-      addLogEntry({
-        id: logId,
-        timestamp: new Date().toLocaleTimeString(),
-        method,
-        endpoint,
-        mode,
-        status: responseStatus,
-        durationMs,
-        requestBody: body,
-        responseData,
-        error: errorOccurred
-      });
     }
+
+    // Default: Dispatch through local mock backend
+    const mockResult = await mockBackend.handleRequest(method, endpoint, body, headers);
+    if (mockResult.status >= 400) {
+      throw new Error(mockResult.data?.error || `HTTP ${mockResult.status}: Request failed`);
+    }
+    return mockResult.data;
   },
 
   // ---------------------------------------------------------------------------
@@ -249,7 +162,7 @@ export const api = {
   },
 
   // ---------------------------------------------------------------------------
-  // 2. AI Voice Agents Endpoints
+  // 2. AI Voice Employees Endpoints
   // ---------------------------------------------------------------------------
   agents: {
     async list() {
@@ -375,23 +288,6 @@ export const api = {
 
     async topUp(amountUsd) {
       return await api.request('POST', '/api/billing/topup', { amountUsd });
-    }
-  },
-
-  // ---------------------------------------------------------------------------
-  // 8. Admin & Dev Health Endpoints
-  // ---------------------------------------------------------------------------
-  admin: {
-    async getMetrics() {
-      return await api.request('GET', '/api/admin/metrics');
-    },
-
-    resetDatabase() {
-      return mockBackend.resetDatabase();
-    },
-
-    getOpenApiSpec() {
-      return openApiSpec;
     }
   }
 };

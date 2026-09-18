@@ -75,31 +75,26 @@
 
 ---
 
-## 🔌 Backend Integration & Admin Dev Panel
+## 🔌 Connecting With Your Backend
 
-Voxly features an enterprise-grade API gateway and developer infrastructure:
+The user console is architected to interface directly with your separate backend:
 
-### 1. Unified API Gateway (`/api/*`)
-All interactions in the user console connect through typed endpoints with JWT Bearer authentication:
-- **Auth & Sessions**: `/api/auth/login`, `/api/auth/signup`, `/api/auth/google`, `/api/auth/github`, `/api/auth/session`, `/api/auth/logout`
-- **AI Voice Employees**: `/api/agents` (CRUD, status toggle, clone, acoustic tuning)
-- **Telephony & Virtual DIDs**: `/api/telephony/numbers` (buy, assign, SIP routing, release, catalog)
-- **Call Logs & Transcripts**: `/api/calls` (list, detail with audio turns, outbound dialer trigger)
-- **CRM Leads & Pipeline**: `/api/leads` (qualification, stage updates, direct follow-up)
-- **Bulk Outbound Campaigns**: `/api/campaigns` (multi-channel pacing, live progress)
-- **Minutes Wallet & Billing**: `/api/billing/wallet`, `/api/billing/topup`
-- **System Health & Telemetry**: `/api/admin/metrics`
+### 1. Configure Your Backend API URL
+In your `.env` or environment:
+```bash
+VITE_API_URL=http://localhost:8000/api
+```
+*(Point this to your backend server URL. If left blank, the frontend uses an internal simulator so pages remain interactive).*
 
-### 2. Instant Mode Switcher (Mock Simulator vs. Live Backend)
-- **Mock Simulator Engine**: Full in-memory/localStorage REST engine allowing complete standalone development.
-- **Custom Live Backend**: Configure `VITE_API_URL` or enter your backend URL directly in the Admin Dev Panel (`http://localhost:8000/api`).
-
-### 3. Admin & Developer Panel (`#dashboard/admin-dev` or `Ctrl + Shift + D`)
-- **API Endpoint Tester**: Interactive request runner with pre-filled JSON payloads and syntax-highlighted responses.
-- **JWT Session Manager**: Live token inspection, claim decoding, custom token injection, and role impersonation.
-- **Telephony & LLM Health Diagnostics**: Real-time monitoring for PSTN trunks, STT (Deepgram), TTS (Cartesia), and LLM TTFT.
-- **Live Network Audit Stream**: Real-time traffic inspection with request/response payloads and millisecond latency timers.
-- **OpenAPI 3.0 Export**: Instant copyable OpenAPI 3.0 JSON specification for backend developers.
+### 2. Supported Backend Endpoints
+All user console actions route through the clean API client in `src/services/api.js`:
+- **Auth & Sessions**: `POST /api/auth/login`, `POST /api/auth/signup`, `POST /api/auth/google`, `POST /api/auth/github`, `GET /api/auth/session`, `POST /api/auth/logout`
+- **AI Voice Employees**: `GET /api/agents`, `POST /api/agents`, `GET /api/agents/:id`, `PUT /api/agents/:id`, `DELETE /api/agents/:id`
+- **Telephony & Virtual DIDs**: `GET /api/telephony/numbers`, `POST /api/telephony/buy`, `POST /api/telephony/numbers/:id/assign`, `PUT /api/telephony/numbers/:id/routing`
+- **Calls & Transcripts**: `GET /api/calls`, `GET /api/calls/:id`, `POST /api/calls/outbound`
+- **CRM Leads & Pipeline**: `GET /api/leads`, `POST /api/leads`, `PATCH /api/leads/:id/stage`
+- **Campaigns**: `GET /api/campaigns`, `POST /api/campaigns`, `PATCH /api/campaigns/:id/status`
+- **Billing & Wallet**: `GET /api/billing/wallet`, `POST /api/billing/topup`
 
 ---
 

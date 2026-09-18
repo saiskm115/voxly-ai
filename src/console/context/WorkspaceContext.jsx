@@ -22,6 +22,56 @@ export function WorkspaceProvider({ children }) {
   const [availableCatalog, setAvailableCatalog] = useState(availableNumbersCatalog);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Multiple Workspaces Management
+  const defaultWorkspaces = [
+    {
+      id: 'ws-acme',
+      name: 'Acme Health Corp',
+      tier: 'Enterprise Fleet',
+      role: 'Owner',
+      activeAgents: 3,
+      avatar: 'V'
+    },
+    {
+      id: 'ws-summit',
+      name: 'Summit Dental Care',
+      tier: 'Professional Fleet',
+      role: 'Admin',
+      activeAgents: 2,
+      avatar: 'S'
+    },
+    {
+      id: 'ws-vance',
+      name: 'Vance Capital Partners',
+      tier: 'Scale Fleet',
+      role: 'Billing Lead',
+      activeAgents: 1,
+      avatar: 'V'
+    }
+  ];
+
+  const [workspaces, setWorkspaces] = useState(defaultWorkspaces);
+  const [currentWorkspaceId, setCurrentWorkspaceId] = useState('ws-acme');
+  const currentWorkspace = workspaces.find((w) => w.id === currentWorkspaceId) || workspaces[0];
+
+  const switchWorkspace = (id) => {
+    setCurrentWorkspaceId(id);
+  };
+
+  const createWorkspace = (name, tier = 'Starter Fleet') => {
+    const newWs = {
+      id: `ws-${Date.now()}`,
+      name: name || 'New Organization',
+      tier,
+      role: 'Owner',
+      activeAgents: 0,
+      avatar: (name || 'N').charAt(0).toUpperCase()
+    };
+    setWorkspaces((prev) => [...prev, newWs]);
+    setCurrentWorkspaceId(newWs.id);
+    return newWs;
+  };
+
   // Active workspace navigation and selection states
   const [selectedAgentId, setSelectedAgentId] = useState('agent-maya');
   const [selectedCallId, setSelectedCallId] = useState(null);
@@ -446,6 +496,12 @@ export function WorkspaceProvider({ children }) {
     availableCatalog,
     isLoading,
     loadWorkspaceData,
+
+    // Workspaces
+    workspaces,
+    currentWorkspace,
+    switchWorkspace,
+    createWorkspace,
 
     // Selections
     selectedAgentId,

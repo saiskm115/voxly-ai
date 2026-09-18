@@ -13,7 +13,8 @@ import {
   Settings,
   ExternalLink,
   ChevronDown,
-  Zap
+  Zap,
+  Terminal
 } from 'lucide-react';
 import { useWorkspace } from './context/WorkspaceContext';
 
@@ -62,6 +63,12 @@ export function Sidebar({
         { id: 'billing', label: 'Billing & Usage', icon: CreditCard },
         { id: 'integrations', label: 'Integrations', icon: Blocks },
         { id: 'settings', label: 'Settings', icon: Settings }
+      ]
+    },
+    {
+      group: 'DEVELOPER',
+      items: [
+        { id: 'admin-dev', label: 'Admin & Dev Panel', icon: Terminal, badge: 'API' }
       ]
     }
   ];

@@ -75,6 +75,34 @@
 
 ---
 
+## 🔌 Backend Integration & Admin Dev Panel
+
+Voxly features an enterprise-grade API gateway and developer infrastructure:
+
+### 1. Unified API Gateway (`/api/*`)
+All interactions in the user console connect through typed endpoints with JWT Bearer authentication:
+- **Auth & Sessions**: `/api/auth/login`, `/api/auth/signup`, `/api/auth/google`, `/api/auth/github`, `/api/auth/session`, `/api/auth/logout`
+- **AI Voice Employees**: `/api/agents` (CRUD, status toggle, clone, acoustic tuning)
+- **Telephony & Virtual DIDs**: `/api/telephony/numbers` (buy, assign, SIP routing, release, catalog)
+- **Call Logs & Transcripts**: `/api/calls` (list, detail with audio turns, outbound dialer trigger)
+- **CRM Leads & Pipeline**: `/api/leads` (qualification, stage updates, direct follow-up)
+- **Bulk Outbound Campaigns**: `/api/campaigns` (multi-channel pacing, live progress)
+- **Minutes Wallet & Billing**: `/api/billing/wallet`, `/api/billing/topup`
+- **System Health & Telemetry**: `/api/admin/metrics`
+
+### 2. Instant Mode Switcher (Mock Simulator vs. Live Backend)
+- **Mock Simulator Engine**: Full in-memory/localStorage REST engine allowing complete standalone development.
+- **Custom Live Backend**: Configure `VITE_API_URL` or enter your backend URL directly in the Admin Dev Panel (`http://localhost:8000/api`).
+
+### 3. Admin & Developer Panel (`#dashboard/admin-dev` or `Ctrl + Shift + D`)
+- **API Endpoint Tester**: Interactive request runner with pre-filled JSON payloads and syntax-highlighted responses.
+- **JWT Session Manager**: Live token inspection, claim decoding, custom token injection, and role impersonation.
+- **Telephony & LLM Health Diagnostics**: Real-time monitoring for PSTN trunks, STT (Deepgram), TTS (Cartesia), and LLM TTFT.
+- **Live Network Audit Stream**: Real-time traffic inspection with request/response payloads and millisecond latency timers.
+- **OpenAPI 3.0 Export**: Instant copyable OpenAPI 3.0 JSON specification for backend developers.
+
+---
+
 ## 📄 License
 
 MIT License — feel free to use and customize for your own projects!

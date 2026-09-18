@@ -17,6 +17,7 @@ import { BillingModule } from './modules/BillingModule';
 import { IntegrationsModule } from './modules/IntegrationsModule';
 import { SettingsModule } from './modules/SettingsModule';
 import { TalkToAiConsole } from './modules/TalkToAiConsole';
+import { AdminDevModule } from './modules/AdminDevModule';
 
 export function AppShell({ onBackToLanding }) {
   const {
@@ -48,6 +49,18 @@ export function AppShell({ onBackToLanding }) {
     handleHash();
     window.addEventListener('hashchange', handleHash);
     return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  // Global hotkey: Ctrl + Shift + D (or Cmd + Shift + D) to jump straight to Admin & Dev Panel
+  useEffect(() => {
+    const handleDevHotkey = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+        e.preventDefault();
+        handleSelectTab('admin-dev');
+      }
+    };
+    window.addEventListener('keydown', handleDevHotkey);
+    return () => window.removeEventListener('keydown', handleDevHotkey);
   }, []);
 
   const handleSelectTab = (tabId) => {
@@ -151,6 +164,8 @@ export function AppShell({ onBackToLanding }) {
             {activeTab === 'integrations' && <IntegrationsModule />}
 
             {activeTab === 'settings' && <SettingsModule />}
+
+            {activeTab === 'admin-dev' && <AdminDevModule />}
           </div>
         </main>
       </div>

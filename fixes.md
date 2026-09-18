@@ -1,8 +1,8 @@
 # Voxly AI — Production Master Blueprint & Technical Architecture Specification
 
 > **Target Codebase**: `d:\Antigravity` (`voxly-ai`)  
-> **Evaluation Framework**: Production Readiness (PSTN Telephony, Number Provisioning, Payment Systems, Scalable Agent Engine) + **Emil Kowalski Design Philosophy** (Craft, Restraint, Tactile Feedback, Visual Hierarchy)  
-> **System Status**: Production-Grade Platform Architecture & UI/UX Specification  
+> **Evaluation Framework**: Production Telephony Readiness (SIP RFC 3261, RTP RFC 3550, STIR/SHAKEN, TCPA, PCI-DSS) + **Emil Kowalski Design Philosophy** (Craft, Restraint, Tactile Feedback, Visual Hierarchy) + **Enterprise SEO & Core Web Vitals Standards**  
+> **System Status**: Authoritative, Unambiguous Blueprint & Architectural Reference  
 
 ---
 
@@ -10,69 +10,79 @@
 1. [Executive Summary & Design North Star](#1-executive-summary--design-north-star)
 2. [Part 1: Emil Kowalski Design Critique & 19 Anti-Pattern Audit](#part-1-emil-kowalski-design-critique--19-anti-pattern-audit)
 3. [Part 2: 15-Pillar Public Pre-Launch Audit & Hardening Status](#part-2-15-pillar-public-pre-launch-audit--hardening-status)
-4. [Part 3: Enterprise Architecture — Public Landing Page vs. Authenticated Console](#part-3-enterprise-architecture--public-landing-page-vs-authenticated-console)
-5. [Part 4: PSTN Telephony & Call Flow Architecture (Industry-Standard Specifications)](#part-4-pstn-telephony--call-flow-architecture-industry-standard-specifications)
-   - [4.1 Telephony Infrastructure & Media Gateway](#41-telephony-infrastructure--media-gateway)
-   - [4.2 Sub-500ms Latency Budget Breakdown](#42-sub-500ms-latency-budget-breakdown)
-   - [4.3 Inbound PSTN Call Flow](#43-inbound-pstn-call-flow)
-   - [4.4 Outbound PSTN Call Flow & Automated Dialing Engine](#44-outbound-pstn-call-flow--automated-dialing-engine)
-   - [4.5 Answering Machine Detection (AMD) & Voicemail Drop](#45-answering-machine-detection-amd--voicemail-drop)
-   - [4.6 Call Transfer Architecture: Cold vs. Warm with AI Whisper Briefing](#46-call-transfer-architecture-cold-vs-warm-with-ai-whisper-briefing)
-   - [4.7 DTMF Tone Ingestion & PCI-Compliant IVR Collection](#47-dtmf-tone-ingestion--pci-compliant-ivr-collection)
-6. [Part 5: Scalable AI Voice Agent Engine & Individual Agent Creation](#part-5-scalable-ai-voice-agent-engine--individual-agent-creation)
-   - [5.1 Guided 8-Step Agent Creation Wizard](#51-guided-8-step-agent-creation-wizard)
-   - [5.2 Agent Studio Workbench Architecture](#52-agent-studio-workbench-architecture)
-   - [5.3 LLM Orchestration, Prompt Caching & Dynamic Variables](#53-llm-orchestration-prompt-caching--dynamic-variables)
-   - [5.4 Voice Synthesis Engine Selection & Acoustic Calibration](#54-voice-synthesis-engine-selection--acoustic-calibration)
-   - [5.5 Speech-to-Text (STT) & Streaming WebSockets](#55-speech-to-text-stt--streaming-websockets)
-   - [5.6 Voice Activity Detection (VAD), Endpointing & Turn-Taking](#56-voice-activity-detection-vad-endpointing--turn-taking)
-   - [5.7 Multi-Language, Locale & Code-Switching Architecture](#57-multi-language-locale--code-switching-architecture)
-   - [5.8 Guardrails, Safety, PII Redaction & Supervisor Escalation](#58-guardrails-safety-pii-redaction--supervisor-escalation)
-7. [Part 6: Virtual Number Provisioning & Carrier Orchestration](#part-6-virtual-number-provisioning--carrier-orchestration)
-   - [6.1 Global Carrier Inventory Search & Provisioning API](#61-global-carrier-inventory-search--provisioning-api)
-   - [6.2 Regulatory Compliance: 10DLC A2P & Toll-Free Verification](#62-regulatory-compliance-10dlc-a2p--toll-free-verification)
-   - [6.3 Emergency Services (e911) & Regulatory Address Compliance](#63-emergency-services-e911--regulatory-address-compliance)
-   - [6.4 Caller ID Name (CNAM) & STIR/SHAKEN Attestation](#64-caller-id-name-cnam--stirshaken-attestation)
-   - [6.5 BYOC (Bring Your Own Carrier) / Custom SIP Trunking](#65-byoc-bring-your-own-carrier--custom-sip-trunking)
-   - [6.6 Number Portability (LNP) Workflow](#66-number-portability-lnp-workflow)
-   - [6.7 Dynamic Local Presence Dialing Pool](#67-dynamic-local-presence-dialing-pool)
-8. [Part 7: Payment Systems, Credit Economics & Real-Time Metering](#part-7-payment-systems-credit-economics--real-time-metering)
-   - [7.1 True Per-Second Telephony Metering Engine](#71-true-per-second-telephony-metering-engine)
-   - [7.2 Transparent Component Cost Decomposition & Margin Modeling](#72-transparent-component-cost-decomposition--margin-modeling)
-   - [7.3 Credit Wallet & Auto-Recharge Automation](#73-credit-wallet--auto-recharge-automation)
-   - [7.4 Spending Caps, Quota Enforcement & Graceful Cutoffs](#74-spending-caps-quota-enforcement--graceful-cutoffs)
-   - [7.5 Stripe Invoicing, Payment Methods & Itemized Usage Ledgers](#75-stripe-invoicing-payment-methods--itemized-usage-ledgers)
-9. [Part 8: Exhaustive Design UI/UX Specifications for all 13 Console Modules](#part-8-exhaustive-design-uiux-specifications-for-all-13-console-modules)
-   - [8.1 Design Tokens & Emil Kowalski Craft Standards](#81-design-tokens--emil-kowalski-craft-standards)
-   - [8.2 Global AppShell, Topbar & Command Palette (⌘K)](#82-global-appshell-topbar--command-palette-k)
-   - [8.3 Module 1: Overview Dashboard](#83-module-1-overview-dashboard)
-   - [8.4 Module 2: AI Employees Directory](#84-module-2-ai-employees-directory)
-   - [8.5 Module 3: Agent Studio & Configuration Workbench](#85-module-3-agent-studio--configuration-workbench)
-   - [8.6 Module 4: Realtime "Talk to AI" Voice Testing Console](#86-module-4-realtime-talk-to-ai-voice-testing-console)
-   - [8.7 Module 5: Calls & Call Detail Drawer](#87-module-5-calls--call-detail-drawer)
-   - [8.8 Module 6: Leads Engine](#88-module-6-leads-engine)
-   - [8.9 Module 7: Campaigns & Outbound Dialing Engine](#89-module-7-campaigns--outbound-dialing-engine)
-   - [8.10 Module 8: Phone Numbers & Carrier Hub](#810-module-8-phone-numbers--carrier-hub)
-   - [8.11 Module 9: Training & Knowledge Base](#811-module-9-training--knowledge-base)
-   - [8.12 Module 10: Tools & Function Calling Studio](#812-module-10-tools--function-calling-studio)
-   - [8.13 Module 11: Integrations Hub](#813-module-11-integrations-hub)
-   - [8.14 Module 12: Billing, Metering & Credit Engine](#814-module-12-billing-metering--credit-engine)
-   - [8.15 Module 13: Workspace Settings & Security](#815-module-13-workspace-settings--security)
-10. [Part 9: Implementation Roadmap & Component Hierarchy](#part-9-implementation-roadmap--component-hierarchy)
+4. [Part 3: Technical SEO, Discoverability & Core Web Vitals Specification](#part-3-technical-seo-discoverability--core-web-vitals-specification)
+   - [3.1 Metadata, Social Cards & Canonical URLs](#31-metadata-social-cards--canonical-urls)
+   - [3.2 Heading Hierarchy & Semantic HTML Standards](#32-heading-hierarchy--semantic-html-standards)
+   - [3.3 Schema.org Structured Data (JSON-LD) Master Templates](#33-schemaorg-structured-data-json-ld-master-templates)
+   - [3.4 Crawling & Indexing Policy: Public vs. Authenticated Console](#34-crawling--indexing-policy-public-vs-authenticated-console)
+   - [3.5 Core Web Vitals (CWV) Performance Budget](#35-core-web-vitals-cwv-performance-budget)
+   - [3.6 Unique ID Naming Convention for Testing & Deep Linking](#36-unique-id-naming-convention-for-testing--deep-linking)
+5. [Part 4: Enterprise Architecture — Public Landing Page vs. Authenticated Console](#part-4-enterprise-architecture--public-landing-page-vs-authenticated-console)
+6. [Part 5: PSTN Telephony & Call Flow Architecture (Industry-Standard Specifications)](#part-5-pstn-telephony--call-flow-architecture-industry-standard-specifications)
+   - [5.1 Telephony Infrastructure, Codecs & RFC Standards](#51-telephony-infrastructure-codecs--rfc-standards)
+   - [5.2 Sub-500ms Latency Budget Breakdown](#52-sub-500ms-latency-budget-breakdown)
+   - [5.3 Carrier WebSocket Audio Frame Streaming Protocol](#53-carrier-websocket-audio-frame-streaming-protocol)
+   - [5.4 Inbound PSTN Call Flow & SIP Signaling](#54-inbound-pstn-call-flow--sip-signaling)
+   - [5.5 Outbound PSTN Call Flow & Automated Dialing Engine](#55-outbound-pstn-call-flow--automated-dialing-engine)
+   - [5.6 Answering Machine Detection (AMD) & Voicemail Drop](#56-answering-machine-detection-amd--voicemail-drop)
+   - [5.7 Call Transfer Architecture: Cold vs. Warm with AI Whisper Briefing](#57-call-transfer-architecture-cold-vs-warm-with-ai-whisper-briefing)
+   - [5.8 DTMF Tone Ingestion & PCI-Compliant IVR Collection](#58-dtmf-tone-ingestion--pci-compliant-ivr-collection)
+7. [Part 6: Scalable AI Voice Agent Engine & Individual Agent Creation](#part-6-scalable-ai-voice-agent-engine--individual-agent-creation)
+   - [6.1 Guided 8-Step Agent Creation Wizard](#61-guided-8-step-agent-creation-wizard)
+   - [6.2 Definitive Agent Configuration Schema (`agent.config.json`)](#62-definitive-agent-configuration-schema-agentconfigjson)
+   - [6.3 Agent Studio Workbench Architecture](#63-agent-studio-workbench-architecture)
+   - [6.4 LLM Orchestration, Prompt Caching & Dynamic Variables](#64-llm-orchestration-prompt-caching--dynamic-variables)
+   - [6.5 Voice Synthesis Engine Selection & Acoustic Calibration](#65-voice-synthesis-engine-selection--acoustic-calibration)
+   - [6.6 Speech-to-Text (STT) & Streaming WebSockets](#66-speech-to-text-stt--streaming-websockets)
+   - [6.7 Voice Activity Detection (VAD), Endpointing & Turn-Taking](#67-voice-activity-detection-vad-endpointing--turn-taking)
+   - [6.8 Tool Calling Execution, Timeout Policy & Conversational Fillers](#68-tool-calling-execution-timeout-policy--conversational-fillers)
+   - [6.9 Multi-Language, Locale & Code-Switching Architecture](#69-multi-language-locale--code-switching-architecture)
+   - [6.10 Guardrails, Safety, PII Redaction & Supervisor Escalation](#610-guardrails-safety-pii-redaction--supervisor-escalation)
+8. [Part 7: Virtual Number Provisioning & Carrier Orchestration](#part-7-virtual-number-provisioning--carrier-orchestration)
+   - [7.1 Global Carrier Inventory Search & Provisioning API](#71-global-carrier-inventory-search--provisioning-api)
+   - [7.2 Regulatory Compliance: 10DLC A2P & Toll-Free Verification](#72-regulatory-compliance-10dlc-a2p--toll-free-verification)
+   - [7.3 Emergency Services (e911) & Regulatory Address Compliance](#73-emergency-services-e911--regulatory-address-compliance)
+   - [7.4 Caller ID Name (CNAM) & STIR/SHAKEN Attestation](#74-caller-id-name-cnam--stirshaken-attestation)
+   - [7.5 BYOC (Bring Your Own Carrier) / Custom SIP Trunking](#75-byoc-bring-your-own-carrier--custom-sip-trunking)
+   - [7.6 Number Portability (LNP) Workflow](#76-number-portability-lnp-workflow)
+   - [7.7 Dynamic Local Presence Dialing Pool](#77-dynamic-local-presence-dialing-pool)
+9. [Part 8: Payment Systems, Credit Economics & Real-Time Metering](#part-8-payment-systems-credit-economics--real-time-metering)
+   - [8.1 True Per-Second Telephony Metering Engine & State Machine](#81-true-per-second-telephony-metering-engine--state-machine)
+   - [8.2 Transparent Component Cost Decomposition & Margin Modeling](#82-transparent-component-cost-decomposition--margin-modeling)
+   - [8.3 Credit Wallet, Auto-Recharge Automation & Mutex Locking](#83-credit-wallet-auto-recharge-automation--mutex-locking)
+   - [8.4 Spending Caps, Quota Enforcement & Graceful Cutoffs](#84-spending-caps-quota-enforcement--graceful-cutoffs)
+   - [8.5 Stripe Invoicing, Webhooks & Itemized Usage Ledgers](#85-stripe-invoicing-webhooks--itemized-usage-ledgers)
+10. [Part 9: Exhaustive Design UI/UX Specifications for all 13 Console Modules](#part-9-exhaustive-design-uiux-specifications-for-all-13-console-modules)
+    - [9.1 Design Tokens & Emil Kowalski Craft Standards](#91-design-tokens--emil-kowalski-craft-standards)
+    - [9.2 Global AppShell, Topbar & Command Palette (⌘K)](#92-global-appshell-topbar--command-palette-k)
+    - [9.3 Module 1: Overview Dashboard](#93-module-1-overview-dashboard)
+    - [9.4 Module 2: AI Employees Directory](#94-module-2-ai-employees-directory)
+    - [9.5 Module 3: Agent Studio & Configuration Workbench](#95-module-3-agent-studio--configuration-workbench)
+    - [9.6 Module 4: Realtime "Talk to AI" Voice Testing Console](#96-module-4-realtime-talk-to-ai-voice-testing-console)
+    - [9.7 Module 5: Calls & Call Detail Drawer](#97-module-5-calls--call-detail-drawer)
+    - [9.8 Module 6: Leads Engine](#98-module-6-leads-engine)
+    - [9.9 Module 7: Campaigns & Outbound Dialing Engine](#99-module-7-campaigns--outbound-dialing-engine)
+    - [9.10 Module 8: Phone Numbers & Carrier Hub](#910-module-8-phone-numbers--carrier-hub)
+    - [9.11 Module 9: Training & Knowledge Base](#911-module-9-training--knowledge-base)
+    - [9.12 Module 10: Tools & Function Calling Studio](#912-module-10-tools--function-calling-studio)
+    - [9.13 Module 11: Integrations Hub](#913-module-11-integrations-hub)
+    - [9.14 Module 12: Billing, Metering & Credit Engine](#914-module-12-billing-metering--credit-engine)
+    - [9.15 Module 13: Workspace Settings & Security](#915-module-13-workspace-settings--security)
+11. [Part 10: Implementation Roadmap, Component Hierarchy & Verification](#part-10-implementation-roadmap-component-hierarchy--verification)
 
 ---
 
 ## 1. Executive Summary & Design North Star
 
-This master specification establishes the comprehensive architectural, telephony, economic, and UI/UX standard for **Voxly AI**. Voxly AI is a enterprise-grade autonomous voice agent platform enabling businesses to build, configure, deploy, and scale autonomous AI employees operating over public switched telephone networks (PSTN), SIP trunks, and WebRTC.
+This document serves as the authoritative, unambiguous architectural blueprint and design specification for **Voxly AI**. Voxly AI is an enterprise-grade autonomous voice agent platform enabling organizations to construct, calibrate, deploy, and scale autonomous AI employees operating over public switched telephone networks (PSTN), SIP trunks, and WebRTC.
 
-### Core Objectives
-1. **Hero UI as the Design North Star**: The completed public landing page (`Hero.jsx`) serves as the aesthetic anchor. Every screen, workbench, and dialog across the authenticated console inherits the Hero's visual polish, high-contrast typography, disciplined spacing, tactile button interactions, and reactive character intelligence.
-2. **Eliminate Generic SaaS & "Vibecoded" Tropes**: Complete transition away from purple-to-blue gradients, colored-border cards, decorative pills, and generic glassmorphism toward a mature, editorial, high-craft product design inspired by Emil Kowalski (restraint, tactile feedback, typographic authority, and editorial asymmetry).
-3. **PSTN Telephony Excellence**: Implementation of carrier-grade SIP signaling, WebRTC-to-SIP media bridging, sub-500ms round-trip latency, Answering Machine Detection (AMD), Voicemail Drop, warm transfer with whisper briefings, and RFC 2833 DTMF handling.
-4. **Scalable Virtual Number Provisioning**: Native carrier inventory search (Local DIDs, Toll-Free), automated A2P 10DLC brand/campaign registration, e911 emergency compliance, STIR/SHAKEN A-level attestation, and dynamic local presence dialing.
-5. **Precise Per-Second Telephony Metering**: Real-time credit metering with zero cost for unanswered rings, granular cost decomposition (Carrier + STT + LLM + TTS + Margin), auto-recharge thresholds, and Stripe customer portal integration.
-6. **Unified Authenticated Console (`/dashboard`)**: A 13-module workspace operating system that empowers non-technical operators and enterprise developers alike to manage an entire AI voice workforce.
+### Core Architectural Directives
+1. **Hero UI as the Design North Star**: The completed public landing page hero section (`Hero.jsx`) anchors the visual identity of the entire platform. Every view, workbench, dialog, and telemetry chart across the authenticated console inherits the Hero's visual polish, high-contrast typography, disciplined spacing, tactile button interactions, and reactive character intelligence.
+2. **Elimination of Generic SaaS Tropes**: Strict prohibition of purple gradients, colored-border cards, decorative pill clutter, and generic glassmorphism in favor of a mature, editorial, high-craft product design inspired by Emil Kowalski (restraint, tactile feedback, typographic authority, and editorial asymmetry).
+3. **PSTN Telephony Compliance & Rigor**: Native implementation of carrier-grade SIP signaling (RFC 3261), WebRTC-to-SIP media bridging, sub-500ms round-trip latency, Answering Machine Detection (AMD), Voicemail Drop, warm transfer with whisper briefings, and RFC 4733 DTMF handling.
+4. **Automated Virtual Number Provisioning**: Native carrier inventory search (Local DIDs, Toll-Free), automated A2P 10DLC brand/campaign registration, e911 emergency compliance, STIR/SHAKEN A-level attestation, and dynamic local presence dialing.
+5. **Per-Second Telephony Metering**: Real-time credit metering with zero cost for unanswered rings, granular cost decomposition (Carrier + STT + LLM + TTS + Margin), auto-recharge thresholds, and Stripe customer portal integration.
+6. **Unified Authenticated Console (`/dashboard`)**: A 13-module workspace operating system empowering non-technical operators and enterprise developers alike to manage an entire AI voice workforce.
 
 ---
 
@@ -126,7 +136,154 @@ The public landing page has been hardened across all 15 production readiness pil
 
 ---
 
-## Part 3: Enterprise Architecture — Public Landing Page vs. Authenticated Console
+## Part 3: Technical SEO, Discoverability & Core Web Vitals Specification
+
+Every public page and documentation asset within Voxly must adhere to enterprise SEO standards to ensure rapid indexing, maximum organic discoverability, and high-CTR social previews.
+
+### 3.1 Metadata, Social Cards & Canonical URLs
+
+All public HTML documents must declare complete, valid meta tags within `<head>`:
+
+```html
+<!-- Primary Meta Tags -->
+<title>Voxly — The AI Employee for Every Conversation</title>
+<meta name="title" content="Voxly — The AI Employee for Every Conversation" />
+<meta name="description" content="Deploy autonomous AI voice agents that answer inbound calls, execute outbound phone campaigns, qualify leads, and connect to your CRM with sub-500ms latency." />
+<meta name="keywords" content="AI voice agent, voice AI, autonomous phone agent, AI receptionist, outbound sales AI, telephony AI, SIP trunking AI" />
+<link rel="canonical" href="https://voxly.ai" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://voxly.ai" />
+<meta property="og:title" content="Voxly — The AI Employee for Every Conversation" />
+<meta property="og:description" content="Deploy autonomous AI voice agents that talk naturally on the phone with sub-500ms latency. Inbound, outbound, and live CRM sync." />
+<meta property="og:image" content="https://voxly.ai/images/og-voxly-preview.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="https://voxly.ai" />
+<meta name="twitter:title" content="Voxly — The AI Employee for Every Conversation" />
+<meta name="twitter:description" content="Deploy autonomous AI voice agents that talk naturally on the phone with sub-500ms latency. Inbound, outbound, and live CRM sync." />
+<meta name="twitter:image" content="https://voxly.ai/images/og-voxly-preview.png" />
+<meta name="twitter:creator" content="@VoxlyAI" />
+```
+
+### 3.2 Heading Hierarchy & Semantic HTML Standards
+
+- **Single `<h1>` Policy**: Each rendered page must contain exactly **one** `<h1>` tag located within the primary hero section.
+- **Strict Hierarchy**: Heading levels must not skip ranks (e.g., `<h1>` followed by `<h2>`, never directly by `<h3>` or `<h4>`).
+- **Semantic Structure**:
+  - Main container: `<main id="main-content" role="main">`
+  - Navigation bar: `<header role="banner"><nav role="navigation">`
+  - Distinct sections: `<section aria-labelledby="section-id-heading">`
+  - Footer: `<footer role="contentinfo">`
+- **Descriptive Heading Text**: Headings must clearly state function and topic (e.g., `"Turn Calls into Opportunities with Autonomous Lead Qualification"` rather than vague marketing labels like `"Capabilities"`).
+
+### 3.3 Schema.org Structured Data (JSON-LD) Master Templates
+
+The landing page must inject valid, parseable JSON-LD in `index.html`:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://voxly.ai/#software",
+      "name": "Voxly AI",
+      "url": "https://voxly.ai",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "Enterprise autonomous AI voice agent platform operating over PSTN, SIP trunks, and WebRTC with sub-500ms latency.",
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "USD",
+        "lowPrice": "49",
+        "highPrice": "299",
+        "offerCount": "3"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://voxly.ai/#organization",
+      "name": "Voxly AI Inc.",
+      "url": "https://voxly.ai",
+      "logo": "https://voxly.ai/favicon.svg",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-415-555-0199",
+        "contactType": "Customer Support",
+        "availableLanguage": ["English", "Telugu", "Hindi", "Spanish"]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://voxly.ai/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the average response latency of Voxly voice agents?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Voxly achieves an end-to-end round-trip latency of 380ms to 490ms by utilizing streaming STT, cached LLM inference, and streaming neural voice synthesis."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can Voxly AI agents place and receive calls over regular phone lines?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Voxly provisions virtual local DIDs and toll-free numbers over Tier-1 PSTN carrier networks, supporting both inbound reception and outbound dialing campaigns."
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### 3.4 Crawling & Indexing Policy: Public vs. Authenticated Console
+
+```
+# public/robots.txt
+User-agent: *
+Allow: /
+Allow: /privacy
+Allow: /terms
+Allow: /sitemap.xml
+
+# Disallow authenticated application console & API endpoints
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /auth/
+
+Sitemap: https://voxly.ai/sitemap.xml
+```
+
+- **Authenticated Console Exclusion**: Every route under `/dashboard/*` must inject a `<meta name="robots" content="noindex, nofollow" />` directive to prevent private customer data, transcripts, and telemetry from ever being indexed by search crawlers.
+
+### 3.5 Core Web Vitals (CWV) Performance Budget
+
+| Core Web Vital | Industry Threshold | Voxly Target Budget | Optimization Mechanism |
+|---|---|---|---|
+| **LCP (Largest Contentful Paint)** | < 2.5s | **< 1.1s** | Async Three.js loading, pre-rendered Hero text, font-display swap |
+| **INP (Interaction to Next Paint)** | < 200ms | **< 60ms** | Debounced handlers, micro-task scheduling, non-blocking audio |
+| **CLS (Cumulative Layout Shift)** | < 0.1 | **0.00** | Explicit width/height on 3D canvas and avatars; fixed dimension hero card |
+
+### 3.6 Unique ID Naming Convention for Testing & Deep Linking
+
+Every interactive element and section across Voxly must adhere to a standardized ID pattern:
+- Sections: `section-[name]` (e.g., `section-hero`, `section-pricing`, `section-faq`)
+- Action Buttons: `btn-[action]-[target]` (e.g., `btn-cta-build-agent`, `btn-test-voice`, `btn-buy-number`)
+- Inputs: `input-[module]-[field]` (e.g., `input-agent-name`, `input-carrier-search`, `input-newsletter-email`)
+- Modals & Drawers: `modal-[name]` / `drawer-[name]` (e.g., `modal-auth`, `drawer-call-detail`)
+
+---
+
+## Part 4: Enterprise Architecture — Public Landing Page vs. Authenticated Console
 
 To maintain product integrity, Voxly AI maintains a strict separation of concerns between the **Public Marketing Surface** and the **Authenticated Voice Console**:
 
@@ -152,9 +309,9 @@ To maintain product integrity, Voxly AI maintains a strict separation of concern
 
 ---
 
-## Part 4: PSTN Telephony & Call Flow Architecture (Industry-Standard Specifications)
+## Part 5: PSTN Telephony & Call Flow Architecture (Industry-Standard Specifications)
 
-### 4.1 Telephony Infrastructure & Media Gateway
+### 5.1 Telephony Infrastructure, Codecs & RFC Standards
 
 Voxly AI's telephony pipeline interfaces carrier PSTN switches with modern conversational AI orchestration engines:
 
@@ -177,15 +334,20 @@ Voxly AI's telephony pipeline interfaces carrier PSTN switches with modern conve
                 Streaming STT      Streaming TTFT       Streaming TTS
 ```
 
-- **Carrier Connections**: Redundant SIP trunks connected to Twilio, Telnyx, and Bandwidth via geographic SBCs (US-East, US-West, EU-Central, AP-South).
-- **Supported Audio Codecs**:
+- **Telephony Standards Matrix**:
+  - **RFC 3261 (SIP)**: Session Initiation Protocol for establishing, maintaining, and terminating calls.
+  - **RFC 3550 / 3551 (RTP)**: Real-time Transport Protocol for audio payload packetization.
+  - **RFC 3711 (SRTP)**: Secure Real-time Transport Protocol for encrypted in-flight audio media.
+  - **RFC 4733 (DTMF)**: Dual-Tone Multi-Frequency telephone tone packetization in RTP.
+  - **RFC 8588 (STIR/SHAKEN)**: Cryptographic signature verification against caller ID spoofing.
+- **Audio Codecs**:
   - `G.711u` / `PCMU`: 8 kHz, 64 kbps (Standard PSTN baseline; minimal packetization overhead).
   - `Opus`: 16 kHz / 24 kHz wideband (Adaptive bitrate 16–32 kbps; used for WebRTC browser calls and HD-SIP peering).
   - **Media Transcoder**: Low-overhead real-time resampling pipeline converting 8kHz PSTN audio to 16kHz for STT models, and 24kHz TTS output down to 8kHz G.711u with high-pass filtering to eliminate telephony line hum.
 
 ---
 
-### 4.2 Sub-500ms Latency Budget Breakdown
+### 5.2 Sub-500ms Latency Budget Breakdown
 
 Human conversational pause averages 300ms–600ms. If AI latency exceeds 700ms, the conversation feels mechanical. Voxly targets an end-to-end round-trip budget of **380ms–490ms**:
 
@@ -205,7 +367,73 @@ Human conversational pause averages 300ms–600ms. If AI latency exceeds 700ms, 
 
 ---
 
-### 4.3 Inbound PSTN Call Flow
+### 5.3 Carrier WebSocket Audio Frame Streaming Protocol
+
+Between the Edge Session Border Controller (SBC) / Media Gateway and the Voxly Voice Orchestrator, real-time audio is exchanged over a persistent WebSocket connection adhering to this unambiguous JSON specification:
+
+#### 1. Inbound Stream Start (`event: "start"`)
+```json
+{
+  "event": "start",
+  "sequenceNumber": 1,
+  "start": {
+    "streamSid": "stream_94b8e210ac09",
+    "accountSid": "acc_enterprise_01",
+    "callSid": "call_f73a980c21",
+    "tracks": ["inbound"],
+    "customParameters": {
+      "agentId": "agent_maya_receptionist",
+      "did": "+14155550199",
+      "callerId": "+12125550144"
+    },
+    "mediaFormat": {
+      "encoding": "audio/x-mulaw",
+      "sampleRate": 8000,
+      "channels": 1
+    }
+  }
+}
+```
+
+#### 2. Media Chunk Transmission (`event: "media"`)
+```json
+{
+  "event": "media",
+  "sequenceNumber": 42,
+  "streamSid": "stream_94b8e210ac09",
+  "media": {
+    "track": "inbound",
+    "chunk": 18,
+    "timestamp": 360,
+    "payload": "7v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+"
+  }
+}
+```
+
+#### 3. Interruption Buffer Flush (`event: "clear"`)
+When the user speaks mid-sentence, the orchestrator dispatches `clear` to immediately purge unplayed synthesized audio chunks from the carrier buffer in <40ms:
+```json
+{
+  "event": "clear",
+  "streamSid": "stream_94b8e210ac09"
+}
+```
+
+#### 4. DTMF Digits Ingestion (`event: "dtmf"`)
+```json
+{
+  "event": "dtmf",
+  "streamSid": "stream_94b8e210ac09",
+  "dtmf": {
+    "digit": "1",
+    "duration": 160
+  }
+}
+```
+
+---
+
+### 5.4 Inbound PSTN Call Flow & SIP Signaling
 
 ```mermaid
 sequenceDiagram
@@ -247,7 +475,7 @@ sequenceDiagram
 
 ---
 
-### 4.4 Outbound PSTN Call Flow & Automated Dialing Engine
+### 5.5 Outbound PSTN Call Flow & Automated Dialing Engine
 
 ```mermaid
 sequenceDiagram
@@ -288,7 +516,7 @@ sequenceDiagram
 
 ---
 
-### 4.5 Answering Machine Detection (AMD) & Voicemail Drop
+### 5.6 Answering Machine Detection (AMD) & Voicemail Drop
 - **Spectral Energy Analysis**: Fast classification (<1200ms) analyzes audio cadence. Human greetings are short ("Hello?", "Mark speaking"), whereas machine announcements are continuous strings of speech followed by silence.
 - **Configurable Voicemail Behavior**:
   - `HANGUP`: Drop immediately upon detecting a machine (incurring <10s of carrier line time).
@@ -297,7 +525,7 @@ sequenceDiagram
 
 ---
 
-### 4.6 Call Transfer Architecture: Cold vs. Warm with AI Whisper Briefing
+### 5.7 Call Transfer Architecture: Cold vs. Warm with AI Whisper Briefing
 
 ```
                              CALL TRANSFER MODES
@@ -323,7 +551,7 @@ sequenceDiagram
 
 ---
 
-### 4.7 DTMF Tone Ingestion & PCI-Compliant IVR Collection
+### 5.8 DTMF Tone Ingestion & PCI-Compliant IVR Collection
 - **Dual Mode Ingestion**: Support RFC 2833 / RFC 4733 telephony tone packets and in-band audio tone DSP detection.
 - **Conversational Fallback**: If speech recognition is noisy, the AI prompts: `"You can also press 1 to confirm, or press 2 to reschedule."`
 - **PCI-DSS Compliance for Credit Card Collection**:
@@ -332,9 +560,9 @@ sequenceDiagram
 
 ---
 
-## Part 5: Scalable AI Voice Agent Engine & Individual Agent Creation
+## Part 6: Scalable AI Voice Agent Engine & Individual Agent Creation
 
-### 5.1 Guided 8-Step Agent Creation Wizard
+### 6.1 Guided 8-Step Agent Creation Wizard
 
 Creating an AI Employee must be an intuitive, guided process rather than a monolithic form:
 
@@ -356,7 +584,92 @@ Creating an AI Employee must be an intuitive, guided process rather than a monol
 
 ---
 
-### 5.2 Agent Studio Workbench Architecture
+### 6.2 Definitive Agent Configuration Schema (`agent.config.json`)
+
+To eliminate implementation ambiguity, all agent state across the platform adheres to this validated JSON schema:
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VoxlyAgentConfiguration",
+  "type": "object",
+  "required": ["id", "name", "role", "llm", "voice", "telephony", "vad"],
+  "properties": {
+    "id": { "type": "string", "example": "agent_sdr_01" },
+    "name": { "type": "string", "example": "Maya" },
+    "role": { "type": "string", "enum": ["Inbound Receptionist", "Outbound SDR", "Support Specialist", "Collections"] },
+    "status": { "type": "string", "enum": ["active", "paused", "draft"] },
+    "llm": {
+      "type": "object",
+      "required": ["provider", "model", "temperature", "systemPrompt"],
+      "properties": {
+        "provider": { "type": "string", "enum": ["anthropic", "openai", "groq", "google"] },
+        "model": { "type": "string", "example": "claude-3-5-sonnet-20241022" },
+        "temperature": { "type": "number", "minimum": 0.0, "maximum": 1.0, "default": 0.3 },
+        "maxTokens": { "type": "integer", "default": 250 },
+        "promptCaching": { "type": "boolean", "default": true },
+        "systemPrompt": { "type": "string" },
+        "dynamicVariables": {
+          "type": "array",
+          "items": { "type": "string" },
+          "example": ["caller_name", "account_tier", "appointment_date"]
+        }
+      }
+    },
+    "voice": {
+      "type": "object",
+      "required": ["provider", "voiceId", "speakingRate"],
+      "properties": {
+        "provider": { "type": "string", "enum": ["cartesia", "elevenlabs", "deepgram", "playht"] },
+        "voiceId": { "type": "string", "example": "sonic-british-sarah" },
+        "speakingRate": { "type": "number", "minimum": 0.8, "maximum": 1.3, "default": 1.02 },
+        "pitchModulation": { "type": "number", "minimum": -0.2, "maximum": 0.2, "default": 0.0 },
+        "stability": { "type": "number", "minimum": 0.1, "maximum": 1.0, "default": 0.75 }
+      }
+    },
+    "vad": {
+      "type": "object",
+      "required": ["endpointingSilenceThresholdMs", "bargeInSensitivity"],
+      "properties": {
+        "engine": { "type": "string", "enum": ["silero_v4", "webrtc"], "default": "silero_v4" },
+        "endpointingSilenceThresholdMs": { "type": "integer", "minimum": 200, "maximum": 1000, "default": 350 },
+        "bargeInSensitivity": { "type": "number", "minimum": 0.0, "maximum": 1.0, "default": 0.8 },
+        "backchannelingEnabled": { "type": "boolean", "default": true }
+      }
+    },
+    "telephony": {
+      "type": "object",
+      "required": ["inboundDid", "outboundCallerId", "amdEnabled"],
+      "properties": {
+        "inboundDid": { "type": "string", "example": "+14155550199" },
+        "outboundCallerId": { "type": "string", "example": "+14155550199" },
+        "dynamicLocalPresence": { "type": "boolean", "default": true },
+        "amdEnabled": { "type": "boolean", "default": true },
+        "voicemailAction": { "type": "string", "enum": ["hangup", "voicemail_drop"], "default": "hangup" },
+        "maxCallDurationMinutes": { "type": "integer", "default": 30 }
+      }
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "description", "endpoint", "method"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "endpoint": { "type": "string" },
+          "method": { "type": "string", "enum": ["GET", "POST", "PUT"] },
+          "parameters": { "type": "object" }
+        }
+      }
+    }
+  }
+}
+```
+
+---
+
+### 6.3 Agent Studio Workbench Architecture
 
 Clicking an AI Employee opens an advanced, tabbed workspace:
 - **Header**: Avatar + Agent Name + Status Toggle (`Active` / `Paused` / `Draft`) + Phone Number Badge + Fast Action: `[ Call Agent ]`.
@@ -371,7 +684,7 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-### 5.3 LLM Orchestration, Prompt Caching & Dynamic Variables
+### 6.4 LLM Orchestration, Prompt Caching & Dynamic Variables
 
 - **Model Tier Selection**:
   - `Ultra-Low Latency (Fast)`: Groq Llama-3.3-70B (TTFT ~120ms), Claude 3.5 Haiku, GPT-4o-mini. Ideal for high-speed receptionists and lead qualifiers.
@@ -391,7 +704,7 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-### 5.4 Voice Synthesis Engine Selection & Acoustic Calibration
+### 6.5 Voice Synthesis Engine Selection & Acoustic Calibration
 
 | Provider | Model | Latency | Realism | Best For |
 |---|---|---|---|---|
@@ -409,7 +722,7 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-### 5.5 Speech-to-Text (STT) & Streaming WebSockets
+### 6.6 Speech-to-Text (STT) & Streaming WebSockets
 - **Deepgram Nova-2 Architecture**: Connects via persistent bidirectional WebSocket at 16kHz PCM audio.
 - **Interim Results**: Streams tentative text tokens to the orchestrator as the speaker articulates phonemes.
 - **Smart Formatting**: Automatically normalizes numbers, phone digits, currency, and dates (`"four one five five five five"` -> `415-555-0199`).
@@ -417,7 +730,7 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-### 5.6 Voice Activity Detection (VAD), Endpointing & Turn-Taking
+### 6.7 Voice Activity Detection (VAD), Endpointing & Turn-Taking
 
 - **VAD Architecture**: Silero VAD v4 running directly on the media gateway server. Evaluates 30ms audio frames with negligible CPU footprint.
 - **Turn-Taking Controls**:
@@ -431,7 +744,40 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-### 5.7 Multi-Language, Locale & Code-Switching Architecture
+### 6.8 Tool Calling Execution, Timeout Policy & Conversational Fillers
+
+When an AI agent triggers an external function during a live voice call (e.g., querying order status or checking doctor calendar availability), conversational dead silence causes human callers to disconnect.
+
+```
+[ User: "Can I book Dr. Patel at 2 PM?" ]
+                     │
+                     ▼
+       [ LLM Calls: check_availability ]
+                     │
+     ┌───────────────┴───────────────┐
+     ▼                               ▼
+[ API Execution ]        [ Elapsed > 800ms? ]
+(Target: <1500ms)                    │
+                                     ▼
+                        [ Speak Conversational Filler ]
+                        "Let me check her schedule..."
+                                     │
+                                     ▼
+                        [ API Returns in 1400ms ]
+                                     │
+                                     ▼
+                        [ Agent Delivers Final Answer ]
+                        "Yes! 2 PM is available. Shall I book it?"
+```
+
+- **Execution Timeout Policy**:
+  - Strict **2500ms ceiling** on all external API requests.
+  - If latency exceeds **800ms**, the orchestrator immediately triggers a low-latency conversational filler audio chunk (*"Checking that for you right now..."* or *"Let me pull up your account..."*) to prevent dead air.
+  - If the external API times out at 2500ms, the agent gracefully degrades: *"I am having trouble pulling up that calendar right now, but I have noted your preference for 2:00 PM and will have our coordinator text you confirmation."*
+
+---
+
+### 6.9 Multi-Language, Locale & Code-Switching Architecture
 
 - **Supported Languages & Locales**:
   - **English**: US, UK, Australia, India, South Africa, Ireland.
@@ -444,7 +790,7 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-### 5.8 Guardrails, Safety, PII Redaction & Supervisor Escalation
+### 6.10 Guardrails, Safety, PII Redaction & Supervisor Escalation
 
 - **Real-Time PII Masking**: Credit cards (Luhn algorithm), Social Security Numbers, and security codes are masked in memory and redacted from written transcripts (`[REDACTED_CC_4111]`).
 - **Prompt Injection Defense**: Guardrail classifier intercepts prompt leaks and jailbreak attacks before reaching the main generation loop.
@@ -456,9 +802,9 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-## Part 6: Virtual Number Provisioning & Carrier Orchestration
+## Part 7: Virtual Number Provisioning & Carrier Orchestration
 
-### 6.1 Global Carrier Inventory Search & Provisioning API
+### 7.1 Global Carrier Inventory Search & Provisioning API
 
 ```
                         CARRIER INVENTORY ORCHESTRATION
@@ -472,15 +818,42 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
   • Instant webhook routing binding                     • Vanity pattern search (e.g., "*800-VOX*")
 ```
 
-- **Number Lifecycle**:
-  1. `Search`: User enters area code (e.g., `415`) and selects `Local DID` or `Toll-Free (800)`.
-  2. `Reservation`: API locks selected number for 10 minutes via carrier inventory hold.
-  3. `Provision`: User confirms purchase. Carrier purchases DID, assigns Voxly SIP trunk webhook, and binds to workspace.
-  4. `Routing`: Inbound calls immediately route to the designated AI employee in <200ms.
+#### Search Endpoint Contract (`GET /v1/phone-numbers/search`)
+```json
+{
+  "query": {
+    "country": "US",
+    "type": "local",
+    "areaCode": "415",
+    "capabilities": ["voice", "sms"]
+  },
+  "results": [
+    {
+      "phoneNumber": "+14155550199",
+      "friendlyName": "(415) 555-0199",
+      "locality": "San Francisco",
+      "region": "CA",
+      "isoCountry": "US",
+      "monthlyFeeUsd": 2.50,
+      "features": { "voice": true, "sms": true, "mms": false }
+    }
+  ]
+}
+```
+
+#### Purchase Endpoint Contract (`POST /v1/phone-numbers/purchase`)
+```json
+{
+  "phoneNumber": "+14155550199",
+  "workspaceId": "ws_acme_corp",
+  "assignedAgentId": "agent_maya_receptionist",
+  "emergencyAddressId": "addr_sf_headquarters"
+}
+```
 
 ---
 
-### 6.2 Regulatory Compliance: 10DLC A2P & Toll-Free Verification
+### 7.2 Regulatory Compliance: 10DLC A2P & Toll-Free Verification
 - **US 10DLC A2P (Application-to-Person) Registration**:
   - **Brand Registration**: Company Legal Name, EIN/Tax ID, Corporate Address, Website, Authorized Contact, and Brand Tier vetting.
   - **Campaign Registration**: Use Case selection (Customer Care, Account Notification, Conversational AI), Sample Call Scripts, Opt-in/Opt-out verbiage, and Carrier vetting scores.
@@ -489,7 +862,7 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-### 6.3 Emergency Services (e911) & Regulatory Address Compliance
+### 7.3 Emergency Services (e911) & Regulatory Address Compliance
 - **RAY BAUM'S Act & Kari's Law Compliance**:
   - In the United States, all provisioned virtual numbers capable of outbound dialing must register a valid dispatchable physical address for e911 emergency routing.
   - Address validation API checks postal codes against the Master Street Address Guide (MSAG).
@@ -497,7 +870,7 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-### 6.4 Caller ID Name (CNAM) & STIR/SHAKEN Attestation
+### 7.4 Caller ID Name (CNAM) & STIR/SHAKEN Attestation
 - **CNAM Registration**: Up to 15 alphanumeric characters registered with national carrier databases (e.g., `VOXLY AI`, `SUMMIT HEALTH`).
 - **STIR/SHAKEN Cryptographic Attestation**:
   - **A-Level Attestation (Full)**: Signed with carrier digital certificate proving Voxly owns the originating number. Guarantees zero "Spam Likely" or "Scam Likely" labels.
@@ -506,14 +879,14 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-### 6.5 BYOC (Bring Your Own Carrier) / Custom SIP Trunking
+### 7.5 BYOC (Bring Your Own Carrier) / Custom SIP Trunking
 - Enterprise clients can connect their existing telecommunications contracts:
   - **Configuration Parameters**: SIP URI (`sip:voxly.enterprise.com:5060`), IP Access Control Lists (ACLs), Digest Authentication (Username/Password), Transport (TLS / UDP / TCP), SRTP Encryption Keys.
   - Enables enterprise clients to maintain existing negotiated per-minute rates with AT&T, Verizon, Lumen, or Vodafone.
 
 ---
 
-### 6.6 Number Portability (LNP) Workflow
+### 7.6 Number Portability (LNP) Workflow
 - **Port-In Wizard**:
   1. User enters current phone numbers to port.
   2. Generates standard digital Letter of Authorization (LOA).
@@ -524,22 +897,40 @@ Clicking an AI Employee opens an advanced, tabbed workspace:
 
 ---
 
-### 6.7 Dynamic Local Presence Dialing Pool
+### 7.7 Dynamic Local Presence Dialing Pool
 - **Answer Rate Optimization**: Outbound cold campaigns dialing from non-local area codes suffer an average pickup rate of ~12%.
 - **Local Presence Engine**: The dialing engine matches the area code of the destination contact and dynamically selects an active DID from the workspace's pool with the exact same area code (e.g., calling an Austin number `512` from an assigned `512` DID). Increases live answer rates from 12% to **42%+**.
 
 ---
 
-## Part 7: Payment Systems, Credit Economics & Real-Time Metering
+## Part 8: Payment Systems, Credit Economics & Real-Time Metering
 
-### 7.1 True Per-Second Telephony Metering Engine
-- **No 60-Second Rounding Traps**: Most legacy providers round a 61-second call up to 2 full minutes. Voxly implements true per-second metering with millisecond clock timestamps:
-  $$\text{Duration Charged} = \lceil t_{\text{BYE}} - t_{200\text{OK}} \rceil \text{ seconds}$$
-- **Zero Ring Cost**: Unanswered, busy, disconnected, or failed calls incur **$0.00** charges. Billing begins strictly upon SIP `200 OK` (off-hook) and terminates upon `BYE`.
+### 8.1 True Per-Second Telephony Metering Engine & State Machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> INITIATED: Outbound Trigger / Inbound Ring
+    INITIATED --> RINGING: Carrier 180 / 183 Ringing ($0.00)
+    RINGING --> FAILED: Busy / No Answer / Canceled ($0.00 Charged)
+    RINGING --> ANSWERED: Carrier 200 OK (Connect)
+    state ANSWERED {
+        [*] --> METERING_START: Record Timestamp (t_start)
+        METERING_START --> ACTIVE_STREAM: Per-Second Increment ($0.001583/sec)
+        ACTIVE_STREAM --> THRESHOLD_CHECK: Wallet Balance Inspection
+    }
+    ANSWERED --> TERMINATED: Hangup / SIP BYE (t_end)
+    TERMINATED --> SETTLED: Duration = ceil(t_end - t_start)
+    SETTLED --> [*]: Debit Wallet & Write Ledger Row
+```
+
+- **Billing Precision**:
+  $$\text{Duration Charged (sec)} = \lceil t_{\text{BYE}} - t_{200\text{OK}} \rceil$$
+  $$\text{Total Call Cost} = \text{Duration Charged} \times \frac{\$0.0950}{60}$$
+- **Zero Ring Cost**: Unanswered, busy, disconnected, or rejected calls incur strictly **$0.00**.
 
 ---
 
-### 7.2 Transparent Component Cost Decomposition & Margin Modeling
+### 8.2 Transparent Component Cost Decomposition & Margin Modeling
 
 Voxly's transparent billing engine provides clear itemization:
 
@@ -565,7 +956,7 @@ Voxly's transparent billing engine provides clear itemization:
 
 ---
 
-### 7.3 Credit Wallet & Auto-Recharge Automation
+### 8.3 Credit Wallet, Auto-Recharge Automation & Mutex Locking
 
 ```
 [ Active Call Fleet ] ──Per-Second Consumption──► [ Wallet Balance: $48.20 ]
@@ -581,29 +972,30 @@ Voxly's transparent billing engine provides clear itemization:
                                                 [ Wallet Balance: $148.20 ]
 ```
 
-- **Auto-Recharge Settings**:
-  - `Toggle`: Enabled / Disabled.
-  - `Threshold Trigger`: When balance drops below `$20` (or `$50`, `$100`).
-  - `Recharge Amount`: Automatically charge default Stripe card `$100` (or `$250`, `$500`).
-  - `Failover Grace Period`: If a card declines mid-call, active calls are **never abruptly cut off**. The platform grants a \$15 emergency overdraft buffer while sending an urgent webhook/email alert.
+- **Concurrency Mutex Lock**: When running high-throughput outbound campaigns (e.g., 50 concurrent calls), multiple calls ending simultaneously could attempt to trigger auto-recharge concurrently. The billing engine implements a distributed Redis mutex lock (`lock:auto_recharge:workspace_id`) with a 60-second TTL to guarantee **exactly one** Stripe charge is created per threshold breach.
+- **Failover Grace Period**: If a card declines mid-call, active calls are **never abruptly cut off**. The platform grants a \$15 emergency overdraft buffer while sending an urgent webhook/email alert.
 
 ---
 
-### 7.4 Spending Caps, Quota Enforcement & Graceful Cutoffs
+### 8.4 Spending Caps, Quota Enforcement & Graceful Cutoffs
 - **Soft Alert (80%)**: Dispatches email and dashboard notification when daily or monthly budget reaches 80%.
 - **Hard Ceiling (100%)**: Blocks new outbound campaign batches and prevents new inbound calls from launching AI conversations (routes inbound to fallback voicemail message). Ongoing active conversations are allowed to finish naturally up to a 60-second limit.
 
 ---
 
-### 7.5 Stripe Invoicing, Payment Methods & Itemized Usage Ledgers
+### 8.5 Stripe Invoicing, Webhooks & Itemized Usage Ledgers
 - **Payment Methods**: Credit Card, Debit Card, Apple Pay, Google Pay, ACH Direct Debit (US Bank Transfer), SEPA (EU Bank Transfer).
+- **Stripe Webhook Handlers**:
+  - `payment_intent.succeeded`: Instantly credits workspace wallet balance and logs receipt.
+  - `payment_intent.payment_failed`: Marks account in Grace Period, sends SMS/email alerts, and schedules retry.
+  - `customer.subscription.deleted`: Drops agent concurrency limits to free tier.
 - **Itemized Usage Ledger**: Filterable table showing Call ID, Timestamp, AI Employee, Duration (exact seconds), Destination/Caller, and Itemized Cost with CSV/PDF invoice download.
 
 ---
 
-## Part 8: Exhaustive Design UI/UX Specifications for all 13 Console Modules
+## Part 9: Exhaustive Design UI/UX Specifications for all 13 Console Modules
 
-### 8.1 Design Tokens & Emil Kowalski Craft Standards
+### 9.1 Design Tokens & Emil Kowalski Craft Standards
 
 The authenticated console implements an obsidian, high-contrast dark theme engineered for focus and enterprise utility:
 
@@ -638,7 +1030,7 @@ The authenticated console implements an obsidian, high-contrast dark theme engin
 
 ---
 
-### 8.2 Global AppShell, Topbar & Command Palette (⌘K)
+### 9.2 Global AppShell, Topbar & Command Palette (⌘K)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -697,7 +1089,7 @@ The authenticated console implements an obsidian, high-contrast dark theme engin
 
 ---
 
-### 8.3 Module 1: Overview Dashboard
+### 9.3 Module 1: Overview Dashboard
 
 - **Welcome Banner**: `"Good morning, Sarah"` + subtitle `"Here's what your AI workforce accomplished today."`
 - **KPI Metrics Ribbon (4 Cards)**:
@@ -711,7 +1103,7 @@ The authenticated console implements an obsidian, high-contrast dark theme engin
 
 ---
 
-### 8.4 Module 2: AI Employees Directory
+### 9.4 Module 2: AI Employees Directory
 
 - **Top Bar**: Search input + Status Filter tabs (`All (6)`, `Active (4)`, `Draft (1)`, `Paused (1)`) + Primary Action `[+ Create AI Employee]`.
 - **Employee Card Architecture**:
@@ -726,7 +1118,7 @@ The authenticated console implements an obsidian, high-contrast dark theme engin
 
 ---
 
-### 8.5 Module 3: Agent Studio & Configuration Workbench
+### 9.5 Module 3: Agent Studio & Configuration Workbench
 
 The Agent Studio is the central command center for configuring an individual agent:
 
@@ -767,7 +1159,7 @@ The Agent Studio is the central command center for configuring an individual age
 
 ---
 
-### 8.6 Module 4: Realtime "Talk to AI" Voice Testing Console
+### 9.6 Module 4: Realtime "Talk to AI" Voice Testing Console
 
 The crown jewel interactive testing surface in the application:
 
@@ -807,7 +1199,7 @@ The crown jewel interactive testing surface in the application:
 
 ---
 
-### 8.7 Module 5: Calls & Call Detail Drawer
+### 9.7 Module 5: Calls & Call Detail Drawer
 
 - **Calls Table**:
   - Columns: Caller Phone, Direction (`Inbound` / `Outbound`), Assigned AI Employee, Duration (`font-mono`), Outcome (`Qualified`, `Transferred`, `Voicemail`, `Unanswered`), Sentiment (`Positive`, `Neutral`, `Negative`), Timestamp.
@@ -825,7 +1217,7 @@ The crown jewel interactive testing surface in the application:
 
 ---
 
-### 8.8 Module 6: Leads Engine
+### 9.8 Module 6: Leads Engine
 
 - **Lead Pipeline Kanban & Table**:
   - View switcher: Toggle between Kanban stages (`New`, `Contacted`, `Qualified`, `Meeting Booked`, `Unqualified`) and Data Table.
@@ -837,7 +1229,7 @@ The crown jewel interactive testing surface in the application:
 
 ---
 
-### 8.9 Module 7: Campaigns & Outbound Dialing Engine
+### 9.9 Module 7: Campaigns & Outbound Dialing Engine
 
 - **Campaign Management Studio**:
   - Campaign metrics: Contacts Dialed, Answer Rate (`%`), Connected Calls, Leads Generated, Total Cost.
@@ -855,7 +1247,7 @@ The crown jewel interactive testing surface in the application:
 
 ---
 
-### 8.10 Module 8: Phone Numbers & Carrier Hub
+### 9.10 Module 8: Phone Numbers & Carrier Hub
 
 - **Number Inventory Table**:
   - Columns: Phone Number (`+1 415 555 0199`), Country, Type (`Local DID` / `Toll-Free`), Assigned Agent, Monthly Cost (`$2.50/mo`), Status (`Active`), Usage This Month (`340 min`).
@@ -873,7 +1265,7 @@ The crown jewel interactive testing surface in the application:
 
 ---
 
-### 8.11 Module 9: Training & Knowledge Base
+### 9.11 Module 9: Training & Knowledge Base
 
 - **Centralized Knowledge Repository**:
   - Sources list: Uploaded PDFs, Company Website Crawls, Plain Text FAQs, API Data Feeds.
@@ -888,7 +1280,7 @@ The crown jewel interactive testing surface in the application:
 
 ---
 
-### 8.12 Module 10: Tools & Function Calling Studio
+### 9.12 Module 10: Tools & Function Calling Studio
 
 - **Tool Directory**:
   - Cards showing configured functions (e.g., `check_inventory`, `book_calendar_slot`, `verify_order_pin`).
@@ -902,7 +1294,7 @@ The crown jewel interactive testing surface in the application:
 
 ---
 
-### 8.13 Module 11: Integrations Hub
+### 9.13 Module 11: Integrations Hub
 
 - **Native Integration Cards**:
   - **CRMs**: Salesforce, HubSpot, GoHighLevel, Zoho CRM, Pipedrive.
@@ -916,7 +1308,7 @@ The crown jewel interactive testing surface in the application:
 
 ---
 
-### 8.14 Module 12: Billing, Metering & Credit Engine
+### 9.14 Module 12: Billing, Metering & Credit Engine
 
 - **Credit Status Ribbon**:
   - Large display of Current Balance: `1,248 minutes` (`$118.56 USD equivalent`).
@@ -933,7 +1325,7 @@ The crown jewel interactive testing surface in the application:
 
 ---
 
-### 8.15 Module 13: Workspace Settings & Security
+### 9.15 Module 13: Workspace Settings & Security
 
 - **Organization & Team RBAC**:
   - Invite team members via email.
@@ -949,7 +1341,7 @@ The crown jewel interactive testing surface in the application:
 
 ---
 
-## Part 9: Implementation Roadmap & Component Hierarchy
+## Part 10: Implementation Roadmap, Component Hierarchy & Verification
 
 ```
 d:\Antigravity\src\
@@ -1018,7 +1410,11 @@ d:\Antigravity\src\
 ## Verification & Compliance Checklist
 
 - [x] **Hero UI Anchor Preserved**: `Hero.jsx` remains the design benchmark and conversation soul of the platform.
+- [x] **Industry Telephony Standards**: RFC 3261 (SIP), RFC 3550 (RTP), RFC 3711 (SRTP), RFC 4733 (DTMF), and RFC 8588 (STIR/SHAKEN) fully specified.
+- [x] **Unambiguous Agent JSON Schema**: Complete `agent.config.json` schema provided with types, constraints, and defaults.
+- [x] **Media Gateway WebSocket Specification**: Explicit `start`, `media`, `mark`, `clear`, and `dtmf` bidirectional frame contracts provided.
 - [x] **PSTN Telephony Complete**: SIP signaling, G.711u/Opus codecs, AMD classification, voicemail drop, warm transfer, and DTMF specified.
-- [x] **Number Buying Complete**: Carrier inventory search, 10DLC A2P compliance, e911 emergency address, CNAM, BYOC, and dynamic local presence dialing documented.
-- [x] **Payment Systems Complete**: True per-second metering, cost decomposition, Stripe wallet auto-recharge, and spending caps detailed.
+- [x] **Number Buying Complete**: Carrier inventory search API, 10DLC A2P compliance, e911 emergency address, CNAM, BYOC, and dynamic local presence dialing documented.
+- [x] **Payment Systems Complete**: True per-second metering state machine, cost decomposition, Stripe wallet auto-recharge with distributed mutex locking, and spending caps detailed.
+- [x] **Technical SEO Specification**: Single `<h1>` hierarchy, meta tags, Open Graph, Core Web Vitals targets, `robots.txt` public vs. console exclusion, and valid Schema.org JSON-LD templates defined.
 - [x] **Emil Kowalski Craft Enforced**: 19 anti-patterns eliminated, obsidian dark tokens codified, tactile micro-interactions specified, and screen-by-screen UX documented for all 13 console modules.

@@ -1,253 +1,778 @@
-# Voxly AI — Pre-Launch Production Audit & Design Transformation Blueprint
+# Voxly AI — Comprehensive Product, Telephony & Engineering Blueprint
+## Master Specification: Public Platform, Authenticated Voice OS, Carrier Telephony, DID Marketplace & Payment Systems
 
 > **Target Codebase**: `d:\Antigravity` (`voxly-ai`)  
-> **Evaluation Framework**: Production Readiness (Legal, Security, SEO, Performance, Accessibility, Conversion) + **Emil Kowalski Design Philosophy** (Craft, Restraint, Visual Hierarchy, Anti-Pattern Elimination)  
-> **Status**: Comprehensive Audit & Action Plan  
+> **Core Architectural Benchmark**: Emil Kowalski Craft Standards, Hero UI Design Benchmark, Sub-400ms Voice Orchestration, and Carrier-Grade Telephony Reliability (RFC 3261 / RFC 5589).  
+> **Status**: Authoritative Master Engineering Blueprint & Product Specification  
 
 ---
 
-## Executive Summary
+# PART 1: Public Landing Page & Design System (Completed Reference)
 
-This document serves as the single source of truth for auditing, refining, and transitioning **Voxly AI** from a prototype with high-energy landing page sections into an elite, production-ready enterprise product.
+> **CRITICAL DIRECTIVE**: The existing public landing page ([`src/App.jsx`](file:///d:/Antigravity/src/App.jsx), [`src/components/Hero.jsx`](file:///d:/Antigravity/src/components/Hero.jsx), Three.js 3D mascot, and all 15 marketing sections) is **fully completed, hardened, and locked**.  
+> **DO NOT** redesign, replace, or break the public landing page. All specifications in Part 2 onward define the **authenticated user console** (`/dashboard` and nested routes) that authenticated users access after signing in.
 
-### Core Objectives
-1. **Built Using the Hero UI as the Design North Star**: The entire project must be built using the Hero UI (`Hero.jsx`) as its design anchor and aesthetic benchmark. Every section across the landing page must inherit the Hero's visual polish, high-contrast typography, disciplined spacing, tactile button interactions, and reactive character intelligence so the entire product feels cohesive, intentional, and premium.
-2. **Eliminate "Vibecoded" / AI-Generated SaaS Tropes**: Transition away from purple gradients, colored-border cards, decorative pills, and generic glassmorphism toward a mature, editorial, high-craft product design inspired by Emil Kowalski.
-3. **Remove Unwanted Redundant Sections**: Completely excise `PhoneNumbersSection.jsx` (Dedicated Phone Numbers & Collaborative Handoff) from [`App.jsx`](file:///d:/Antigravity/src/App.jsx) and navigation.
-4. **Execute Full Pre-Launch Hardening**: Address all 15 production audit pillars—implement legal pages, complete SEO metadata (`robots.txt`, `sitemap.xml`, Open Graph), fix broken links, enforce single-goal CTA conversion hierarchy, add accessible error states, and optimize the 3D WebGL asset pipeline without removing the 3D mascot.
-
----
-
-## Core Architectural Directive: Built Around the Hero UI
-
-The **Hero UI** represents the core identity, conversational soul, and design pinnacle of Voxly AI. The entire landing page and surrounding application interfaces must be explicitly constructed as a natural extension of this Hero UI:
-
-### Principles of the Hero UI Design System
-- **Living Character Embodiment**: Voxly (the 3D mascot) anchors the brand with subtle cursor tracking, articulated gestures (two-hands wave, celebratory roll), and contextual dialogue cards. Subsequent sections must reflect this living intelligence rather than collapsing into static brochure cards.
-- **Typographic Authority**: Clean, solid display typography (deep navy `#0F0E17` / `#111019` with tight letter-spacing `-0.03em`) without gimmick gradient text fills or forced italics.
-- **Conversion Anchor**: Dual high-impact CTAs established in the Hero:
-  - **Primary**: `[ Build Your Agent ]` (Direct route to workspace onboarding/pricing)
-  - **Secondary**: `[ Talk to AI ]` (Instant launch of live voice conversation & speech synthesis)
-- **Visual Harmony & Surface Hierarchy**: Solid, premium card surfaces with hairline borders (`border-black/5` or `border-neutral-200`), tactile active button depressions, and generous whitespace.
-- **Zero Style Drift**: No downstream section should feel like an unrelated template or generic card grid; each section (Capabilities, Studio, Voice Test, Pipeline, Team, Analytics, Pricing) must look and feel as if designed by the exact same product designer who crafted the Hero.
+### Completed 15-Section Marketing Architecture:
+1. `Hero` (AI Voice Agent with live 3D robot mascot, gestures, speech synthesis, and dual CTAs `[ Build Your Agent ]` & `[ Talk to AI ]`)
+2. `AiEmployeeSection` (What Can Your AI Employee Do? Asymmetric workbench with live execution telemetry)
+3. `TalkToAiSection` (Interactive Live Voice Studio with physical audio meters and scenario prompts)
+4. `PhoneChannelsSection` (Inbound, Outbound, and Bulk Campaign telephony tabs)
+5. `LeadEngineSection` (Autonomous Lead Qualification Engine & real extracted CRM table)
+6. `CampaignScaleSection` (Campaign scale monitor & live telemetry dashboard)
+7. `TrainingSection` (Proprietary Knowledge Integration RAG architecture schematic)
+8. `AiTeamSection` (Specialized Voice Employees with neutral monogram badges and audio previews)
+9. `ConversationHistorySection` (Live Transcript Feed with sentiment filters)
+10. `AnalyticsSection` (Operational Intelligence clean SVG charts)
+11. `IndustriesSection` (High-stakes operational vertical solution cards)
+12. `HowItWorksSection` (Production voice roadmap & billing transparency widget)
+13. `PricingSection` (Predictable fleet economics & monthly/annual billing switch)
+14. `FAQSection` (Monochrome FAQ accordion with structured data)
+15. `FinalCTA` (High-contrast enclosure with standardized dual CTAs)
+16. `Footer` & `LegalModals` (Validated newsletter form, Privacy Policy, Terms of Service, and Telephony disclosures)
 
 ---
 
-## Part 1: Emil Kowalski Design Critique & 19 Anti-Pattern Audit
+# PART 2: Industry-Standard PSTN Telephony & Call Flow Architecture
 
-A rigorous evaluation of Voxly's current UI against the 19 anti-patterns of generic, AI-generated SaaS design:
+Voxly AI bridges standard telecommunications carrier networks (PSTN / Cellular / VoIP) with sub-400ms artificial intelligence. All call orchestration adheres to standard telecommunication RFC protocols.
 
-| # | Anti-Pattern | Current Status in Voxly | Required Remediation |
-|---|---|---|---|
-| **1** | **Purple-to-blue gradients** | `bg-gradient-to-r from-[#7657E8] to-[#9B7BF7]` applied to buttons, cards, and backgrounds across 8 components. | Replace with solid, high-contrast brand neutrals: rich dark `#0F0E17`, crisp white `#FFFFFF`, subtle stone borders `#E4E2EB`, and restrained violet `#6344E7` as an accent. |
-| **2** | **Gradient-colored hero text** | `.gradient-text-lavender` used on primary `<h1>` and section titles in [`Hero.jsx`](file:///d:/Antigravity/src/components/Hero.jsx), [`AiEmployeeSection.jsx`](file:///d:/Antigravity/src/components/AiEmployeeSection.jsx), etc. | Remove all text clipping gradients. Use solid, high-contrast typography (`#0F0E17` in light mode, `#F7F7FB` on dark panels) for superior legibility. |
-| **3** | **Emojis in headings** | Emojis present in badges and headers (e.g. `🤖`, `📞`, `⚡`, `👩‍💼`). | Remove all emojis from headings, navigation, and badges. Use curated monochrome icons or pure typographic weight. |
-| **4** | **Defaulting to Inter everywhere** | System font stack defaults to standard Inter/Plus Jakarta Sans without typographic contrast. | Establish a clear typographic scale: Plus Jakarta Sans for crisp display headings, balanced with clean body geometry and monospace accents for telemetry data. |
-| **5** | **Excessive colored-border cards** | Almost every card uses `border-[#7657E8]/15` or `border-[#7657E8]/40`. | Replace tinted borders with neutral hairline borders (`border-black/5` or `border-neutral-200`). Use whitespace and elevation rather than colored outlines. |
-| **6** | **Generic glassmorphism cards** | Extensive use of `backdrop-blur-xl`, `bg-white/10`, and `bg-white/5` with semi-transparent borders. | Replace glass cards with solid, opaque surfaces (`#FFFFFF` on `#FAF9FD`, or clean dark `#13121D`). Reserve blur strictly for sticky navigation. |
-| **7** | **Low-contrast dark mode** | Several dark modules use low-contrast text (`text-white/40`, `text-white/50` on dark grey). | Ensure all body text meets WCAG AA 4.5:1 minimum contrast. Lighten secondary text to `#A19EAD` or `#D1CFDB`. |
-| **8** | **Repetitive 3-card & 4-card grids** | Sections 2, 4, 5, 8, and 12 rely on repetitive identical card boxes with top icons. | Break monotony: use varied asymmetric editorial layouts—split feature columns, data tables, interactive workbench split-views, and narrative horizontal bands. |
-| **9** | **Unnecessary badges above headlines** | Almost every section begins with an eyebrow pill badge (`Sparkles`, `Bot`, `Zap`, `Brain`). | Eliminate decorative eyebrow badges where they add no information. Let bold, direct section titles drive the hierarchy. |
-| **10** | **Lucide icons everywhere** | Over 40 decorative icons placed in small colored rounded rectangles above text. | Remove decorative icon containers. Icons should only exist where they directly aid navigation or clarify functionality (e.g. Play, Mic, Check). |
-| **11** | **Default/shallow styling** | Reliance on standard Tailwind rounded pills (`rounded-full`) and basic shadow utilities. | Use tailored border radiuses (`rounded-xl` / `rounded-2xl` max), bespoke micro-shadows (`box-shadow: 0 1px 2px rgba(0,0,0,0.04)`), and crisp 1px borders. |
-| **12** | **Generic fade-in animations** | Multiple `animate-in fade-in zoom-in-95` classes scattered throughout components. | Remove non-functional entrance animations. Keep animations functional: smooth state transitions, audio waveforms, and 3D character interactions. |
-| **13** | **Unnecessary cursor-following effects** | Floating blur orbs following mouse or static ambient blur blobs. | Remove blurred decorative background blobs (`blur-3xl`, `blur-[140px]`). Ground the page in clean negative space. |
-| **14** | **Fade/opacity-only button hovers** | Buttons rely on `hover:opacity-90` or simple background shifts. | Implement tactile, purposeful button states: subtle active depression (`active:scale-[0.98]`), micro-border illumination, and distinct keyboard focus rings. |
-| **15** | **Inconsistent spacing system** | Varying section padding (`py-24`, `py-32`, varying gaps `gap-6`, `gap-8`, `gap-10`). | Enforce an 8pt spatial rhythm: consistent section padding (`py-20` sm: `py-28`), standard container max-width (`max-w-6xl`), and consistent component margins. |
-| **16** | **Excessive em dashes in copy** | Copy frequently uses "—" as an empty conversational pause. | Replace em dashes with crisp, professional sentence structures and bulleted specifications. |
-| **17** | **Generic AI/SaaS buzzwords** | Phrases like "Supercharge workflows", "Autonomous magic", "Deliver 10x results". | Replace with concrete operational terminology: "Sub-500ms call latency", "BANT qualification", "Direct SIP trunking", "Zero hold times". |
-| **18** | **Forced serif-italic accents** | Occasional italicized typography without brand purpose. | Keep typographic styling clean, upright, and legible throughout. |
-| **19** | **Arbitrary font combinations** | Caveat handwriting font loaded in `index.html` without cohesive product utility. | Unload unused fonts (`Caveat`) to save bandwidth and maintain typographic discipline. |
+## 2.1 High-Level Telecom Architecture
 
----
+```
+                                  VOXLY TELEPHONY BACKBONE
+┌───────────────────────┐         ┌────────────────────────┐         ┌────────────────────────┐
+│ Global Telecom        │         │ Session Border         │         │ Streaming Media Engine │
+│ Carriers (Tier 1 DIDs)│ ──SIP─► │ Controller (SBC) Clust.│ ──RTP─► │ (Opus / G.711u / PCM)  │
+│ Twilio/Telnyx/Bandwdth│ ◄─TLS── │ Kamailio + FreeSWITCH  │ ◄─SRTP─ │ WebRTC Audio Gateway   │
+└───────────────────────┘         └────────────────────────┘         └───────────┬────────────┘
+                                                                                 │ Dual WebSocket
+                                                                                 ▼
+                                                                     ┌────────────────────────┐
+                                                                     │ Sub-400ms Voice Orchestr│
+                                                                     │ Silero VAD (40ms)      │
+                                                                     │ Streaming STT (100ms)  │
+                                                                     │ LLM Orchestrator (120ms│
+                                                                     │ Streaming TTS (110ms)  │
+                                                                     └────────────────────────┘
+```
 
-## Part 2: Detailed 15-Pillar Pre-Launch Audit
+## 2.2 Complete Inbound PSTN Call Flow (RFC 3261 SIP Ladder)
 
-### 1. Legal & Trust
-- [ ] **Missing Legal Pages**: No Privacy Policy (`/privacy`) or Terms of Service (`/terms`) exist; links in [`Footer.jsx`](file:///d:/Antigravity/src/components/Footer.jsx) point to `#` or `#faq`.
-- [ ] **Voice Telephony Data Disclosure**: Because the product records, transcribes, and synthesizes human voice, explicit terms must clarify data processing, audio retention policies, and GDPR/CCPA consumer rights.
-- [ ] **Cookie Consent**: Missing cookie notice / consent mechanism for session tracking and audio permission caching.
-- [ ] **Compliance Claims**: Remove uncertified marketing statements (e.g. "100% HIPAA BAA certified") unless verified; replace with precise technical statements regarding encryption in transit (TLS 1.3) and secure WebRTC streams.
+```
+Caller Phone           Carrier Trunk            Voxly SBC              Media Engine          Voice Agent
+     │                      │                       │                       │                     │
+     │─── Inbound Call ────►│                       │                       │                     │
+     │                      │─── SIP INVITE (SDP) ─►│                       │                     │
+     │                      │◄── 100 Trying ────────│                       │                     │
+     │                      │                       │── Check DID & KYC ───►│                     │
+     │                      │                       │◄─ Active Agent Conf ──│                     │
+     │                      │◄── 183 Session Prog ──│                       │                     │
+     │                      │    (Early Media)      │                       │                     │
+     │                      │◄── 200 OK (SDP) ──────│                       │                     │
+     │                      │─── ACK ──────────────►│                       │                     │
+     │                      │                       │── Initialize Session ─►                     │
+     │                      │                       │                       │── WS Stream Open ──►│
+     │                      │                       │                       │   (Bi-dir 16kHz PCM)│
+     │◄════ RTP 2-way Audio Stream (G.711u / Opus) ════════════════════════►│                     │
+     │                      │                       │                       │── Split Channels ──►│ S3/GCS
+     │                      │                       │                       │   Ch 0: Caller      │ Stereo
+     │                      │                       │                       │   Ch 1: Agent       │ Rec.
+     │                      │                       │                       │                     │
+     │ "Hello, I need help" │                       │                       │                     │
+     │═════════════════════════════════════════════════════════════════════►│── VAD Silence (40ms)│
+     │                      │                       │                       │── Streaming STT ───►│
+     │                      │                       │                       │   (Nova-2: 95ms)    │
+     │                      │                       │                       │                     │── RAG/LLM (120ms)
+     │                      │                       │                       │                     │── TTS (110ms)
+     │                      │                       │                       │◄─ Streaming Audio ──│
+     │◄════ "Hi there! I can help you with that." ══════════════════════════│   (Chunks: 20ms)    │
+     │                      │                       │                       │                     │
+```
 
-### 2. Security
-- [ ] **Client-Side Environment Variables**: Audit [`src/services/voiceAgent.js`](file:///d:/Antigravity/src/services/voiceAgent.js) to guarantee no hardcoded API keys, bearer tokens, or sensitive webhooks exist.
-- [ ] **Form Input Sanitization**: Newsletter and lead form inputs in [`Footer.jsx`](file:///d:/Antigravity/src/components/Footer.jsx) must sanitize input to prevent XSS.
-- [ ] **Microphone Permissions**: Ensure microphone access requests via `navigator.mediaDevices.getUserMedia` handle denial gracefully without leaking console errors.
-- [ ] **Production Build Sanitization**: Ensure Vite build removes all `console.log` and debug markers (`drop: ['console', 'debugger']`).
+## 2.3 Sub-400ms Real-Time Latency Budget Breakdown
 
-### 3. SEO & Discoverability
-- [ ] **Outdated Document Title**: [`index.html`](file:///d:/Antigravity/index.html) has outdated title `"Voxly — Turn Conversations Into Opportunities"` instead of the current brand headline `"Voxly — The AI Employee for Every Conversation"`.
-- [ ] **Missing Metadata Files**:
-  - Missing [`public/robots.txt`](file:///d:/Antigravity/public/robots.txt)
-  - Missing [`public/sitemap.xml`](file:///d:/Antigravity/public/sitemap.xml)
-- [ ] **Social Sharing Cards**: Missing Twitter Card tags (`twitter:card`, `twitter:site`, `twitter:creator`, `twitter:image`) and Open Graph image (`og:image`).
-- [ ] **Canonical URL**: Missing `<link rel="canonical" href="https://voxly.ai" />`.
-- [ ] **Structured Data (JSON-LD)**: Missing `SoftwareApplication` and `Organization` schema markup in `index.html`.
+| Phase | Component & Technology | Target Latency | Strict Ceiling | Optimization Technique |
+| :--- | :--- | :--- | :--- | :--- |
+| **A. Packet Reception** | Telecom Jitter Buffer + RTP Ingestion | 20ms | 35ms | Adaptive jitter buffer with zero re-encoding |
+| **B. Speech Boundary** | Silero VAD (Voice Activity Detection) | 40ms | 60ms | Sliding acoustic energy window (32ms frames) |
+| **C. Speech-to-Text** | Deepgram Nova-2 / Whisper v3 Turbo | 95ms | 130ms | Streaming interim tokens via persistent WebSockets |
+| **D. Decision & LLM** | Groq Llama 3.3 70B / Claude 3.5 Haiku | 120ms | 160ms | Speculative decoding, first-token streaming |
+| **E. Text-to-Speech** | Cartesia Sonic / ElevenLabs Turbo 2.5 | 95ms | 120ms | Chunk-based streaming (starts audio at 1st token) |
+| **F. RTP Packetizing**| G.711u / Opus SIP Packetizer | 15ms | 25ms | Direct payload insertion to carrier RTP bridge |
+| **TOTAL BUDGET** | **End-to-End Perceived Acoustic Turn** | **385ms** | **530ms** | **Sub-500ms guaranteed human conversational benchmark** |
 
-### 4. Performance & 3D WebGL Optimization
-- [ ] **3D Asset Weight**: The 3D model at [`public/models/VoxlyBot_AIEmployee_Interactive.glb`](file:///d:/Antigravity/public/models/VoxlyBot_AIEmployee_Interactive.glb) is 2.1 MB. It must remain intact as the central product visual, but:
-  - Verify WebGL fallback in [`VoxlyScene.jsx`](file:///d:/Antigravity/src/three/VoxlyScene.jsx) renders cleanly when WebGL fails.
-  - Pause Three.js mixer updates and canvas rendering when the Hero section is not in the viewport.
-- [ ] **Font Loading Optimization**: Remove unused `Caveat` font from Google Fonts link in [`index.html`](file:///d:/Antigravity/index.html) to eliminate render-blocking stylesheet latency.
-- [ ] **Image Optimization**: Convert images in `public/images/` to optimized WebP format with explicit `width` and `height` dimensions to prevent layout shifts (CLS).
+## 2.4 Outbound Predictive Dialer, STIR/SHAKEN & Answering Machine Detection (AMD)
 
-### 5. Accessibility (WCAG 2.1 AA)
-- [ ] **Contrast Deficiencies**:
-  - Secondary text `#6F6B7D` on `#FAF9FD` background fails 4.5:1 ratio for small text. Darken to `#524E5E` or `#4A4656`.
-  - Light purple pill text `#EDE7FF` on white fails contrast.
-- [ ] **Missing ARIA Labels**: Icon buttons in [`Hero.jsx`](file:///d:/Antigravity/src/components/Hero.jsx), [`Navbar.jsx`](file:///d:/Antigravity/src/components/Navbar.jsx), and [`Footer.jsx`](file:///d:/Antigravity/src/components/Footer.jsx) lack `aria-label`.
-- [ ] **Keyboard Navigation**: Interactive custom tabs in [`AiEmployeeSection.jsx`](file:///d:/Antigravity/src/components/AiEmployeeSection.jsx) and [`PhoneChannelsSection.jsx`](file:///d:/Antigravity/src/components/PhoneChannelsSection.jsx) must support Tab and arrow-key focus with visible focus rings (`focus-visible:ring-2`).
-- [ ] **Reduced Motion**: Wrap continuous 3D floating and pulsing CSS animations in `@media (prefers-reduced-motion: reduce)`.
+```
+                            OUTBOUND CAMPAIGN DIALER
+                                       │
+                        ┌──────────────┴──────────────┐
+                        ▼                             ▼
+              [ TCPA Window Check ]        [ National DNC Registry ]
+              (08:00 - 21:00 Local)        (Suppression list check)
+                        │                             │
+                        └──────────────┬──────────────┘
+                                       │
+                                       ▼
+                       [ STIR/SHAKEN A-Level Signing ]
+                       (Cryptographic Identity Token)
+                                       │
+                                       ▼
+                       [ High-Concurrency SIP INVITE ]
+                                       │
+                                       ▼
+                     [ Answering Machine Detection (AMD) ]
+                     - Acoustic energy duration analysis (<1.2s)
+                     - Spectral flux pattern matching
+                                       │
+                     ┌─────────────────┴─────────────────┐
+                     ▼                                   ▼
+             [ Human Answered ]                 [ Machine Detected ]
+             - Greeting: "Hello?" (<1.5s)       - Greeting: >2.8s ("Please leave...")
+             - Silence pause detected           - Beep frequency detected (1000Hz)
+                     │                                   │
+                     ▼                                   ├─► Option A: Hangup immediately (0 min)
+         [ Instant Agent Speech ]                        └─► Option B: Drop Voicemail Audio
+         Inject speech within <150ms
+```
 
-### 6. Responsive Design
-- [ ] **Mobile Viewport (375px–420px)**:
-  - Verify 3D canvas container scales down appropriately (`h-[360px]`) so text and CTA are visible above the fold.
-  - Prevent dialogue popup in [`Hero.jsx`](file:///d:/Antigravity/src/components/Hero.jsx) from overflowing on narrow screens.
-- [ ] **Horizontal Scroll Check**: Confirm zero horizontal overflow (`overflow-x-hidden`) across all viewports.
-- [ ] **Touch Targets**: Ensure every interactive button and card has a minimum hit area of 44x44px.
+## 2.5 Attended (Warm) & Blind (Cold) Transfer Flows (RFC 5589 SIP REFER)
 
-### 7. Error States & Handling
-- [ ] **Missing 404 Experience**: Standalone or modal fallback for unknown URL paths.
-- [ ] **Speech API Denial**: Graceful, friendly fallback state when microphone permissions are denied in [`TalkToMeModal.jsx`](file:///d:/Antigravity/src/components/TalkToMeModal.jsx) or browser lacks Web Speech support.
-- [ ] **WebGL Unavailable Fallback**: Display a high-resolution preview image of Voxly if hardware acceleration is disabled.
+### Blind (Cold) Transfer:
+1. Agent triggers `transfer_call(target_phone_number)`.
+2. Voxly SBC sends a `SIP REFER` request to the upstream carrier.
+3. Carrier accepts with `202 Accepted` and sends `NOTIFY` events.
+4. Call leg is handed off cleanly to the destination; Voxly session terminates immediately.
 
-### 8. Forms & Lead Capture
-- [ ] **Footer Newsletter Form**: Currently has an inert `<input>` and `<button>` with no submit handler, no validation, and no success confirmation.
-- [ ] **Form Validation**: Add regex email validation, error messages, and immediate visual success state ("Thank you for subscribing").
+### Attended (Warm) Transfer with Whisper Briefing:
+1. **Hold Leg**: Inbound caller is placed on high-fidelity hold with branded waiting audio.
+2. **Consultation Leg**: Voxly SBC originates a new outbound SIP call to the human specialist.
+3. **Acoustic Whisper**: Before bridging the caller, the AI synthesizes a confidential 6-second summary heard only by the specialist:
+   > *"Incoming warm transfer from Sarah Connor regarding Enterprise SLA pricing. Budget verified at $40,000/yr."*
+4. **Specialist Action**:
+   - Press `1` or speak "Accept": Carrier bridges caller and specialist into a 2-party conference. AI drops off.
+   - Press `2` or No Answer (20s timeout): Specialist leg is released; AI returns to customer: *"Our senior engineer is currently tied up, but I have sent a calendar invite for 2 PM."*
 
-### 9. Spam Protection
-- [ ] **Honeypot Field**: Add hidden anti-bot honeypot field (`aria-hidden="true" style="display:none"`) to all public input forms.
-- [ ] **Client-Side Debouncing**: Debounce rapid multi-clicks to prevent duplicate submissions.
-
-### 10. Analytics & Event Instrumentation
-- [ ] **Unified Telemetry Helper**: Create a clean, privacy-friendly analytics dispatcher (`src/services/analytics.js`) logging key milestones:
-  - `page_view`
-  - `cta_build_agent_click`
-  - `voice_demo_started`
-  - `voice_test_prompt_clicked`
-  - `plan_selected`
-  - `newsletter_subscribed`
-
-### 11. Conversion & Single Primary CTA Strategy
-- [ ] **CTA Fragmentation**: Currently mixed between "Get Started", "Build Your Agent", "Create your AI employee", "Deploy Pro Fleet", "Start 14-Day Free Trial".
-- [ ] **Enforce Unified Hierarchy**:
-  - **Primary CTA**: `"Build Your Agent"` (or `"Build Your AI Agent"`) throughout the entire page.
-  - **Secondary CTA**: `"Talk to AI"` (triggering live audio demonstration).
-  - Eliminate competing tertiary CTA labels.
-
-### 12. Link & Navigation Integrity
-- [ ] **Dead Navigation Anchors**:
-  - [`Navbar.jsx`](file:///d:/Antigravity/src/components/Navbar.jsx) and [`Footer.jsx`](file:///d:/Antigravity/src/components/Footer.jsx) contain old anchors (`#builder`, `#simulator`, `#platform`).
-  - Update all navigation items to match active section IDs:
-    - `#capabilities` (Capabilities)
-    - `#build` (Build Agent)
-    - `#talk-to-ai` (Talk to AI)
-    - `#phone` (Phone Channels)
-    - `#leads` (Lead Engine)
-    - `#campaigns` (Bulk Campaigns)
-    - `#train` (Train Your AI)
-    - `#team` (AI Team)
-    - `#conversations` (Call History)
-    - `#analytics` (Performance)
-    - `#industries` (Industries)
-    - `#how-it-works` (How It Works)
-    - `#pricing` (Pricing)
-    - `#faq` (FAQ)
-
-### 13. Content Quality & Brand Tone
-- [ ] **Tone Alignment**: Replace marketing fluff with authoritative, precise operational language.
-- [ ] **Remove Em Dashes**: Clean up excessive punctuation dashes in body copy.
-- [ ] **Remove Unsubstantiated Claims**: Remove ungrounded statistics and clarify exact technical capabilities.
-
-### 14. Voice Agent-Specific UX
-- [ ] **Instant Understanding**: Ensure a first-time visitor grasps within 5 seconds that Voxly is an autonomous voice phone agent—not a chat widget, not a text prompt tool, but an AI that talks over telephone networks.
-- [ ] **Clear Inbound vs. Outbound Separation**: Highlight the duality of receiving inbound calls and placing outbound campaign dials.
-
-### 15. Final Technical Health
-- [ ] Production build succeeds with 0 errors (`npm run build`).
-- [ ] Clean bundle output with no duplicate dependencies.
-- [ ] Clean console without Three.js deprecation or hydration warnings.
+## 2.6 Dual-Channel Stereo Recording, PII/PCI-DSS Redaction & HIPAA Compliance
+- **Stereo Separation**: Caller audio is captured on Channel 0 (Left); AI audio on Channel 1 (Right). This enables 100% accurate acoustic sentiment analysis and isolated transcript reconstruction.
+- **PCI-DSS Card Masking**: When the agent enters a payment collection state, audio recording is paused or dtmf tones are masked with white noise.
+- **Automated PII Redaction**: Real-time transcript engine strips credit card numbers, SSNs, and dates of birth before committing to the database.
+- **Storage**: Audio is encrypted with AES-256-GCM and stored in HIPAA-compliant isolated buckets with configurable retention (30, 60, 90 days, or permanent).
 
 ---
 
-## Part 3: Mandatory Architecture & Code Changes
+# PART 3: Virtual Number Buying (DID Marketplace), LNP Porting & Elastic SIP Trunking
 
-### 1. Remove PhoneNumbersSection & Collaborative Handoff
-As explicitly mandated, delete / remove the dedicated phone numbers and collaborative handoff component:
-- **Remove Component File**: Delete [`src/components/PhoneNumbersSection.jsx`](file:///d:/Antigravity/src/components/PhoneNumbersSection.jsx).
-- **Update [`App.jsx`](file:///d:/Antigravity/src/App.jsx)**: Remove import and rendering of `<PhoneNumbersSection />`.
-- **Update [`Navbar.jsx`](file:///d:/Antigravity/src/components/Navbar.jsx)** & [`siteContent.js`](file:///d:/Antigravity/src/data/siteContent.js): Remove links to `#numbers` and phone numbers submenu items.
-- *Rationale*: Collaborative handoff and telephony numbers are already cleanly addressed inside `PhoneChannelsSection` ("Inbound", "Outbound", "Campaigns") and `AiEmployeeSection` ("Transfer to humans"). Having a separate standalone phone numbers block creates redundancy and clutter.
+## 3.1 Global DID Procurement Engine & Number Classifications
 
-### 2. Streamlined 15-Section Product Flow
-With the removal of `PhoneNumbersSection`, the streamlined landing page flow becomes:
-1. `Hero` (AI Voice Agent + 3D Mascot)
-2. `AiEmployeeSection` (What Can Your AI Employee Do? + Build in Minutes)
-3. `TalkToAiSection` (Interactive Live Voice Experience)
-4. `PhoneChannelsSection` (Inbound, Outbound, Campaigns)
-5. `LeadEngineSection` (Turn Calls into Opportunities)
-6. `CampaignScaleSection` (Run Campaigns at Scale)
-7. `TrainingSection` (Teach It How Your Business Works)
-8. `AiTeamSection` (Build an AI Team: Sales, Support, Receptionist, Follow-up)
-9. `ConversationHistorySection` (Every Conversation in One Place)
-10. `AnalyticsSection` (Performance Dashboard)
-11. `IndustriesSection` (One Platform, Every Vertical)
-12. `HowItWorksSection` (5 Steps + Transparent Usage & Billing)
-13. `PricingSection` (Transparent Pricing Tiers)
-14. `FAQSection` (Technical & Operational FAQ)
-15. `FinalCTA` (Final High-Impact Call to Action)
+Voxly provides direct, self-service provisioning of virtual numbers across 100+ countries:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ DID CLASSIFICATION MATRIX                                                              │
+├───────────────┬────────────────────┬─────────────────┬───────────────────┬─────────────┤
+│ Number Type   │ Geographic Reach   │ Monthly Fee     │ Inbound Surcharge │ SMS Enabled │
+├───────────────┼────────────────────┼─────────────────┼───────────────────┼─────────────┤
+│ Local DID     │ Specific Area Code │ $1.50 – $2.50   │ $0.0085 / min     │ Yes (US/CA) │
+│ Toll-Free     │ Nationwide         │ $3.50 – $5.00   │ $0.0180 / min     │ Yes (US/CA) │
+│ Mobile DID    │ National Mobile    │ $2.50 – $4.00   │ $0.0120 / min     │ Yes         │
+│ National      │ Non-geographic     │ $3.00 – $4.50   │ $0.0110 / min     │ Voice Only  │
+│ Vanity Block  │ Custom Spelling    │ $15.00 setup    │ Standard          │ Yes         │
+└───────────────┴────────────────────┴─────────────────┴───────────────────┴─────────────┘
+```
+
+## 3.2 Country-Specific KYC & Regulatory Compliance Matrix
+
+To adhere to international telecommunications laws, purchasing phone numbers requires compliance verification:
+
+- **United States & Canada**:
+  - **A2P 10DLC Registration**: Brand registration (EIN, Legal Business Name) and Campaign use-case declaration for SMS-enabled numbers.
+  - **E911 Address**: Physical emergency dispatch address registration for every two-way voice number.
+- **Germany (Bundesnetzagentur - BNetzA)**:
+  - Local address proof in the corresponding city/area code required within 14 days.
+- **France (ARCEP)**:
+  - Corporate registration certificate (Kbis) + Proof of local presence for geographic (01-05) prefixes.
+- **United Kingdom (Ofcom)**:
+  - Proof of physical address for local geographic numbers (01/02 prefixes).
+- **India (DoT / TRAI)**:
+  - Corporate KYC, Certificate of Incorporation, authorized signatory passport/Aadhaar, and TRAI Distributed Ledger Technology (DLT) registration.
+- **Australia (ACMA)**:
+  - Proof of identity and address for geographic (02, 03, 07, 08) numbers.
+
+## 3.3 Dynamic Local Presence Engine
+For outbound sales campaigns, the dialer dynamically selects a DID matching the recipient's area code from the workspace's pool of numbers:
+- Recipient in Chicago (`312`) -> Caller ID displays `+1 (312) 847-XXXX`.
+- Increases call pickup rates from standard 11% to over 34%.
+
+## 3.4 Local Number Portability (LNP) Self-Service Workflow
+
+A 5-step self-service wizard to migrate existing business lines to Voxly:
+1. **Eligibility Check**: Enter E.164 numbers; automated system queries Neustar/NPAC to identify current losing carrier (OCN).
+2. **Account Verification**: Enter losing carrier account number and porting PIN.
+3. **LOA Generation**: System generates standardized Letter of Authorization (LOA); operator signs digitally in-browser.
+4. **Statement Upload**: Upload recent telephone bill (dated within last 30 days) displaying billing name and address.
+5. **FOC Tracking**: Visual milestone tracker:
+   - `Submitted` -> `Carrier Review` -> `FOC Date Confirmed` -> `Cutover Complete`.
+   - Automated failover call forwarding maintains zero downtime during port execution.
+
+## 3.5 Bring-Your-Own-Carrier (BYOC) & Elastic SIP Trunks
+
+For enterprise clients with existing master service agreements (Twilio, Telnyx, Bandwidth, Cisco, Avaya):
+- **Inbound SIP URI**: `sip:agent-uuid@inbound.voxly.ai:5060;transport=tls`
+- **Outbound Termination**: IP Access Control Lists (ACLs) or SIP Digest Authentication (Username + Password).
+- **Codecs Supported**: Opus (48kHz), G.711u (PCMU), G.711a (PCMA), G.722, AMR-WB.
+- **Security**: Mandatory TLS 1.3 signaling and SRTP (AES-128-CM-HMAC-SHA1) media encryption.
 
 ---
 
-## Part 4: Component-by-Component Remediation Matrix
+# PART 4: Payment Systems, Prepaid Wallet & Micro-Metering Architecture
 
-| Component | Priority | Identified Issues | Concrete Remediation |
-|---|---|---|---|
-| [`index.html`](file:///d:/Antigravity/index.html) | **Critical** | Outdated title, missing meta description tags, missing Open Graph image, unused font (`Caveat`) loaded, missing `robots.txt`/`sitemap.xml`. | Update title, add comprehensive SEO meta tags, remove Caveat font, create `public/robots.txt` and `public/sitemap.xml`. |
-| [`App.jsx`](file:///d:/Antigravity/src/App.jsx) | **Critical** | Still imports and renders `<PhoneNumbersSection />`; missing legal modal routing. | Remove `<PhoneNumbersSection />`; wire Privacy Policy and Terms of Service modals. |
-| [`Hero.jsx`](file:///d:/Antigravity/src/components/Hero.jsx) | **High** | Gradient text on headline (`gradient-text-lavender`), decorative badge above headline, purple gradient CTA buttons. | Refactor to solid deep navy headline (`#0F0E17`), remove decorative badge, restyle buttons to solid high-contrast Emil Kowalski style (`bg-[#6344E7]` or `#0F0E17`). |
-| [`AiEmployeeSection.jsx`](file:///d:/Antigravity/src/components/AiEmployeeSection.jsx) | **High** | 8 identical colored-border cards, purple gradient text, decorative badges, repetitive icons in colored boxes. | Redesign into an asymmetric workbench layout: clean hairline borders, remove decorative pills, use solid typography, and improve step navigation. |
-| [`TalkToAiSection.jsx`](file:///d:/Antigravity/src/components/TalkToAiSection.jsx) | **High** | Heavy glowing background blobs (`blur-[140px]`), gradient text, low-contrast text. | Simplify dark container to solid `#111019` with hairline border, increase text contrast, streamline waveform animation to clean physical audio meters. |
-| [`PhoneChannelsSection.jsx`](file:///d:/Antigravity/src/components/PhoneChannelsSection.jsx) | **Medium** | Redundant tree diagram, pill tabs with heavy gradient. | Streamline tabs to clean segmented control (`bg-[#F0EEF6]` with sliding active pill), integrate clear telephony specs. |
-| [`LeadEngineSection.jsx`](file:///d:/Antigravity/src/components/LeadEngineSection.jsx) | **Medium** | Repetitive 4-card grid with Lucide icons in colored boxes. | Redesign into a structured horizontal pipeline with structured data tables showing real extracted fields. |
-| [`CampaignScaleSection.jsx`](file:///d:/Antigravity/src/components/CampaignScaleSection.jsx) | **Medium** | 5 identical numbered cards in a row. | Convert into an interactive campaign timeline and realistic telemetry monitor. |
-| [`TrainingSection.jsx`](file:///d:/Antigravity/src/components/TrainingSection.jsx) | **Medium** | Bouncing arrow animation, decorative pills. | Replace with a clean architectural schematic showing vector ingestion, RAG pipeline, and guardrails. |
-| [`AiTeamSection.jsx`](file:///d:/Antigravity/src/components/AiTeamSection.jsx) | **Medium** | 4 identical cards with emoji avatars. | Upgrade agent profiles with polished typography, realistic audio sample triggers, and structured role specifications. |
-| [`ConversationHistorySection.jsx`](file:///d:/Antigravity/src/components/ConversationHistorySection.jsx) | **Medium** | Dark right panel contrast could be crisper. | Enhance transcript readability with clear speech bubbles and instant audio playback. |
-| [`AnalyticsSection.jsx`](file:///d:/Antigravity/src/components/AnalyticsSection.jsx) | **Medium** | Chart tabs and bar heights can feel more realistic. | Refine SVG charts with clean grid lines and precise percentages. |
-| [`IndustriesSection.jsx`](file:///d:/Antigravity/src/components/IndustriesSection.jsx) | **Medium** | Repetitive 6 cards with identical icon boxes. | Create a tabbed vertical showcase with real enterprise workflow examples. |
-| [`HowItWorksSection.jsx`](file:///d:/Antigravity/src/components/HowItWorksSection.jsx) | **Medium** | Dark usage card with purple gradient header. | Redesign as a crisp billing transparency card with precise per-second accounting details. |
-| [`PricingSection.jsx`](file:///d:/Antigravity/src/components/PricingSection.jsx) | **High** | Plan CTA buttons have inconsistent wording ("Build Your Agent" vs "Deploy Pro Fleet"). | Standardize primary CTA to `"Build Your Agent"` across all tiers. Clarify included minutes and overage rates. |
-| [`Footer.jsx`](file:///d:/Antigravity/src/components/Footer.jsx) | **High** | Dead `#` links for Privacy Policy, Terms, and Cookie Settings; newsletter form is non-functional; links reference old section IDs. | Connect legal links to real modals, add working newsletter submission with validation, fix all anchor links. |
-| [`LegalModals.jsx`](file:///d:/Antigravity/src/components/LegalModals.jsx) | **Critical** (New) | Missing legal documents. | Create clean, comprehensive Privacy Policy and Terms of Service modal dialogues. |
+Phone calls cannot fail mid-sentence due to a synchronous credit card decline. Voxly operates on an **Enterprise Prepaid Fleet Wallet with Automated Micro-Replenishment**.
+
+## 4.1 Prepaid Wallet Ledger & Cost Composition
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ REAL-TIME USAGE & MICRO-BILLING FORMULA                                                │
+│                                                                                        │
+│ Total Call Cost = Telecom Leg + Voice Engine (STT + LLM + TTS) + Add-ons              │
+│                                                                                        │
+│ • Telecom Leg:                                                                         │
+│   Inbound:  $0.0085 / 60s  = $0.00014167 per second                                   │
+│   Outbound: $0.0120 / 60s  = $0.00020000 per second                                   │
+│                                                                                        │
+│ • Voice Engine Compute:                                                                │
+│   Standard Model (Llama 3.3 + Deepgram Nova-2 + Cartesia Sonic):  $0.05 / min         │
+│   Premium Model  (Claude 3.5 Haiku + Whisper + ElevenLabs Turbo): $0.08 / min         │
+│                                                                                        │
+│ • Exact 1/1 Second Metering:                                                           │
+│   A 47-second connected call is billed for exactly 47 seconds. Zero minute-rounding.   │
+│   Zero charges for unanswered rings, busy signals, or failed connections.              │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## 4.2 Automated Replenishment State Machine
+
+```
+                        [ NORMAL OPERATION ]
+                        Wallet Balance > $25.00
+                                  │
+                                  ▼ (Balance drops below threshold, e.g. $25.00)
+                     [ AUTO-RECHARGE TRIGGERED ]
+                     Calls Stripe / Razorpay API: Charge $100.00
+                                  │
+                  ┌───────────────┴───────────────┐
+                  ▼ (Success)                     ▼ (Card Declined)
+       [ BALANCE REPLENISHED ]           [ SOFT DECLINE GRACE STATE ]
+       - Credits updated instantly       - 15-minute emergency overdraft buffer
+       - Receipt emailed to billing      - Urgent SMS & Dashboard Banner
+       - Return to Normal                - In-progress calls ARE NOT dropped
+                                                  │
+                                                  ▼ (After 15 min or max $20 overdraft)
+                                         [ HARD CAP / SUSPENDED ]
+                                         - New outbound calls blocked
+                                         - Inbound calls routed to voicemail
+```
+
+## 4.3 Payment Methods & Global Gateway Matrix
+- **Credit / Debit Cards**: Visa, MasterCard, American Express via Stripe Elements (PCI-DSS Level 1).
+- **Mobile Wallets**: Apple Pay and Google Pay via one-touch biometric authorization.
+- **ACH Direct Debit (US)**: Stripe Financial Connections for bank debit (0.8% fee capped at $5.00). Ideal for $1,000+ wallet top-ups.
+- **SEPA Direct Debit (EU)**: Eurozone bank account payments with automated SEPA mandate generation.
+- **UPI / Netbanking / RuPay (India)**: Native Razorpay gateway integration for Indian enterprises with instant INR to USD settlement.
+- **Enterprise Invoicing (Net-30 / Net-60)**: Wire transfer / ACH invoicing for fleets spending >$2,500/month.
+
+## 4.4 Global Tax & Compliance Engine
+- **US Telecommunications Taxes**: Calculates Federal Universal Service Fund (USF), State PUC fees, and local 911 surcharges based on the physical billing address.
+- **EU VAT**: Automated VIES database verification for B2B VAT Reverse Charge.
+- **Indian GST**: Automated SAC code `9984` (Telecommunications Services) tax invoicing with 18% GST and GSTIN validation.
+
+## 4.5 Call Detail Records (CDR) Ledger Schema
+Every phone interaction writes an immutable CDR record:
+```json
+{
+  "call_uuid": "c98b1a72-4d10-482a-9e12-88f912c918a0",
+  "workspace_id": "ws_acme_prod",
+  "agent_id": "agent_sarah_sdr",
+  "direction": "inbound",
+  "from_number": "+14159821049",
+  "to_number": "+18005550199",
+  "sip_call_id": "a984b2@sbc.voxly.ai",
+  "start_time": "2026-09-18T10:14:02.108Z",
+  "connect_time": "2026-09-18T10:14:05.412Z",
+  "end_time": "2026-09-18T10:16:32.812Z",
+  "duration_seconds": 147,
+  "billing_seconds": 147,
+  "telecom_cost_usd": 0.0208,
+  "ai_compute_cost_usd": 0.1225,
+  "total_cost_usd": 0.1433,
+  "disposition": "human_completed",
+  "recording_url": "s3://voxly-recordings/ws_acme/c98b1a72.wav",
+  "sentiment": "positive",
+  "lead_qualified": true
+}
+```
 
 ---
 
-## Part 5: Implementation Roadmap
+# PART 5: Individual AI Employee Creation & Multi-Step Scalable Wizard
 
-### Phase 1: Structural Cleanup & Deletion
-1. Delete [`src/components/PhoneNumbersSection.jsx`](file:///d:/Antigravity/src/components/PhoneNumbersSection.jsx).
-2. Remove references to `PhoneNumbersSection` from [`App.jsx`](file:///d:/Antigravity/src/App.jsx), [`Navbar.jsx`](file:///d:/Antigravity/src/components/Navbar.jsx), and [`siteContent.js`](file:///d:/Antigravity/src/data/siteContent.js).
+Scaling from a solo operator creating their first inbound receptionist to an enterprise provisioning 5,000 distributed outbound SDRs requires a standardized, frictionless 8-step wizard.
 
-### Phase 2: Design System Overhaul (Emil Kowalski Principles)
-1. **Palette Restraint**: Update [`tailwind.config.js`](file:///d:/Antigravity/tailwind.config.js) and [`globals.css`](file:///d:/Antigravity/src/styles/globals.css) to eliminate gradient utilities and establish crisp neutral tokens (`#0F0E17`, `#524E5E`, `#E4E2EB`, `#FAF9FD`, accent `#6344E7`).
-2. **Typography & Contrast**: Remove `Caveat` font; establish clean Plus Jakarta Sans hierarchy with solid colors and zero gradient text clipping.
-3. **Card & Surface Simplification**: Replace generic glassmorphism and colored outlines with solid white cards, 1px neutral hairline borders, and refined micro-shadows.
+```
+   ① IDENTITY ──► ② VOICE ──► ③ BRAIN ──► ④ KNOWLEDGE ──► ⑤ TOOLS ──► ⑥ PHONE ──► ⑦ TEST ──► ⑧ DEPLOY
+```
 
-### Phase 3: Core Section Redesign
-1. **Hero**: Remove gradient text; refine CTA buttons to solid high-contrast states; preserve full 3D robot interaction and mouse tracking.
-2. **AiEmployeeSection**: Replace repetitive card grid with asymmetric workbench view; polish 6-step builder.
-3. **TalkToAiSection**: Clean up dark panel; replace heavy glowing blobs with sleek physical audio meters and functional speech test prompts.
-4. **LeadEngine & CampaignScale**: Replace generic icon cards with structured pipeline tables and realistic dial telemetry.
-5. **AiTeam**: Replace emoji headers with professional multi-agent profiles.
+## 5.1 Deep Configuration Options Matrix
 
-### Phase 4: Production Hardening (SEO, Legal, Forms, Security)
-1. **SEO**: Update `index.html` with title, meta tags, and Open Graph; generate `public/robots.txt` and `public/sitemap.xml`.
-2. **Legal**: Create `LegalModals.jsx` containing comprehensive Privacy Policy and Terms of Service; wire to `Footer.jsx`.
-3. **Forms & Links**: Fix newsletter form with validation; audit and fix all anchor links.
-4. **Analytics**: Implement lightweight event tracking service (`src/services/analytics.js`).
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ STEP 1: IDENTITY & ROLE SPECIFICATION                                                  │
+├───────────────────┬──────────────┬───────────────┬─────────────────────────────────────┤
+│ Field Name        │ Type         │ Default       │ Description & Operational Impact    │
+├───────────────────┼──────────────┼───────────────┼─────────────────────────────────────┤
+│ `name`            │ String       │ "Sarah"       │ Internal & spoken agent persona     │
+│ `role`            │ Dropdown     │ "Inbound SDR" │ Role category (Support, Sales, etc.)│
+│ `avatar_type`     │ Radio        │ "3d_robot"    │ 3D Mascot / Headshot / Monogram     │
+│ `primary_goal`    │ Textarea     │ "Qualify..."  │ Single-sentence core mandate        │
+│ `concurrency_max` │ Number (1-5k)│ 10            │ Max simultaneous PSTN channels      │
+└───────────────────┴──────────────┴───────────────┴─────────────────────────────────────┘
 
-### Phase 5: Verification & Production Build
-1. Verify `npm run build` generates 0 warnings/errors.
-2. Verify responsive design from 375px to 1440px.
-3. Commit and sync all production changes to GitHub repository.
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ STEP 2: ACOUSTIC ENGINE & VOICE TUNING                                                 │
+├───────────────────┬──────────────┬───────────────┬─────────────────────────────────────┤
+│ Field Name        │ Type         │ Default       │ Description & Operational Impact    │
+├───────────────────┼──────────────┼───────────────┼─────────────────────────────────────┤
+│ `tts_provider`    │ Select       │ "cartesia"    │ Cartesia Sonic, ElevenLabs, Deepgram│
+│ `voice_id`        │ Voice Picker │ "sonic-en-01" │ Acoustic voice identifier           │
+│ `language`        │ Select       │ "en-US"       │ Supported: en-US, en-IN, te-IN, etc.│
+│ `speaking_speed`  │ Slider       │ 1.05x         │ Range: 0.80x to 1.35x (0.01 step)   │
+│ `pitch_shift`     │ Slider       │ 0.00 st       │ Semitone pitch modulation (-6 to +6)│
+│ `barge_in_ms`     │ Slider       │ 220ms         │ Interruption sensitivity (100-500ms)│
+│ `turn_timeout_ms` │ Slider       │ 650ms         │ Silence pause before AI speaks      │
+│ `pronunciation`   │ Key-Value    │ {}            │ Custom phonetic acronym overrides   │
+└───────────────────┴──────────────┴───────────────┴─────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ STEP 3: BRAIN, REASONING & GUARDRAILS                                                  │
+├───────────────────┬──────────────┬───────────────┬─────────────────────────────────────┤
+│ Field Name        │ Type         │ Default       │ Description & Operational Impact    │
+├───────────────────┼──────────────┼───────────────┼─────────────────────────────────────┤
+│ `llm_model`       │ Select       │ "llama-3.3-70b│ Groq Llama 3.3, Claude 3.5 Haiku    │
+│ `system_prompt`   │ Code Editor  │ Template      │ Primary system instructions         │
+│ `temperature`     │ Slider       │ 0.3           │ Range: 0.0 to 1.0 (Low = factual)   │
+│ `dynamic_vars`    │ Token list   │ [caller_name] │ Variables injected from CRM / SIP   │
+│ `hallucination_bar│ Toggle       │ Enabled       │ Enforce strict "I don't know" rule  │
+│ `profanity_filter`│ Toggle       │ Enabled       │ Automatic de-escalation filter      │
+└───────────────────┴──────────────┴───────────────┴─────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ STEP 4: KNOWLEDGE BASE & RAG INGESTION                                                 │
+├───────────────────┬──────────────┬───────────────┬─────────────────────────────────────┤
+│ Field Name        │ Type         │ Default       │ Description & Operational Impact    │
+├───────────────────┼──────────────┼───────────────┼─────────────────────────────────────┤
+│ `kb_collections`  │ Multi-Select │ []            │ Linked knowledge vector collections │
+│ `rag_top_k`       │ Number       │ 3             │ Max semantic chunks retrieved       │
+│ `confidence_score`│ Slider       │ 0.75          │ Minimum cosine similarity threshold │
+│ `test_query`      │ Input + Run  │ ""            │ Real-time RAG chunk citation tester │
+└───────────────────┴──────────────┴───────────────┴─────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ STEP 5: TOOLS & FUNCTION CALLING                                                       │
+├───────────────────┬──────────────┬───────────────┬─────────────────────────────────────┤
+│ Field Name        │ Type         │ Default       │ Description & Operational Impact    │
+├───────────────────┼──────────────┼───────────────┼─────────────────────────────────────┤
+│ `calendar_sync`   │ Toggle       │ Disabled      │ Cal.com / Google Calendar live slot │
+│ `crm_sync`        │ Toggle       │ Disabled      │ Salesforce / HubSpot lead push      │
+│ `sms_confirmation`│ Toggle       │ Disabled      │ Send Twilio/Telnyx SMS during call  │
+│ `custom_webhooks` │ Tool List    │ []            │ User-defined REST API tools         │
+└───────────────────┴──────────────┴───────────────┴─────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ STEP 6: PHONE ASSIGNMENT & ROUTING                                                     │
+├───────────────────┬──────────────┬───────────────┬─────────────────────────────────────┤
+│ Field Name        │ Type         │ Default       │ Description & Operational Impact    │
+├───────────────────┼──────────────┼───────────────┼─────────────────────────────────────┤
+│ `assigned_did`    │ DID Selector │ None          │ Choose from pool or buy new number  │
+│ `business_hours`  │ Time Range   │ "24/7"        │ Active window for inbound routing   │
+│ `voicemail_action`│ Select       │ "record_vm"   │ Record audio, transcribe, or SMS    │
+│ `human_transfer`  │ Phone/SIP    │ None          │ Warm escalation destination number  │
+└───────────────────┴──────────────┴───────────────┴─────────────────────────────────────┘
+```
+
+---
+
+# PART 6: Comprehensive 13-Module Console UI & Layout Specification
+
+All modules strictly follow the Emil Kowalski craft guidelines: hairline borders, neutral surfaces, tactile micro-feedback, and high-density typography.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ AUTHENTICATED VOICE OS CONSOLE — 13 CORE SECTIONS                                      │
+├────┬─────────────────────────────┬─────────────────────────────────────────────────────┤
+│ 01 │ Overview Dashboard          │ KPI cards, live telemetry, activity chart, calls    │
+│ 02 │ AI Employees Roster         │ Employee grid/list, status toggles, quick-talk      │
+│ 03 │ Agent Studio Workspace      │ 8-tab deep-dive per agent (Brain, Voice, Telemetry) │
+│ 04 │ Real-Time Voice Sandbox     │ 3D reactive mascot, waveform, STT/TTS latency meter │
+│ 05 │ Calls & Audio Player        │ Dual-channel audio, synced transcript, CRM actions  │
+│ 06 │ Leads & Opportunities       │ BANT score table, transcript summary, CRM sync      │
+│ 07 │ Outbound Campaigns          │ CSV mapper, AMD classifier, calling hours, dialer   │
+│ 08 │ Phone Numbers & DID Market  │ Buy numbers, E911, LNP porting, Elastic SIP trunks  │
+│ 09 │ Brain & Training Hub        │ System prompt editor, token budget, RAG retriever   │
+│ 10 │ Knowledge Base Repository   │ Documents, web crawl, chunk inspector, health score │
+│ 11 │ Custom Tools & Webhooks     │ API schemas, parameter builder, live tester         │
+│ 12 │ Billing, Wallet & Usage     │ Prepaid wallet, auto-recharge, CDR micro-billing    │
+│ 13 │ Workspace Settings & Profile│ Team roles, STIR/SHAKEN, TCPA compliance, API keys  │
+└────┴─────────────────────────────┴─────────────────────────────────────────────────────┘
+```
+
+## 6.1 Application Shell Architecture
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ APP SHELL WIREFRAME                                                                    │
+├──────────────────────────┬─────────────────────────────────────────────────────────────┤
+│ [Logo] Acme Corp ▼       │ [Search ⌘K]  [● Carrier: 99.98%]  [$248.50]  [Talk AI] [User] │
+├──────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ OVERVIEW                 │                                                             │
+│ • Dashboard              │                                                             │
+│                          │                                                             │
+│ AI WORKFORCE             │                     MAIN VIEWPORT                           │
+│ • AI Employees           │               (Dynamic Module Rendering)                    │
+│ • Knowledge Base         │                                                             │
+│ • Training & Brain       │                                                             │
+│                          │                                                             │
+│ COMMUNICATIONS           │                                                             │
+│ • Calls & Transcripts    │                                                             │
+│ • Outbound Campaigns     │                                                             │
+│ • Phone Numbers (DID)    │                                                             │
+│                          │                                                             │
+│ REVENUE & OPS            │                                                             │
+│ • Leads & CRM            │                                                             │
+│ • Analytics              │                                                             │
+│                          │                                                             │
+│ SETTINGS                 │                                                             │
+│ • Custom Tools           │                                                             │
+│ • Billing & Wallet       │                                                             │
+│ • Workspace Settings     │                                                             │
+├──────────────────────────┤                                                             │
+│ Balance: $248.50 (2,485m)│                                                             │
+│ [+ Add Funds] [Pro Plan] │                                                             │
+└──────────────────────────┴─────────────────────────────────────────────────────────────┘
+```
+
+### Topbar Elements:
+- **Workspace Switcher**: Monogram icon + Organization name with fast dropdown for multi-client agency switching.
+- **Global Search (`⌘K`)**: Modal search index covering agents, phone numbers, leads, call records, and documentation.
+- **PSTN Telephony Status**: `● 99.98% Operational` pill with green indicator dot. Hover reveals latency metrics.
+- **Prepaid Balance Pill**: Displays live remaining balance `$248.50 (~2,485 min)`. Clicking opens instant recharge drawer.
+- **"Talk to AI" Quick Launcher**: Primary branded button `[ ⚡ Talk to AI ]` opening the browser voice sandbox from anywhere.
+- **Profile / Avatar**: User monogram with dropdown: My Profile, API Keys, Documentation, Log Out.
+
+---
+
+## 6.2 Module 01: Overview Dashboard
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ OVERVIEW DASHBOARD WIREFRAME                                                           │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ "Good morning, Alex. Your AI fleet is operating across 4 active phone numbers."        │
+│                                                   [ + Create AI Employee ]  [ Export ] │
+├───────────────────┬───────────────────┬───────────────────┬────────────────────────────┤
+│ TOTAL CALLS       │ VOICE MINUTES     │ QUALIFIED LEADS   │ FIRST-CALL RESOLUTION      │
+│ 14,842            │ 28,490 min        │ 2,418             │ 84.2%                      │
+│ ▲ +18.4% vs last  │ ▲ +12.1% vs last  │ ▲ +24.6% conv     │ ▲ +3.1%                    │
+├───────────────────┴───────────────────┴───────────────────┴────────────────────────────┤
+│ CALL TRAFFIC & CONCURRENCY (LAST 7 DAYS)                         [ Today | 7D | 30D ]  │
+│ ┌────────────────────────────────────────────────────────────────────────────────────┐ │
+│ │  [ Clean SVG Area / Bar Chart showing Inbound vs Outbound volume per hour/day ]    │ │
+│ └────────────────────────────────────────────────────────────────────────────────────┘ │
+├───────────────────────────────────────────┬────────────────────────────────────────────┤
+│ ACTIVE AI EMPLOYEES                       │ RECENT LIVE CALLS STREAM                   │
+│ ┌───────────────────────────────────────┐ │ ┌────────────────────────────────────────┐ │
+│ │ [●] Sarah - SDR    | +1 (415) 890-2341│ │ │ +1 (212) 489-0128  | Sarah SDR | 2m 14s│ │
+│ │ 1,248 calls today  | [ Talk ] [Studio]│ │ │ +1 (512) 782-9901  | Maya Care | 4m 02s│ │
+│ ├───────────────────────────────────────┤ │ │ +1 (650) 332-1184  | David Out | 1m 20s│ │
+│ │ [●] Maya - Support | +1 (800) 555-0199│ │ │ +1 (415) 902-8822  | Sarah SDR | 3m 45s│ │
+│ │ 840 calls today    | [ Talk ] [Studio]│ │ │ [ View All 14,842 Calls in Log → ]     │ │
+│ └───────────────────────────────────────┘ │ └────────────────────────────────────────┘ │
+└───────────────────────────────────────────┴────────────────────────────────────────────┘
+```
+
+---
+
+## 6.3 Module 02: AI Employees Roster
+
+- **Filter Tabs**: `All (6)`, `Active (4)`, `Training (1)`, `Paused (1)`.
+- **Search Bar**: Instant filter by employee name, assigned DID, or target role.
+- **Card Layout**:
+  - Employee Avatar (3D robot mascot variant or monogram).
+  - Status Indicator: Green (Live on PSTN), Amber (Draft / Training), Grey (Paused).
+  - Primary Details: Name, Role Badge (`SDR`, `Support`, `Reception`), Acoustic Voice Engine (`Cartesia • Indian English`).
+  - Operational Stats: Calls handled, Average talk time, BANT qualification rate.
+  - Assigned Phone DID: Clickable pill copying number to clipboard.
+  - Action Row: `[ ⚡ Talk ]` (Opens sandbox), `[ Configure Studio ]`, `[ ... More ]` (`Duplicate`, `Pause`, `Delete`).
+
+---
+
+## 6.4 Module 03: Agent Studio (Dedicated Workspace)
+
+Clicking an AI employee opens their dedicated 8-tab studio:
+1. **Overview**: Individual performance charts, call volume trends, sentiment breakdown.
+2. **Brain**: System prompt editor with token budget gauge, temperature slider, and variable list.
+3. **Voice & Acoustics**: TTS provider dropdown, voice picker with audio preview player, speed slider (0.8x-1.35x), barge-in sensitivity slider (100-500ms).
+4. **Knowledge**: Linked vector document collections with individual health scores.
+5. **Tools**: Toggles for Calendar Booking, CRM Sync, and custom REST API webhooks.
+6. **Phone & Routing**: Inbound DID assignment, after-hours fallback, and warm transfer number.
+7. **Sandbox**: Direct embedded browser voice conversation with real-time debug telemetry.
+8. **Audit Log**: Chronological version history of prompt edits, voice changes, and tool updates.
+
+---
+
+## 6.5 Module 04: Real-Time Voice Sandbox ("Talk to AI")
+
+The benchmark testing workbench for voice architects:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ REAL-TIME VOICE SANDBOX WIREFRAME                                                      │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ Active Agent: Sarah Miller (SDR)               Scenario: "Pricing & Enterprise SLA"    │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                        │
+│                                    [ 3D MASCOT ]                                       │
+│                               (Articulated Mouth & Ears)                               │
+│                                                                                        │
+│                          ─── ── ─── ───── ─── ── ───                                  │
+│                          Acoustic Amplitude Audio Meter                                │
+│                                                                                        │
+│                      [ ● Connected | Latency: 340ms ]                                  │
+│                                                                                        │
+│             [ 🎤 Mute Mic ]     [ ⏹ End Call ]     [ 🔄 Reset Dialogue ]               │
+│                                                                                        │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ LATENCY TELEMETRY STRIP                                                                │
+│ STT: 85ms (Deepgram Nova-2) │ LLM TTFT: 140ms (Groq 70B) │ TTS: 95ms (Cartesia) │ Total: 320ms │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ SYNCHRONIZED STREAMING TRANSCRIPT                                                      │
+│ [10:14:02] You: "Hi, do you offer custom enterprise invoicing?"                        │
+│ [10:14:03] Sarah: "Yes, we support Net-30 and Net-60 wire invoicing for enterprise     │
+│                   fleets spending over $2,500 monthly. Would you like me to send..."   │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 6.6 Module 05: Calls Log & Dual-Channel Audio Player Drawer
+
+- **Filterable Table**: `All Calls`, `Inbound`, `Outbound`, `Missed / Busy`.
+- **Table Columns**: Caller ID, Direction, Agent, Duration, Sentiment Tag (`Positive`, `Neutral`, `Escalated`), Outcome (`Qualified Lead`, `Demo Booked`), Timestamp.
+- **Call Detail Drawer** (Slides out smoothly upon row click):
+  - **Dual-Channel Audio Player**:
+    - Stereo Waveform Scrubber: Top wave represents Caller (Left channel), bottom wave represents Agent (Right channel).
+    - Play/Pause, 10s skip forward/back, Playback speed (`1x`, `1.25x`, `1.5x`, `2x`).
+  - **Synchronized Transcript**: Clicking any transcript turn jumps audio playback to that exact second.
+  - **Executive Summary Card**: Auto-generated 3-bullet AI briefing.
+  - **Extracted BANT Matrix**: Budget, Authority, Need, and Timeline pills.
+  - **Raw CDR Telemetry**: Exact duration, telecom cost, AI engine cost, latency logs.
+
+---
+
+## 6.7 Module 06: Autonomous Leads & Opportunities Engine
+
+- **CRM Table View**:
+  - Columns: Prospect Name, Company Name, Phone, Email, Assigned AI Employee, BANT Score (`88/100`), Stage (`New`, `Qualified`, `Demo Booked`, `Nurture`), Created Date.
+- **Lead Detail Modal / Drawer**:
+  - Direct call recording playback embedded.
+  - Extracted fields: Company size, Current telephony stack, Target launch date, Key objections.
+  - Quick Actions: `[ 📞 Call Now with AI ]`, `[ Push to Salesforce / HubSpot ]`, `[ Mark as Closed Won ]`.
+
+---
+
+## 6.8 Module 07: Outbound Campaigns & Mass Dialing Engine
+
+- **Campaign Monitor**:
+  - Progress bar (`2,180 / 2,500 contacts reached`), Connected rate (`48.2%`), Conversion rate (`18.4%`), Spend (`$142.80`).
+- **Campaign Creation Flow (Modal / Stepper)**:
+  1. Campaign Title & Objectives.
+  2. Agent Selection: Assign single agent or load-balanced agent pool.
+  3. Contact List Upload: CSV/Excel drag-and-drop.
+  4. Column Mapper: Map CSV headers to agent variables (`First Name` -> `{{caller_name}}`, `Balance` -> `{{balance}}`).
+  5. Local Presence Caller ID Pool: Select area code strategy.
+  6. Permitted Calling Windows: Enforce local recipient time constraints (e.g. 09:00 - 17:00).
+  7. Concurrency Throttle: Set max simultaneous lines (10 to 500 channels).
+  8. Answering Machine Detection (AMD) sensitivity setting.
+  9. Pre-Flight Test & Launch.
+
+---
+
+## 6.9 Module 08: Phone Numbers, DID Marketplace & Porting Console
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ PHONE NUMBERS & DID MARKETPLACE WIREFRAME                                              │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ [ Active Numbers (4) ]   [ DID Marketplace ]   [ LNP Porting (1) ]   [ Elastic SIP ]   │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ ACTIVE NUMBERS TABLE                                              [ + Buy Number ]     │
+│ Phone Number       Country/Area          Type        Assigned Agent     Status  Monthly│
+│ +1 (415) 890-2341  🇺🇸 San Francisco, CA  Local       Sarah - SDR        Active  $2.00  │
+│ +1 (800) 555-0199  🇺🇸 Toll-Free US       Toll-Free   Maya - Support     Active  $4.50  │
+│ +44 20 7946 0991   🇬🇧 London, UK         National    Oliver - UK Sales  Active  $3.00  │
+│ +91 80 4012 8821   🇮🇳 Bangalore, KA      Local       Kavya - Admissions Active  $2.50  │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ DID MARKETPLACE MODAL (Opens on "+ Buy Number")                                        │
+│ Country: [ United States 🇺🇸 ▼ ]    Number Type: (●) Local  ( ) Toll-Free  ( ) Mobile   │
+│ Search by Area Code or City: [ 415            ]                                        │
+│                                                                                        │
+│ AVAILABLE INVENTORY:                                                                   │
+│ • +1 (415) 230-9182  San Francisco, CA   Voice + SMS   $2.00/mo  [ Buy with Wallet ]   │
+│ • +1 (415) 230-9183  San Francisco, CA   Voice + SMS   $2.00/mo  [ Buy with Wallet ]   │
+│ • +1 (415) 340-8812  San Francisco, CA   Voice + SMS   $2.00/mo  [ Buy with Wallet ]   │
+│                                                                                        │
+│ E911 Emergency Address Registration: [ 100 Montgomery St, Suite 400, San Francisco ]   │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 6.10 Module 09: Brain & Prompt Engineering Hub
+- Global prompt repository with version history.
+- Context window visualizer: Displays token consumption breakdown (System Prompt, RAG context, Tools schema, Dialogue history).
+- Hallucination prevention rule toggles:
+  - Enforce strict negative constraints ("Never quote pricing above $50k without manager approval").
+  - Automated citation requirement.
+
+---
+
+## 6.11 Module 10: Knowledge Base & Vector Document Repository
+- Document collections: Product Specs, Help Center Docs, Policy Manuals, Pricing Sheets.
+- File Ingestion: PDF, DOCX, Markdown, CSV, and Live Website Sitemap Crawling.
+- Chunk Inspector: View exact text chunks, token lengths, and vector embeddings.
+- "Test Query" Workbench: Enter a prospective customer question and view the top-3 retrieved chunks with cosine similarity confidence scores.
+
+---
+
+## 6.12 Module 11: Custom Tools & Webhook Function Calling Builder
+- Visual tool builder allowing agents to call external REST APIs mid-conversation:
+  - Tool Name: e.g. `check_inventory_level`.
+  - Trigger Description: "Execute when the caller asks if a product is in stock."
+  - HTTP Method: `GET` / `POST` / `PUT`.
+  - Endpoint URL: `https://api.acme.com/v1/warehouse/check`.
+  - Authentication: Bearer Token, API Key, Basic Auth.
+  - JSON Parameters Schema Builder: Define field names, data types (`string`, `number`, `boolean`), and required flags.
+  - Live Testing Console: Enter sample JSON parameters, click `[ Send Test Request ]`, and inspect raw response.
+
+---
+
+## 6.13 Module 12: Billing, Wallet & Usage Analytics
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ PREPAID FLEET WALLET & BILLING CONSOLE WIREFRAME                                       │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ CURRENT PREPAID BALANCE             AUTO-REPLENISHMENT STATUS                          │
+│ $248.50                             Active: +$100.00 when balance falls below $25.00   │
+│ ~2,485 remaining voice minutes      Card: Visa ending in 4242                          │
+│ [ + Add Funds to Wallet ]           [ Configure Auto-Recharge Rules ]                  │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ MONTHLY SPEND BREAKDOWN                                                                │
+│ Total Spend: $842.20                                                                   │
+│ • Voice AI Compute (STT/LLM/TTS):  $580.40  (68.9%)                                    │
+│ • PSTN Telecom Carrier Minutes:    $212.80  (25.3%)                                    │
+│ • Phone Number DID Subscriptions:  $24.00   (2.8%)                                     │
+│ • Regulatory & Telecom Taxes:      $25.00   (3.0%)                                     │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ TRANSACTION HISTORY & CDR EXPORT                                  [ Download CDR CSV ] │
+│ Date         Description                         Type        Amount    Balance Receipt │
+│ 2026-09-18   Auto-Recharge (Visa •••• 4242)      Credit     +$100.00   $248.50 [PDF]   │
+│ 2026-09-17   Outbound Campaign "Q3 Outreach"     Usage       -$48.20   $148.50 [CDR]   │
+│ 2026-09-01   DID Monthly Renewal (4 Numbers)     DID Rent     -$11.50  $196.70 [PDF]   │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 6.14 Module 13: Workspace Settings, Team Roles & Compliance
+- **Team & Permissions**: Invite team members with granular roles (`Owner`, `Admin`, `Agent Architect`, `Billing Manager`, `Read-Only Analyst`).
+- **Telephony & TCPA Compliance**:
+  - Mandatory Call Recording Disclosure: Enable automated audio chime or verbal statement ("This call is recorded for quality assurance").
+  - Do-Not-Call (DNC) Suppression List Management: Upload CSV of numbers to permanently block.
+  - STIR/SHAKEN Identity Certificate verification status.
+- **Developer API Keys & Webhooks**:
+  - Production Keys (`vox_live_...`) and Sandbox Keys (`vox_test_...`).
+  - Webhook Endpoint URL with event subscriptions (`call.started`, `call.ended`, `lead.qualified`, `recording.ready`).
+
+---
+
+# PART 7: Emil Kowalski UI Design System, Tokens & Component Specifications
+
+The authenticated console must maintain the exact design discipline codified in Part 1. It must **never** degrade into a generic template.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ EMIL KOWALSKI DESIGN PRINCIPLES FOR THE CONSOLE                                        │
+├────────────────────────────┬───────────────────────────────────────────────────────────┤
+│ 1. Surface Hierarchy       │ Clean, solid surfaces (#FFFFFF on #FAF9FD, or #111019 for │
+│                            │ dark terminals) with crisp hairline borders (#E4E2EB).    │
+├────────────────────────────┼───────────────────────────────────────────────────────────┤
+│ 2. Tactile Feedback        │ Subtle active depressions (active:scale-[0.98]), visible  │
+│                            │ focus rings (ring-[#6344E7]), and crisp micro-shadows.    │
+├────────────────────────────┼───────────────────────────────────────────────────────────┤
+│ 3. Restraint Over Clutter  │ Zero gratuitous purple gradients, zero generic emoji      │
+│                            │ headings, zero decorative blur orbs. Clean negative space.│
+├────────────────────────────┼───────────────────────────────────────────────────────────┤
+│ 4. Compact Data Density    │ High-density tables, monospace telemetry tags, clear      │
+│                            │ typographic hierarchy (Plus Jakarta Sans + JetBrains Mono)│
+├────────────────────────────┼───────────────────────────────────────────────────────────┤
+│ 5. Purposeful Animation    │ Animations communicate physical state (waveforms, latency │
+│                            │ spinners, audio meters). No decorative entrance bounce.   │
+└────────────────────────────┴───────────────────────────────────────────────────────────┘
+```
+
+### 7.1 Core Color & Elevation Palette
+- **Primary Ink**: `#0F0E17` (Deep obsidian; high legibility)
+- **Muted Ink**: `#524E5E` (WCAG AA compliant contrast > 5.5:1)
+- **Hairline Border**: `#E4E2EB` (Crisp 1px borders)
+- **Subtle Surface**: `#FAF9FD` (Workbench canvas)
+- **Card Surface**: `#FFFFFF` (Solid cards with `box-shadow: 0 1px 3px rgba(15,14,23,0.06)`)
+- **Accent Brand**: `#6344E7` (Royal indigo accent)
+- **Status Success**: `#16A34A` (PSTN operational green)
+- **Status Warning**: `#D97706` (Low credit alert amber)
+- **Status Error**: `#DC2626` (Failed connection red)
+
+---
+
+# PART 8: Step-by-Step Engineering Implementation Roadmap
+
+```
+   PHASE 1: APP SHELL & ROUTER ──► PHASE 2: AGENTS & STUDIO ──► PHASE 3: VOICE & SANDBOX ──► PHASE 4: TELEPHONY & BILLING
+```
+
+### Phase 1: Authentication Boundary & Console Shell
+- Configure client-side routing (`/` for Public Landing Page, `/dashboard/*` for Authenticated Console).
+- Build `AppShell.jsx`, `Sidebar.jsx`, `Topbar.jsx`, and `CommandPalette.jsx` (`Cmd+K`).
+- Wire `AuthContext` to protect `/dashboard` routes and redirect unauthenticated visitors.
+
+### Phase 2: Core Overview & AI Employee Studio
+- Implement `OverviewDashboard.jsx` with KPI metrics, SVG activity charts, and recent calls stream.
+- Implement `AiEmployeesRoster.jsx` with card/table views and status toggles.
+- Implement `CreateEmployeeWizard.jsx` (8-step guided wizard).
+- Implement `AgentStudio.jsx` (8-tab deep dive).
+
+### Phase 3: Real-Time Voice Sandbox & Audio Player
+- Implement `VoiceTestingStudio.jsx` ("Talk to AI" real-time voice sandbox with Three.js mascot reactivity, audio waveform, and latency telemetry).
+- Implement `CallsSection.jsx` and `CallDetailDrawer.jsx` with dual-channel audio scrubber, synced transcript, and CRM action log.
+- Implement `LeadsSection.jsx` with BANT scoring and contact detail inspection.
+
+### Phase 4: Telephony, DID Marketplace & Outbound Campaigns
+- Implement `PhoneNumbersSection.jsx` with virtual number marketplace, DID procurement modal, and LNP porting status.
+- Implement `CampaignsSection.jsx` with CSV column mapper, AMD tuning, and live outbound dialer progress.
+- Implement `BrainTrainingSection.jsx` and `KnowledgeBaseSection.jsx` with RAG query testing.
+- Implement `CustomToolsSection.jsx` with JSON schema builder and live webhook tester.
+
+### Phase 5: Wallet, Billing & Production Hardening
+- Implement `BillingWalletSection.jsx` with prepaid balance, auto-recharge drawer, invoice table, and CDR export.
+- Implement `SettingsSection.jsx` with team roles, TCPA compliance, and API keys.
+- Comprehensive verification: desktop, tablet, mobile responsiveness, empty states, loading skeletons, and zero build warnings (`npm run build`).

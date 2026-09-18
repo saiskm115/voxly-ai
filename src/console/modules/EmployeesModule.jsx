@@ -7,12 +7,15 @@ import {
   Pause,
   Trash2,
   Search,
-  Volume2
+  Volume2,
+  Sliders,
+  Settings
 } from 'lucide-react';
 import { SolidCard } from '../ui/SolidCard';
 import { StatusBadge } from '../ui/StatusBadge';
 import { TactileButton } from '../ui/TactileButton';
 import { useWorkspace } from '../context/WorkspaceContext';
+import { IndividualEmployeeConsole } from './IndividualEmployeeConsole';
 
 export function EmployeesModule({
   onNavigate,
@@ -30,6 +33,7 @@ export function EmployeesModule({
 
   const [filter, setFilter] = useState('All');
   const [search, setSearch] = useState('');
+  const [selectedAgentForConsole, setSelectedAgentForConsole] = useState(null);
 
   const filteredAgents = agents.filter((agent) => {
     const matchesFilter =
@@ -120,11 +124,17 @@ export function EmployeesModule({
                   <div className="w-12 h-12 rounded-2xl bg-[#F0EEF6] border border-[#E4E2EB] flex items-center justify-center text-[#0F0E17] font-bold text-lg shadow-2xs">
                     {agent.name.charAt(0)}
                   </div>
-                  <div>
+                    <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-sm sm:text-base font-bold text-[#0F0E17]">
-                        {agent.name}
-                      </h3>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedAgentForConsole(agent.id)}
+                        className="text-left group/title"
+                      >
+                        <h3 className="text-sm sm:text-base font-bold text-[#0F0E17] group-hover/title:text-[#6344E7] transition-colors flex items-center gap-1.5">
+                          {agent.name}
+                        </h3>
+                      </button>
                       <StatusBadge status={agent.status} size="xs" />
                     </div>
                     <div className="text-xs text-[#524E5E] font-medium mt-0.5">
@@ -133,15 +143,26 @@ export function EmployeesModule({
                   </div>
                 </div>
 
-                {/* Quick Toggle Status */}
-                <button
-                  type="button"
-                  onClick={() => toggleAgentStatus(agent.id)}
-                  title={agent.status === 'active' ? 'Pause Agent' : 'Activate Agent'}
-                  className="p-1.5 rounded-lg text-[#524E5E] hover:text-[#0F0E17] hover:bg-[#FAF9FD] border border-transparent hover:border-[#E4E2EB] transition-all"
-                >
-                  <Pause className="w-3.5 h-3.5" />
-                </button>
+                {/* Quick Actions: Configure Console & Toggle Status */}
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedAgentForConsole(agent.id)}
+                    title="Employee Settings & Console"
+                    className="p-1.5 rounded-lg text-[#524E5E] hover:text-[#6344E7] hover:bg-[#FAF9FD] border border-transparent hover:border-[#E4E2EB] transition-all"
+                  >
+                    <Sliders className="w-3.5 h-3.5" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleAgentStatus(agent.id)}
+                    title={agent.status === 'active' ? 'Pause Agent' : 'Activate Agent'}
+                    className="p-1.5 rounded-lg text-[#524E5E] hover:text-[#0F0E17] hover:bg-[#FAF9FD] border border-transparent hover:border-[#E4E2EB] transition-all"
+                  >
+                    <Pause className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
 
               {/* Description */}
@@ -205,11 +226,20 @@ export function EmployeesModule({
             </div>
 
             {/* Bottom Actions Bar */}
-            <div className="flex items-center justify-between gap-2 pt-3 border-t border-[#E4E2EB]">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-[#E4E2EB]">
+              <div className="flex flex-wrap items-center gap-2">
                 <TactileButton
                   size="sm"
                   variant="primary"
+                  icon={Sliders}
+                  onClick={() => setSelectedAgentForConsole(agent.id)}
+                >
+                  Configure Settings
+                </TactileButton>
+
+                <TactileButton
+                  size="sm"
+                  variant="secondary"
                   icon={Play}
                   onClick={() => {
                     setSelectedAgentId(agent.id);
@@ -221,18 +251,18 @@ export function EmployeesModule({
 
                 <TactileButton
                   size="sm"
-                  variant="secondary"
+                  variant="ghost"
                   icon={FileCode2}
                   onClick={() => {
                     setSelectedAgentId(agent.id);
                     onNavigate('agent-studio');
                   }}
                 >
-                  Script & Flow
+                  Script Studio
                 </TactileButton>
               </div>
 
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 ml-auto">
                 <button
                   type="button"
                   onClick={() => duplicateAgent(agent.id)}
@@ -258,6 +288,15 @@ export function EmployeesModule({
           </SolidCard>
         ))}
       </div>
+
+      {/* Individual Employee Configuration & Settings Console Modal */}
+      <IndividualEmployeeConsole
+        agentId={selectedAgentForConsole}
+        isOpen={!!selectedAgentForConsole}
+        onClose={() => setSelectedAgentForConsole(null)}
+        onNavigate={onNavigate}
+        onOpenBuyNumber={onOpenBuyNumber}
+      />
     </div>
   );
 }

@@ -16,7 +16,7 @@ import { useWorkspace } from './context/WorkspaceContext';
 
 export function CommandPalette({ isOpen, onClose, onNavigate }) {
   const [query, setQuery] = useState('');
-  const { agents, phoneNumbers, leads, campaigns } = useWorkspace();
+  const { agents, phoneNumbers, leads } = useWorkspace();
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -83,24 +83,24 @@ export function CommandPalette({ isOpen, onClose, onNavigate }) {
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-[#0B0A10]/80 backdrop-blur-sm"
+        className="fixed inset-0 bg-[#0F0E17]/60 backdrop-blur-sm"
         aria-hidden="true"
       />
 
       {/* Palette Container */}
-      <div className="relative w-full max-w-xl bg-[#111019] border border-[#262438] rounded-2xl shadow-2xl overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
+      <div className="relative w-full max-w-xl bg-white border border-[#E4E2EB] rounded-2xl shadow-2xl overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
         {/* Search Input Bar */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#262438]">
-          <Search className="w-4 h-4 text-[#A19EAD] shrink-0" />
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#E4E2EB]">
+          <Search className="w-4 h-4 text-[#524E5E] shrink-0" />
           <input
             autoFocus
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Type a command, agent name, or search..."
-            className="flex-1 bg-transparent text-sm text-[#F7F7FB] placeholder-[#6E6B7B] focus:outline-none"
+            className="flex-1 bg-transparent text-sm text-[#0F0E17] placeholder-[#8C879A] focus:outline-none"
           />
-          <kbd className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#181724] text-[#6E6B7B] border border-[#262438]">
+          <kbd className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#FAF9FD] text-[#524E5E] border border-[#E4E2EB] shadow-2xs">
             ESC
           </kbd>
         </div>
@@ -108,7 +108,7 @@ export function CommandPalette({ isOpen, onClose, onNavigate }) {
         {/* Results List */}
         <div className="max-h-80 overflow-y-auto p-2 space-y-1">
           {allResults.length === 0 ? (
-            <div className="p-8 text-center text-xs text-[#6E6B7B]">
+            <div className="p-8 text-center text-xs text-[#524E5E]">
               No results found for "{query}"
             </div>
           ) : (
@@ -121,20 +121,20 @@ export function CommandPalette({ isOpen, onClose, onNavigate }) {
                     item.action();
                     onClose();
                   }}
-                  className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[#181724] text-left transition-colors group"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[#FAF9FD] text-left transition-colors group"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-7 h-7 rounded-lg bg-[#181724] border border-[#262438] flex items-center justify-center text-[#A19EAD] group-hover:text-[#F7F7FB] group-hover:border-[#3D3A55] transition-all">
-                      <Icon className="w-3.5 h-3.5" />
+                    <div className="w-8 h-8 rounded-lg bg-[#F0EEF6] border border-[#E4E2EB] flex items-center justify-center text-[#524E5E] group-hover:text-[#0F0E17] group-hover:border-[#D1CFDB] transition-all">
+                      <Icon className="w-4 h-4" />
                     </div>
                     <div className="min-w-0">
-                      <div className="text-xs font-semibold text-[#F7F7FB] truncate group-hover:text-[#6344E7] transition-colors">
+                      <div className="text-xs font-semibold text-[#0F0E17] truncate group-hover:text-[#6344E7] transition-colors">
                         {item.label}
                       </div>
-                      <div className="text-[10px] text-[#6E6B7B]">{item.category}</div>
+                      <div className="text-[10px] text-[#524E5E]">{item.category}</div>
                     </div>
                   </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#6E6B7B] group-hover:text-[#F7F7FB] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#8C879A] group-hover:text-[#0F0E17] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </button>
               );
             })
@@ -142,7 +142,7 @@ export function CommandPalette({ isOpen, onClose, onNavigate }) {
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-2 bg-[#181724] border-t border-[#262438] flex items-center justify-between text-[11px] text-[#6E6B7B]">
+        <div className="px-4 py-2 bg-[#FAF9FD] border-t border-[#E4E2EB] flex items-center justify-between text-[11px] text-[#524E5E]">
           <span>Use <b>↑↓</b> to navigate</span>
           <span>Press <b>ESC</b> to close</span>
         </div>

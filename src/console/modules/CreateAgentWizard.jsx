@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import {
   Check,
-  Bot,
-  Volume2,
-  FileCode2,
   BookOpen,
-  Phone,
   Sparkles,
   ArrowRight,
-  ArrowLeft,
-  X
+  ArrowLeft
 } from 'lucide-react';
 import { Modal } from '../ui/Modal';
 import { TactileButton } from '../ui/TactileButton';
@@ -71,7 +66,6 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
     });
 
     onClose();
-    setStep(1);
     onNavigate('agent-studio', { agentId: created.id });
   };
 
@@ -85,7 +79,7 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
     >
       <div className="space-y-6">
         {/* Step Indicator Bar */}
-        <div className="flex items-center justify-between gap-2 pb-4 border-b border-[#262438]">
+        <div className="flex items-center justify-between gap-2 pb-4 border-b border-[#E4E2EB]">
           {[
             { s: 1, label: 'Identity' },
             { s: 2, label: 'Script' },
@@ -98,17 +92,17 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
               <div
                 className={`w-6 h-6 rounded-lg text-xs font-mono font-bold flex items-center justify-center transition-all ${
                   step === item.s
-                    ? 'bg-[#6344E7] text-white'
+                    ? 'bg-[#0F0E17] text-white shadow-2xs'
                     : step > item.s
-                    ? 'bg-[#22C55E]/15 text-[#22C55E] border border-[#22C55E]/30'
-                    : 'bg-[#181724] text-[#6E6B7B] border border-[#262438]'
+                    ? 'bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0]'
+                    : 'bg-[#F0EEF6] text-[#524E5E] border border-[#E4E2EB]'
                 }`}
               >
                 {step > item.s ? <Check className="w-3 h-3" /> : item.s}
               </div>
               <span
                 className={`text-xs font-semibold hidden sm:inline ${
-                  step === item.s ? 'text-[#F7F7FB]' : 'text-[#6E6B7B]'
+                  step === item.s ? 'text-[#0F0E17]' : 'text-[#8C879A]'
                 }`}
               >
                 {item.label}
@@ -121,7 +115,7 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
         {step === 1 && (
           <div className="space-y-4 animate-in fade-in duration-150">
             <div>
-              <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+              <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                 Agent Name *
               </label>
               <input
@@ -129,19 +123,19 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="e.g. Jordan, Sarah, Alex"
-                className="w-full bg-[#181724] border border-[#262438] rounded-xl px-3.5 py-2 text-xs text-[#F7F7FB] placeholder-[#6E6B7B] focus:outline-none focus:border-[#6344E7]"
+                className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl px-3.5 py-2 text-xs text-[#0F0E17] placeholder-[#8C879A] focus:outline-none focus:border-[#6344E7] transition-colors"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+                <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                   Role / Specialization
                 </label>
                 <select
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full bg-[#181724] border border-[#262438] rounded-xl px-3.5 py-2 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl px-3.5 py-2 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 >
                   <option value="Inbound Receptionist">Inbound Receptionist</option>
                   <option value="Outbound SDR">Outbound SDR</option>
@@ -152,7 +146,7 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+                <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                   Department
                 </label>
                 <input
@@ -160,13 +154,13 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
                   value={formData.department}
                   onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                   placeholder="e.g. Front Desk, Sales, Support"
-                  className="w-full bg-[#181724] border border-[#262438] rounded-xl px-3.5 py-2 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl px-3.5 py-2 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+              <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                 Description
               </label>
               <textarea
@@ -174,7 +168,7 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Describe what this AI agent is responsible for..."
-                className="w-full bg-[#181724] border border-[#262438] rounded-xl p-3 text-xs text-[#F7F7FB] placeholder-[#6E6B7B] focus:outline-none focus:border-[#6344E7]"
+                className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-3 text-xs text-[#0F0E17] placeholder-[#8C879A] focus:outline-none focus:border-[#6344E7] transition-colors"
               />
             </div>
           </div>
@@ -184,29 +178,29 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
         {step === 2 && (
           <div className="space-y-4 animate-in fade-in duration-150">
             <div>
-              <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+              <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                 Inbound Opening Greeting *
               </label>
               <input
                 type="text"
                 value={formData.greeting}
                 onChange={(e) => setFormData({ ...formData, greeting: e.target.value })}
-                className="w-full bg-[#181724] border border-[#262438] rounded-xl px-3.5 py-2 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl px-3.5 py-2 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
               />
-              <span className="text-[10px] text-[#6E6B7B] mt-1 block">
+              <span className="text-[10px] text-[#524E5E] mt-1 block">
                 This exact phrase is synthesized as soon as the caller connects.
               </span>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+              <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                 Conversation Script & Prompt Directives
               </label>
               <textarea
                 rows={6}
                 value={formData.script}
                 onChange={(e) => setFormData({ ...formData, script: e.target.value })}
-                className="w-full bg-[#181724] border border-[#262438] rounded-xl p-3 text-xs text-[#F7F7FB] font-mono leading-relaxed focus:outline-none focus:border-[#6344E7]"
+                className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-3 text-xs text-[#0F0E17] font-mono leading-relaxed focus:outline-none focus:border-[#6344E7] transition-colors"
               />
             </div>
           </div>
@@ -217,13 +211,13 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
           <div className="space-y-4 animate-in fade-in duration-150">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+                <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                   Voice Provider
                 </label>
                 <select
                   value={formData.voiceProvider}
                   onChange={(e) => setFormData({ ...formData, voiceProvider: e.target.value })}
-                  className="w-full bg-[#181724] border border-[#262438] rounded-xl px-3.5 py-2 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl px-3.5 py-2 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 >
                   <option value="Cartesia">Cartesia Sonic (90ms Latency)</option>
                   <option value="ElevenLabs">ElevenLabs Turbo v2.5 (140ms)</option>
@@ -233,13 +227,13 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+                <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                   Primary Language
                 </label>
                 <select
                   value={formData.language}
                   onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                  className="w-full bg-[#181724] border border-[#262438] rounded-xl px-3.5 py-2 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl px-3.5 py-2 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 >
                   <option value="English (US)">English (US)</option>
                   <option value="English (UK)">English (UK)</option>
@@ -252,7 +246,7 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+              <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                 Speaking Pace: {formData.speed}x
               </label>
               <input
@@ -264,7 +258,7 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
                 onChange={(e) => setFormData({ ...formData, speed: parseFloat(e.target.value) })}
                 className="w-full accent-[#6344E7]"
               />
-              <div className="flex justify-between text-[10px] text-[#6E6B7B] mt-1 font-mono">
+              <div className="flex justify-between text-[10px] text-[#524E5E] mt-1 font-mono">
                 <span>0.8x (Deliberate)</span>
                 <span>1.0x (Natural)</span>
                 <span>1.3x (Energetic)</span>
@@ -276,15 +270,15 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
         {/* Step 4: Knowledge */}
         {step === 4 && (
           <div className="space-y-4 animate-in fade-in duration-150">
-            <div className="p-6 rounded-2xl border-2 border-dashed border-[#262438] bg-[#181724] text-center">
+            <div className="p-6 rounded-2xl border-2 border-dashed border-[#E4E2EB] bg-[#FAF9FD] text-center">
               <BookOpen className="w-8 h-8 text-[#6344E7] mx-auto mb-2" />
-              <h4 className="text-xs font-bold text-[#F7F7FB]">Drag & Drop Business Documents</h4>
-              <p className="text-[11px] text-[#A19EAD] mt-1">
+              <h4 className="text-xs font-bold text-[#0F0E17]">Drag & Drop Business Documents</h4>
+              <p className="text-[11px] text-[#524E5E] mt-1">
                 Upload PDFs, price sheets, service lists, or FAQs. The agent will reference them dynamically during calls.
               </p>
               <button
                 type="button"
-                className="mt-3 px-3 py-1.5 text-xs font-semibold text-[#6344E7] bg-[#6344E7]/15 border border-[#6344E7]/30 rounded-xl hover:bg-[#6344E7]/25 transition-all"
+                className="mt-3 px-3 py-1.5 text-xs font-semibold text-[#0F0E17] bg-white border border-[#E4E2EB] rounded-xl hover:bg-[#F0EEF6] transition-all shadow-2xs"
               >
                 Browse Files (.PDF, .DOCX, .TXT)
               </button>
@@ -296,7 +290,7 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
         {step === 5 && (
           <div className="space-y-4 animate-in fade-in duration-150">
             <div>
-              <label className="block text-xs font-bold text-[#F7F7FB] mb-2">
+              <label className="block text-xs font-bold text-[#0F0E17] mb-2">
                 Connect Virtual Telephone Number
               </label>
 
@@ -307,8 +301,8 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
                       key={num.id}
                       className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
                         formData.selectedNumberId === num.id
-                          ? 'bg-[#6344E7]/15 border-[#6344E7] text-[#F7F7FB]'
-                          : 'bg-[#181724] border-[#262438] text-[#A19EAD] hover:border-[#3D3A55]'
+                          ? 'bg-[#6344E7]/10 border-[#6344E7] text-[#0F0E17]'
+                          : 'bg-[#FAF9FD] border-[#E4E2EB] text-[#524E5E] hover:border-[#D1CFDB]'
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -320,18 +314,18 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
                           className="accent-[#6344E7]"
                         />
                         <div>
-                          <div className="font-mono font-bold text-xs text-[#F7F7FB]">{num.number}</div>
-                          <div className="text-[10px] text-[#6E6B7B]">{num.locality} • {num.type}</div>
+                          <div className="font-mono font-bold text-xs text-[#0F0E17]">{num.number}</div>
+                          <div className="text-[10px] text-[#524E5E]">{num.locality} • {num.type}</div>
                         </div>
                       </div>
-                      <span className="text-[11px] font-mono text-[#22C55E]">Available</span>
+                      <span className="text-[11px] font-mono text-[#047857]">Available</span>
                     </label>
                   ))}
                 </div>
               ) : (
-                <div className="p-4 rounded-xl bg-[#181724] border border-[#262438] text-center text-xs text-[#A19EAD]">
-                  <p>All existing numbers are currently assigned.</p>
-                  <span className="text-[11px] text-[#6E6B7B] mt-1 block">
+                <div className="p-4 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] text-center text-xs text-[#524E5E]">
+                  <p className="font-semibold text-[#0F0E17]">All existing numbers are currently assigned.</p>
+                  <span className="text-[11px] text-[#524E5E] mt-1 block">
                     You can create this agent now and buy/assign a new virtual number in the Phone Numbers tab.
                   </span>
                 </div>
@@ -343,40 +337,40 @@ export function CreateAgentWizard({ isOpen, onClose, onNavigate }) {
         {/* Step 6: Deploy & Review */}
         {step === 6 && (
           <div className="space-y-4 animate-in fade-in duration-150">
-            <div className="p-4 rounded-xl bg-[#181724] border border-[#262438] space-y-2 text-xs">
-              <div className="flex justify-between py-1 border-b border-[#262438]">
-                <span className="text-[#A19EAD]">Agent Name</span>
-                <span className="font-bold text-[#F7F7FB]">{formData.name || 'Untitled Agent'}</span>
+            <div className="p-4 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] space-y-2 text-xs">
+              <div className="flex justify-between py-1 border-b border-[#E4E2EB]">
+                <span className="text-[#524E5E]">Agent Name</span>
+                <span className="font-bold text-[#0F0E17]">{formData.name || 'Untitled Agent'}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#262438]">
-                <span className="text-[#A19EAD]">Role</span>
-                <span className="font-semibold text-[#F7F7FB]">{formData.role}</span>
+              <div className="flex justify-between py-1 border-b border-[#E4E2EB]">
+                <span className="text-[#524E5E]">Role</span>
+                <span className="font-semibold text-[#0F0E17]">{formData.role}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#262438]">
-                <span className="text-[#A19EAD]">Voice Engine</span>
-                <span className="text-[#F7F7FB]">{formData.voiceProvider} ({formData.language})</span>
+              <div className="flex justify-between py-1 border-b border-[#E4E2EB]">
+                <span className="text-[#524E5E]">Voice Engine</span>
+                <span className="text-[#0F0E17]">{formData.voiceProvider} ({formData.language})</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-[#A19EAD]">Connected Number</span>
-                <span className="font-mono text-[#F7F7FB]">
+                <span className="text-[#524E5E]">Connected Number</span>
+                <span className="font-mono text-[#0F0E17]">
                   {phoneNumbers.find((n) => n.id === formData.selectedNumberId)?.number || 'Unassigned (Can bind later)'}
                 </span>
               </div>
             </div>
 
-            <p className="text-xs text-[#A19EAD] text-center">
+            <p className="text-xs text-[#524E5E] text-center">
               Clicking <b>Activate Agent</b> provisions the conversational workflow and registers the agent in your fleet directory.
             </p>
           </div>
         )}
 
         {/* Footer Navigation Controls */}
-        <div className="flex items-center justify-between pt-4 border-t border-[#262438]">
+        <div className="flex items-center justify-between pt-4 border-t border-[#E4E2EB]">
           <button
             type="button"
             onClick={handleBack}
             disabled={step === 1}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#A19EAD] hover:text-[#F7F7FB] disabled:opacity-30 disabled:pointer-events-none transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#524E5E] hover:text-[#0F0E17] disabled:opacity-30 disabled:pointer-events-none transition-all"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back</span>

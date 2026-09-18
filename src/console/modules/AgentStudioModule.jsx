@@ -4,15 +4,11 @@ import {
   Volume2,
   Phone,
   BookOpen,
-  Sparkles,
   Save,
   Play,
   Plus,
   Trash2,
-  Tag,
-  CheckCircle2,
-  Sliders,
-  ChevronDown
+  CheckCircle2
 } from 'lucide-react';
 import { SolidCard } from '../ui/SolidCard';
 import { StatusBadge } from '../ui/StatusBadge';
@@ -25,8 +21,7 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
     selectedAgentId,
     setSelectedAgentId,
     selectedAgent,
-    updateAgent,
-    phoneNumbers
+    updateAgent
   } = useWorkspace();
 
   const [activeTab, setActiveTab] = useState('script');
@@ -45,7 +40,6 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
     language: selectedAgent.language
   });
 
-  // Sync state when selected agent changes
   useEffect(() => {
     if (selectedAgent) {
       setFormData({
@@ -97,10 +91,10 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
   return (
     <div className="space-y-6">
       {/* Workbench Header: Agent Switcher, Status & Save */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#181724] border border-[#262438]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-white border border-[#E4E2EB] shadow-craft-xs">
         {/* Left: Agent Avatar & Selector */}
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-[#111019] border border-[#262438] flex items-center justify-center text-[#6344E7] font-bold text-lg shadow-sm">
+          <div className="w-12 h-12 rounded-2xl bg-[#F0EEF6] border border-[#E4E2EB] flex items-center justify-center text-[#0F0E17] font-bold text-lg shadow-2xs">
             {selectedAgent.name.charAt(0)}
           </div>
           <div>
@@ -108,7 +102,7 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
               <select
                 value={selectedAgentId}
                 onChange={(e) => setSelectedAgentId(e.target.value)}
-                className="bg-[#111019] border border-[#262438] rounded-xl px-2.5 py-1 text-sm font-bold text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                className="bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl px-2.5 py-1 text-sm font-bold text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
               >
                 {agents.map((a) => (
                   <option key={a.id} value={a.id}>
@@ -118,8 +112,8 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
               </select>
               <StatusBadge status={selectedAgent.status} size="xs" />
             </div>
-            <div className="text-xs text-[#A19EAD] mt-1">
-              Assigned: <span className="font-mono text-[#F7F7FB]">{selectedAgent.assignedNumber || 'None (Pool)'}</span>
+            <div className="text-xs text-[#524E5E] mt-1">
+              Assigned: <span className="font-mono font-semibold text-[#0F0E17]">{selectedAgent.assignedNumber || 'None (Pool)'}</span>
             </div>
           </div>
         </div>
@@ -147,7 +141,7 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
       </div>
 
       {/* Tabs Navigation Bar */}
-      <div className="flex items-center gap-1 p-1.5 rounded-2xl bg-[#181724] border border-[#262438] overflow-x-auto">
+      <div className="flex items-center gap-1 p-1.5 rounded-2xl bg-white border border-[#E4E2EB] overflow-x-auto shadow-craft-xs">
         {[
           { id: 'script', label: 'Script & Conversation Flow', icon: FileCode2 },
           { id: 'voice', label: 'Voice & Acoustic Tuning', icon: Volume2 },
@@ -162,8 +156,8 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                 isActive
-                  ? 'bg-[#6344E7] text-white shadow-xs'
-                  : 'text-[#A19EAD] hover:text-[#F7F7FB] hover:bg-[#111019]'
+                  ? 'bg-[#0F0E17] text-white shadow-xs font-bold'
+                  : 'text-[#524E5E] hover:text-[#0F0E17] hover:bg-[#FAF9FD]'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -178,17 +172,17 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
         <div className="space-y-6 animate-in fade-in duration-150">
           {/* Opening Greeting */}
           <SolidCard>
-            <label className="block text-xs font-bold text-[#F7F7FB] mb-1.5">
+            <label className="block text-xs font-bold text-[#0F0E17] mb-1.5">
               Opening Inbound Greeting
             </label>
             <input
               type="text"
               value={formData.greeting}
               onChange={(e) => setFormData({ ...formData, greeting: e.target.value })}
-              className="w-full bg-[#111019] border border-[#262438] rounded-xl px-3.5 py-2.5 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+              className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl px-3.5 py-2.5 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
             />
-            <p className="text-[11px] text-[#6E6B7B] mt-1.5">
-              Synthesized within 280ms of call connect before the user speaks.
+            <p className="text-[11px] text-[#524E5E] mt-1.5">
+              Synthesized within 280ms of call connect before the caller speaks.
             </p>
           </SolidCard>
 
@@ -196,13 +190,13 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
           <SolidCard>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
               <div>
-                <h3 className="text-xs font-bold text-[#F7F7FB]">Agent Prompt & Script Directives</h3>
-                <p className="text-[11px] text-[#A19EAD]">Full instructions governing conversation flow, tone, and goals.</p>
+                <h3 className="text-xs font-bold text-[#0F0E17]">Agent Prompt & Script Directives</h3>
+                <p className="text-[11px] text-[#524E5E]">Full instructions governing conversation flow, tone, and goals.</p>
               </div>
 
               {/* Dynamic Variables Chips */}
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-[10px] text-[#6E6B7B] uppercase font-bold tracking-wider mr-1">
+                <span className="text-[10px] text-[#8C879A] uppercase font-bold tracking-wider mr-1">
                   Inject:
                 </span>
                 {['caller_name', 'service_type', 'preferred_date', 'insurance_carrier'].map((v) => (
@@ -210,7 +204,7 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
                     key={v}
                     type="button"
                     onClick={() => handleInsertVariable(v)}
-                    className="px-2 py-0.5 rounded-md bg-[#111019] border border-[#262438] hover:border-[#6344E7] text-[10px] font-mono text-[#6344E7] hover:text-[#7557F8] transition-all"
+                    className="px-2.5 py-1 rounded-lg bg-[#F0EEF6] border border-[#E4E2EB] hover:border-[#6344E7] text-[10px] font-mono text-[#6344E7] hover:text-[#5034CE] transition-all font-semibold"
                   >
                     + {`{{${v}}}`}
                   </button>
@@ -222,10 +216,10 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
               rows={10}
               value={formData.script}
               onChange={(e) => setFormData({ ...formData, script: e.target.value })}
-              className="w-full bg-[#111019] border border-[#262438] rounded-xl p-4 text-xs text-[#F7F7FB] font-mono leading-relaxed focus:outline-none focus:border-[#6344E7]"
+              className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-4 text-xs text-[#0F0E17] font-mono leading-relaxed focus:outline-none focus:border-[#6344E7] transition-colors"
             />
 
-            <div className="flex items-center justify-between text-[11px] text-[#6E6B7B] font-mono mt-2">
+            <div className="flex items-center justify-between text-[11px] text-[#524E5E] font-mono mt-2">
               <span>Tokens: ~{Math.floor(formData.script.length / 4)} tokens (Cached)</span>
               <span>Estimated TTFT: ~160ms</span>
             </div>
@@ -235,13 +229,13 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
           <SolidCard>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-xs font-bold text-[#F7F7FB]">Objection Handling Rules</h3>
-                <p className="text-[11px] text-[#A19EAD]">Deterministic responses triggered when customer raises specific hesitations.</p>
+                <h3 className="text-xs font-bold text-[#0F0E17]">Objection Handling Rules</h3>
+                <p className="text-[11px] text-[#524E5E]">Deterministic responses triggered when customer raises specific hesitations.</p>
               </div>
               <button
                 type="button"
                 onClick={handleAddObjection}
-                className="text-xs font-semibold text-[#6344E7] hover:text-[#7557F8] flex items-center gap-1"
+                className="text-xs font-semibold text-[#6344E7] hover:text-[#5034CE] flex items-center gap-1"
               >
                 <Plus className="w-3 h-3" />
                 <span>Add Objection Rule</span>
@@ -252,10 +246,10 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
               {formData.objectionRules.map((rule, idx) => (
                 <div
                   key={idx}
-                  className="p-3 rounded-xl bg-[#111019] border border-[#262438] grid grid-cols-1 sm:grid-cols-2 gap-3 relative group"
+                  className="p-3 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] grid grid-cols-1 sm:grid-cols-2 gap-3 relative group"
                 >
                   <div>
-                    <span className="text-[10px] text-[#6E6B7B] uppercase font-bold block mb-1">
+                    <span className="text-[10px] text-[#8C879A] uppercase font-bold block mb-1">
                       If Caller Mentions / Asks:
                     </span>
                     <input
@@ -266,12 +260,12 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
                         next[idx].trigger = e.target.value;
                         setFormData({ ...formData, objectionRules: next });
                       }}
-                      className="w-full bg-[#181724] border border-[#262438] rounded-lg px-2.5 py-1 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                      className="w-full bg-white border border-[#E4E2EB] rounded-lg px-2.5 py-1 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                     />
                   </div>
 
                   <div>
-                    <span className="text-[10px] text-[#6E6B7B] uppercase font-bold block mb-1">
+                    <span className="text-[10px] text-[#8C879A] uppercase font-bold block mb-1">
                       Agent Response Script:
                     </span>
                     <input
@@ -282,17 +276,17 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
                         next[idx].response = e.target.value;
                         setFormData({ ...formData, objectionRules: next });
                       }}
-                      className="w-full bg-[#181724] border border-[#262438] rounded-lg px-2.5 py-1 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                      className="w-full bg-white border border-[#E4E2EB] rounded-lg px-2.5 py-1 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                     />
                   </div>
 
                   <button
                     type="button"
                     onClick={() => handleRemoveObjection(idx)}
-                    className="absolute top-2 right-2 p-1 text-[#EF4444] opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-2 right-2 p-1 text-[#DC2626] opacity-0 group-hover:opacity-100 transition-opacity"
                     title="Remove rule"
                   >
-                    <Trash2 className="w-3 h-3" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               ))}
@@ -305,10 +299,10 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
       {activeTab === 'voice' && (
         <div className="space-y-6 animate-in fade-in duration-150">
           <SolidCard>
-            <h3 className="text-xs font-bold text-[#F7F7FB] mb-4">Voice Engine Selection</h3>
+            <h3 className="text-xs font-bold text-[#0F0E17] mb-4">Voice Engine Selection</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+                <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                   Engine Provider
                 </label>
                 <select
@@ -319,7 +313,7 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
                       voice: { ...formData.voice, provider: e.target.value }
                     })
                   }
-                  className="w-full bg-[#111019] border border-[#262438] rounded-xl p-2.5 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-2.5 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 >
                   <option value="Cartesia">Cartesia Sonic (90ms Latency — Recommended)</option>
                   <option value="ElevenLabs">ElevenLabs Turbo v2.5 (140ms — High Realism)</option>
@@ -329,13 +323,13 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+                <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                   Language & Dialect
                 </label>
                 <select
                   value={formData.language}
                   onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                  className="w-full bg-[#111019] border border-[#262438] rounded-xl p-2.5 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-2.5 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 >
                   <option value="English (US & UK)">English (US & UK)</option>
                   <option value="Indian English">Indian English</option>
@@ -348,11 +342,11 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
           </SolidCard>
 
           <SolidCard>
-            <h3 className="text-xs font-bold text-[#F7F7FB] mb-4">Acoustic Calibration Sliders</h3>
+            <h3 className="text-xs font-bold text-[#0F0E17] mb-4">Acoustic Calibration Sliders</h3>
             <div className="space-y-5">
               <div>
                 <div className="flex justify-between text-xs mb-1.5">
-                  <span className="font-semibold text-[#F7F7FB]">Speaking Speed</span>
+                  <span className="font-semibold text-[#0F0E17]">Speaking Speed</span>
                   <span className="font-mono text-[#6344E7] font-bold">{formData.voice.speed}x</span>
                 </div>
                 <input
@@ -373,7 +367,7 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
 
               <div>
                 <div className="flex justify-between text-xs mb-1.5">
-                  <span className="font-semibold text-[#F7F7FB]">Pitch Modulation</span>
+                  <span className="font-semibold text-[#0F0E17]">Pitch Modulation</span>
                   <span className="font-mono text-[#6344E7] font-bold">{formData.voice.pitch > 0 ? `+${formData.voice.pitch}` : formData.voice.pitch}</span>
                 </div>
                 <input
@@ -394,7 +388,7 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
 
               <div>
                 <div className="flex justify-between text-xs mb-1.5">
-                  <span className="font-semibold text-[#F7F7FB]">Stability & Consistency</span>
+                  <span className="font-semibold text-[#0F0E17]">Stability & Consistency</span>
                   <span className="font-mono text-[#6344E7] font-bold">{formData.voice.stability}</span>
                 </div>
                 <input
@@ -423,8 +417,8 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
           <SolidCard>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-xs font-bold text-[#F7F7FB]">Assigned Phone Number</h3>
-                <p className="text-[11px] text-[#A19EAD]">The virtual DID routed directly to this voice agent.</p>
+                <h3 className="text-xs font-bold text-[#0F0E17]">Assigned Phone Number</h3>
+                <p className="text-[11px] text-[#524E5E]">The virtual DID routed directly to this voice agent.</p>
               </div>
 
               <TactileButton
@@ -437,12 +431,12 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
               </TactileButton>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#111019] border border-[#262438] flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] flex items-center justify-between">
               <div>
-                <div className="font-mono font-bold text-sm text-[#F7F7FB]">
+                <div className="font-mono font-bold text-sm text-[#0F0E17]">
                   {selectedAgent.assignedNumber || 'No number assigned'}
                 </div>
-                <div className="text-[11px] text-[#6E6B7B] mt-0.5">
+                <div className="text-[11px] text-[#524E5E] mt-0.5">
                   Inbound PSTN & Outbound Caller ID
                 </div>
               </div>
@@ -452,22 +446,22 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
           </SolidCard>
 
           <SolidCard>
-            <h3 className="text-xs font-bold text-[#F7F7FB] mb-3">Inbound Call Routing Schedule</h3>
+            <h3 className="text-xs font-bold text-[#0F0E17] mb-3">Inbound Call Routing Schedule</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div>
-                <label className="block font-bold text-[#F7F7FB] mb-1">Active Business Hours</label>
+                <label className="block font-bold text-[#0F0E17] mb-1">Active Business Hours</label>
                 <input
                   type="text"
                   defaultValue="08:00 - 18:00 (PST)"
-                  className="w-full bg-[#111019] border border-[#262438] rounded-xl p-2.5 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-2.5 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-[#F7F7FB] mb-1">After-Hours Fallback Action</label>
+                <label className="block font-bold text-[#0F0E17] mb-1">After-Hours Fallback Action</label>
                 <select
                   defaultValue="voicemail"
-                  className="w-full bg-[#111019] border border-[#262438] rounded-xl p-2.5 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-2.5 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 >
                   <option value="voicemail">Take Voicemail & Transcribe</option>
                   <option value="transfer">Warm Transfer to Human On-Call</option>
@@ -485,8 +479,8 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
           <SolidCard>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-xs font-bold text-[#F7F7FB]">Attached Knowledge Documents</h3>
-                <p className="text-[11px] text-[#A19EAD]">Vector chunks retrieved in real-time when callers ask business questions.</p>
+                <h3 className="text-xs font-bold text-[#0F0E17]">Attached Knowledge Documents</h3>
+                <p className="text-[11px] text-[#524E5E]">Vector chunks retrieved in real-time when callers ask business questions.</p>
               </div>
               <TactileButton variant="secondary" size="sm" icon={Plus}>
                 Upload Document
@@ -497,13 +491,13 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
               {(selectedAgent.knowledgeSources || []).map((doc, i) => (
                 <div
                   key={i}
-                  className="p-3 rounded-xl bg-[#111019] border border-[#262438] flex items-center justify-between text-xs"
+                  className="p-3 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] flex items-center justify-between text-xs"
                 >
                   <div className="flex items-center gap-2.5">
                     <BookOpen className="w-4 h-4 text-[#6344E7]" />
-                    <span className="font-semibold text-[#F7F7FB]">{doc}</span>
+                    <span className="font-semibold text-[#0F0E17]">{doc}</span>
                   </div>
-                  <span className="text-[10px] font-mono text-[#22C55E]">Indexed & Active</span>
+                  <span className="text-[10px] font-mono text-[#047857]">Indexed & Active</span>
                 </div>
               ))}
             </div>

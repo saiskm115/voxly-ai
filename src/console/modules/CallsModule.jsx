@@ -1,26 +1,18 @@
 import React, { useState } from 'react';
 import {
-  PhoneCall,
   Search,
-  Filter,
   Play,
   Pause,
-  Clock,
-  Sparkles,
-  CheckCircle2,
-  X,
   Volume2,
-  Calendar,
-  Share2,
+  Sparkles,
   FileText
 } from 'lucide-react';
 import { SolidCard } from '../ui/SolidCard';
 import { StatusBadge } from '../ui/StatusBadge';
-import { TactileButton } from '../ui/TactileButton';
 import { useWorkspace } from '../context/WorkspaceContext';
 
 export function CallsModule() {
-  const { calls, selectedCallId, setSelectedCallId, selectedCall, agents } = useWorkspace();
+  const { calls, selectedCallId, setSelectedCallId } = useWorkspace();
   const [filterDirection, setFilterDirection] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -43,26 +35,26 @@ export function CallsModule() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-[#F7F7FB] tracking-tight">
+          <h2 className="text-xl font-bold text-[#0F0E17] tracking-tight">
             Call Logs & Transcripts ({calls.length})
           </h2>
-          <p className="text-xs text-[#A19EAD] mt-0.5">
+          <p className="text-xs text-[#524E5E] mt-0.5">
             Inspect real-time conversation audio, diarized speaker transcripts, and AI-extracted sentiment.
           </p>
         </div>
       </div>
 
       {/* Filter Tabs & Search Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2 rounded-2xl bg-[#181724] border border-[#262438]">
-        <div className="flex items-center gap-1">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2.5 rounded-2xl bg-white border border-[#E4E2EB] shadow-craft-xs">
+        <div className="flex items-center p-1 rounded-xl bg-[#F0EEF6] border border-[#E4E2EB]">
           {['All', 'Inbound', 'Outbound'].map((tab) => (
             <button
               key={tab}
               onClick={() => setFilterDirection(tab)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
                 filterDirection === tab
-                  ? 'bg-[#6344E7] text-white shadow-xs'
-                  : 'text-[#A19EAD] hover:text-[#F7F7FB] hover:bg-[#111019]'
+                  ? 'bg-white text-[#0F0E17] shadow-xs'
+                  : 'text-[#524E5E] hover:text-[#0F0E17]'
               }`}
             >
               {tab}
@@ -71,13 +63,13 @@ export function CallsModule() {
         </div>
 
         <div className="relative min-w-[240px]">
-          <Search className="w-3.5 h-3.5 text-[#6E6B7B] absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-3.5 h-3.5 text-[#524E5E] absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by caller, agent, outcome..."
-            className="w-full bg-[#111019] border border-[#262438] rounded-xl pl-8 pr-3 py-1.5 text-xs text-[#F7F7FB] placeholder-[#6E6B7B] focus:outline-none focus:border-[#6344E7]"
+            className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl pl-8 pr-3 py-1.5 text-xs text-[#0F0E17] placeholder-[#8C879A] focus:outline-none focus:border-[#6344E7] transition-colors"
           />
         </div>
       </div>
@@ -90,7 +82,7 @@ export function CallsModule() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-[#262438] bg-[#111019] text-[10px] font-bold text-[#6E6B7B] uppercase tracking-wider">
+                  <tr className="border-b border-[#E4E2EB] bg-[#FAF9FD] text-[10px] font-bold text-[#8C879A] uppercase tracking-wider">
                     <th className="py-3 px-4">Caller</th>
                     <th className="py-3 px-3">Agent</th>
                     <th className="py-3 px-3">Type</th>
@@ -99,7 +91,7 @@ export function CallsModule() {
                     <th className="py-3 px-4 text-right">Time</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#262438]">
+                <tbody className="divide-y divide-[#E4E2EB]">
                   {filteredCalls.map((call) => {
                     const isSelected = activeCall && activeCall.id === call.id;
                     return (
@@ -107,24 +99,24 @@ export function CallsModule() {
                         key={call.id}
                         onClick={() => setSelectedCallId(call.id)}
                         className={`cursor-pointer transition-colors ${
-                          isSelected ? 'bg-[#6344E7]/10' : 'hover:bg-[#111019]/50'
+                          isSelected ? 'bg-[#6344E7]/10 font-medium' : 'hover:bg-[#FAF9FD]'
                         }`}
                       >
                         <td className="py-3.5 px-4">
-                          <div className="font-semibold text-[#F7F7FB]">{call.callerName}</div>
-                          <div className="text-[10px] font-mono text-[#6E6B7B]">{call.callerPhone}</div>
+                          <div className="font-semibold text-[#0F0E17]">{call.callerName}</div>
+                          <div className="text-[10px] font-mono text-[#524E5E]">{call.callerPhone}</div>
                         </td>
-                        <td className="py-3.5 px-3 text-[#A19EAD] font-medium">{call.agentName}</td>
+                        <td className="py-3.5 px-3 text-[#524E5E] font-medium">{call.agentName}</td>
                         <td className="py-3.5 px-3">
                           <StatusBadge status={call.direction} size="xs" />
                         </td>
-                        <td className="py-3.5 px-3 font-mono font-bold text-[#F7F7FB]">{call.formattedDuration}</td>
+                        <td className="py-3.5 px-3 font-mono font-bold text-[#0F0E17]">{call.formattedDuration}</td>
                         <td className="py-3.5 px-3">
-                          <span className="text-[11px] text-[#A19EAD] truncate max-w-[150px] block">
+                          <span className="text-[11px] text-[#524E5E] truncate max-w-[150px] block">
                             {call.outcome}
                           </span>
                         </td>
-                        <td className="py-3.5 px-4 text-right text-[11px] text-[#6E6B7B]">
+                        <td className="py-3.5 px-4 text-right text-[11px] text-[#8C879A]">
                           {call.timestamp}
                         </td>
                       </tr>
@@ -141,12 +133,12 @@ export function CallsModule() {
           <div className="lg:col-span-5 space-y-4">
             <SolidCard className="space-y-4">
               {/* Drawer Header */}
-              <div className="flex items-start justify-between pb-3 border-b border-[#262438]">
+              <div className="flex items-start justify-between pb-3 border-b border-[#E4E2EB]">
                 <div>
-                  <span className="text-[10px] font-mono text-[#6E6B7B] uppercase">
+                  <span className="text-[10px] font-mono text-[#8C879A] uppercase">
                     Call Record ID: {activeCall.id}
                   </span>
-                  <h3 className="text-sm font-bold text-[#F7F7FB] mt-0.5">
+                  <h3 className="text-sm font-bold text-[#0F0E17] mt-0.5">
                     {activeCall.callerName} ({activeCall.callerPhone})
                   </h3>
                 </div>
@@ -154,13 +146,13 @@ export function CallsModule() {
               </div>
 
               {/* Dual-Track Audio Waveform Player Simulation */}
-              <div className="p-3.5 rounded-xl bg-[#111019] border border-[#262438] space-y-2">
-                <div className="flex items-center justify-between text-xs text-[#A19EAD]">
-                  <span className="flex items-center gap-1.5 font-semibold text-[#F7F7FB]">
+              <div className="p-3.5 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] space-y-2">
+                <div className="flex items-center justify-between text-xs text-[#524E5E]">
+                  <span className="flex items-center gap-1.5 font-semibold text-[#0F0E17]">
                     <Volume2 className="w-3.5 h-3.5 text-[#6344E7]" />
                     <span>Call Recording Audio</span>
                   </span>
-                  <span className="font-mono text-[11px] text-[#6E6B7B]">
+                  <span className="font-mono text-[11px] text-[#524E5E]">
                     00:{playbackTime < 10 ? `0${playbackTime}` : playbackTime} / {activeCall.formattedDuration}
                   </span>
                 </div>
@@ -174,7 +166,7 @@ export function CallsModule() {
                         onClick={() => setPlaybackTime(idx * 5)}
                         style={{ height: `${barHeight}%` }}
                         className={`flex-1 rounded-full transition-all ${
-                          idx < 8 ? 'bg-[#6344E7]' : 'bg-[#262438] hover:bg-[#3D3A55]'
+                          idx < 8 ? 'bg-[#6344E7]' : 'bg-[#E4E2EB] hover:bg-[#D1CFDB]'
                         }`}
                       />
                     )
@@ -186,34 +178,34 @@ export function CallsModule() {
                   <button
                     type="button"
                     onClick={() => setIsPlayingAudio(!isPlayingAudio)}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#6344E7] text-white text-xs font-semibold hover:bg-[#7557F8] active:scale-[0.98] transition-all"
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0F0E17] text-white text-xs font-semibold hover:bg-[#232130] active:scale-[0.98] transition-all shadow-2xs"
                   >
                     {isPlayingAudio ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
                     <span>{isPlayingAudio ? 'Pause' : 'Play'}</span>
                   </button>
 
-                  <span className="text-[10px] font-mono text-[#6E6B7B]">
+                  <span className="text-[10px] font-mono text-[#524E5E]">
                     Cost: {activeCall.cost} (Billed {activeCall.durationSeconds}s)
                   </span>
                 </div>
               </div>
 
               {/* AI Structured Summary */}
-              <div className="p-3.5 rounded-xl bg-[#111019] border border-[#262438] space-y-2">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-[#F7F7FB]">
+              <div className="p-3.5 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] space-y-2">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#0F0E17]">
                   <Sparkles className="w-3.5 h-3.5 text-[#6344E7]" />
                   <span>AI Executive Summary</span>
                 </div>
-                <p className="text-xs text-[#A19EAD] leading-relaxed">
+                <p className="text-xs text-[#524E5E] leading-relaxed">
                   {activeCall.summary}
                 </p>
 
                 {activeCall.extractedFields && (
-                  <div className="pt-2 border-t border-[#262438] grid grid-cols-2 gap-2 text-[11px] font-mono">
+                  <div className="pt-2 border-t border-[#E4E2EB] grid grid-cols-2 gap-2 text-[11px] font-mono">
                     {Object.entries(activeCall.extractedFields).map(([k, v]) => (
-                      <div key={k} className="bg-[#181724] p-2 rounded-lg border border-[#262438]">
-                        <span className="text-[#6E6B7B] block text-[9px] uppercase tracking-wider">{k}</span>
-                        <span className="text-[#F7F7FB] truncate block font-semibold">{v}</span>
+                      <div key={k} className="bg-white p-2 rounded-lg border border-[#E4E2EB] shadow-2xs">
+                        <span className="text-[#8C879A] block text-[9px] uppercase tracking-wider">{k}</span>
+                        <span className="text-[#0F0E17] truncate block font-semibold">{v}</span>
                       </div>
                     ))}
                   </div>
@@ -222,8 +214,8 @@ export function CallsModule() {
 
               {/* Diarized Transcript Bubbles */}
               <div>
-                <h4 className="text-xs font-bold text-[#F7F7FB] mb-2.5 flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-[#A19EAD]" />
+                <h4 className="text-xs font-bold text-[#0F0E17] mb-2.5 flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5 text-[#524E5E]" />
                   <span>Diarized Transcript ({activeCall.transcript?.length || 0} turns)</span>
                 </h4>
 
@@ -235,17 +227,17 @@ export function CallsModule() {
                         key={idx}
                         className={`p-3 rounded-xl text-xs leading-relaxed ${
                           isAgent
-                            ? 'bg-[#181724] border border-[#262438] ml-3'
-                            : 'bg-[#111019] border border-[#262438] mr-3'
+                            ? 'bg-white border border-[#E4E2EB] ml-3 shadow-2xs'
+                            : 'bg-[#FAF9FD] border border-[#E4E2EB] mr-3'
                         }`}
                       >
-                        <div className="flex items-center justify-between text-[10px] text-[#6E6B7B] mb-1 font-mono">
-                          <span className={`font-bold ${isAgent ? 'text-[#6344E7]' : 'text-[#3B82F6]'}`}>
+                        <div className="flex items-center justify-between text-[10px] text-[#8C879A] mb-1 font-mono">
+                          <span className={`font-bold ${isAgent ? 'text-[#6344E7]' : 'text-[#0F0E17]'}`}>
                             {t.speaker}
                           </span>
                           <span>{t.time}</span>
                         </div>
-                        <p className="text-[#F7F7FB]">{t.text}</p>
+                        <p className="text-[#0F0E17]">{t.text}</p>
                       </div>
                     );
                   })}

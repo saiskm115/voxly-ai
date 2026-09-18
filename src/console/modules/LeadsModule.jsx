@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
 import {
-  Users,
-  Search,
-  Plus,
   PhoneCall,
   LayoutGrid,
-  List,
-  Sparkles,
-  ArrowRight,
-  CheckCircle2,
-  Calendar,
-  Building,
-  Mail,
-  Phone,
-  FileText
+  List
 } from 'lucide-react';
 import { SolidCard } from '../ui/SolidCard';
 import { StatusBadge } from '../ui/StatusBadge';
@@ -48,21 +37,21 @@ export function LeadsModule() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-[#F7F7FB] tracking-tight">
+          <h2 className="text-xl font-bold text-[#0F0E17] tracking-tight">
             Autonomous Lead Pipeline ({leads.length})
           </h2>
-          <p className="text-xs text-[#A19EAD] mt-0.5">
+          <p className="text-xs text-[#524E5E] mt-0.5">
             Leads automatically captured, BANT-qualified, and scored by AI voice employees during phone calls.
           </p>
         </div>
 
         {/* View Toggle */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center p-1 rounded-xl bg-[#181724] border border-[#262438]">
+          <div className="flex items-center p-1 rounded-xl bg-white border border-[#E4E2EB] shadow-2xs">
             <button
               onClick={() => setViewMode('kanban')}
               className={`p-1.5 rounded-lg transition-all ${
-                viewMode === 'kanban' ? 'bg-[#6344E7] text-white' : 'text-[#A19EAD] hover:text-[#F7F7FB]'
+                viewMode === 'kanban' ? 'bg-[#0F0E17] text-white shadow-xs' : 'text-[#524E5E] hover:text-[#0F0E17]'
               }`}
               title="Kanban Board View"
             >
@@ -71,7 +60,7 @@ export function LeadsModule() {
             <button
               onClick={() => setViewMode('table')}
               className={`p-1.5 rounded-lg transition-all ${
-                viewMode === 'table' ? 'bg-[#6344E7] text-white' : 'text-[#A19EAD] hover:text-[#F7F7FB]'
+                viewMode === 'table' ? 'bg-[#0F0E17] text-white shadow-xs' : 'text-[#524E5E] hover:text-[#0F0E17]'
               }`}
               title="Data Table View"
             >
@@ -83,9 +72,9 @@ export function LeadsModule() {
 
       {/* Call Trigger Notification Banner */}
       {callNotice && (
-        <div className="p-3.5 rounded-xl bg-[#22C55E]/15 border border-[#22C55E]/30 text-xs font-semibold text-[#22C55E] flex items-center justify-between animate-in fade-in duration-150">
+        <div className="p-3.5 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] text-xs font-semibold text-[#047857] flex items-center justify-between animate-in fade-in duration-150">
           <div className="flex items-center gap-2">
-            <PhoneCall className="w-4 h-4 animate-pulse" />
+            <PhoneCall className="w-4 h-4 animate-pulse text-[#10B981]" />
             <span>{callNotice}</span>
           </div>
           <span className="text-[10px] font-mono">SIP INVITE Dispatched</span>
@@ -100,9 +89,9 @@ export function LeadsModule() {
             return (
               <div key={stage} className="flex flex-col min-w-[240px] space-y-3">
                 {/* Column Header */}
-                <div className="flex items-center justify-between p-3 rounded-xl bg-[#181724] border border-[#262438]">
-                  <span className="text-xs font-bold text-[#F7F7FB] truncate">{stage}</span>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#111019] text-[#A19EAD]">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-white border border-[#E4E2EB] shadow-2xs">
+                  <span className="text-xs font-bold text-[#0F0E17] truncate">{stage}</span>
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#F0EEF6] text-[#524E5E]">
                     {stageLeads.length}
                   </span>
                 </div>
@@ -113,37 +102,37 @@ export function LeadsModule() {
                     <SolidCard
                       key={lead.id}
                       padding="p-3.5"
-                      className="space-y-2.5 hover:border-[#3D3A55] transition-all cursor-pointer group"
+                      className="space-y-2.5 hover:border-[#D1CFDB] transition-all cursor-pointer group shadow-craft-xs"
                       onClick={() => setSelectedLead(lead)}
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <div className="text-xs font-bold text-[#F7F7FB] group-hover:text-[#6344E7] transition-colors">
+                          <div className="text-xs font-bold text-[#0F0E17] group-hover:text-[#6344E7] transition-colors">
                             {lead.name}
                           </div>
-                          <div className="text-[11px] text-[#A19EAD] truncate">{lead.company}</div>
+                          <div className="text-[11px] text-[#524E5E] truncate">{lead.company}</div>
                         </div>
 
                         {/* BANT Score Badge */}
                         <span
-                          className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                          className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border ${
                             lead.bantScore >= 80
-                              ? 'bg-[#22C55E]/15 text-[#22C55E] border border-[#22C55E]/30'
+                              ? 'bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]'
                               : lead.bantScore >= 50
-                              ? 'bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30'
-                              : 'bg-[#EF4444]/15 text-[#EF4444] border border-[#EF4444]/30'
+                              ? 'bg-[#FFFBEB] text-[#92400E] border-[#FDE68A]'
+                              : 'bg-[#FEF2F2] text-[#991B1B] border-[#FECACA]'
                           }`}
                         >
                           BANT {lead.bantScore}
                         </span>
                       </div>
 
-                      <div className="text-[11px] text-[#A19EAD] line-clamp-1">
+                      <div className="text-[11px] text-[#524E5E] line-clamp-1">
                         🎯 {lead.intent}
                       </div>
 
                       {/* Card Bottom: Agent & Quick Call Trigger */}
-                      <div className="flex items-center justify-between pt-2 border-t border-[#262438] text-[10px] text-[#6E6B7B]">
+                      <div className="flex items-center justify-between pt-2 border-t border-[#E4E2EB] text-[10px] text-[#8C879A]">
                         <span>{lead.agentName}</span>
                         <button
                           type="button"
@@ -151,7 +140,7 @@ export function LeadsModule() {
                             e.stopPropagation();
                             handleTriggerCall(lead);
                           }}
-                          className="flex items-center gap-1 text-[#6344E7] hover:text-[#7557F8] font-bold"
+                          className="flex items-center gap-1 text-[#6344E7] hover:text-[#5034CE] font-bold"
                         >
                           <PhoneCall className="w-3 h-3" />
                           <span>Call</span>
@@ -161,7 +150,7 @@ export function LeadsModule() {
                   ))}
 
                   {stageLeads.length === 0 && (
-                    <div className="p-6 rounded-xl border border-dashed border-[#262438] text-center text-[11px] text-[#6E6B7B]">
+                    <div className="p-6 rounded-xl border border-dashed border-[#E4E2EB] text-center text-[11px] text-[#8C879A]">
                       No leads in {stage}
                     </div>
                   )}
@@ -178,7 +167,7 @@ export function LeadsModule() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[#262438] bg-[#111019] text-[10px] font-bold text-[#6E6B7B] uppercase tracking-wider">
+                <tr className="border-b border-[#E4E2EB] bg-[#FAF9FD] text-[10px] font-bold text-[#8C879A] uppercase tracking-wider">
                   <th className="py-3 px-4">Contact</th>
                   <th className="py-3 px-3">Company</th>
                   <th className="py-3 px-3 font-mono">BANT Score</th>
@@ -188,24 +177,24 @@ export function LeadsModule() {
                   <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#262438]">
+              <tbody className="divide-y divide-[#E4E2EB]">
                 {filteredLeads.map((lead) => (
                   <tr
                     key={lead.id}
                     onClick={() => setSelectedLead(lead)}
-                    className="hover:bg-[#111019]/50 transition-colors cursor-pointer"
+                    className="hover:bg-[#FAF9FD] transition-colors cursor-pointer"
                   >
                     <td className="py-3 px-4">
-                      <div className="font-semibold text-[#F7F7FB]">{lead.name}</div>
-                      <div className="text-[10px] font-mono text-[#6E6B7B]">{lead.phone}</div>
+                      <div className="font-semibold text-[#0F0E17]">{lead.name}</div>
+                      <div className="text-[10px] font-mono text-[#524E5E]">{lead.phone}</div>
                     </td>
-                    <td className="py-3 px-3 text-[#A19EAD] font-medium">{lead.company}</td>
-                    <td className="py-3 px-3 font-mono font-bold text-[#22C55E]">{lead.bantScore}/100</td>
+                    <td className="py-3 px-3 text-[#524E5E] font-medium">{lead.company}</td>
+                    <td className="py-3 px-3 font-mono font-bold text-[#047857]">{lead.bantScore}/100</td>
                     <td className="py-3 px-3">
                       <StatusBadge status={lead.stage} size="xs" />
                     </td>
-                    <td className="py-3 px-3 text-[#A19EAD] truncate max-w-[160px]">{lead.intent}</td>
-                    <td className="py-3 px-3 text-[#6E6B7B]">{lead.agentName}</td>
+                    <td className="py-3 px-3 text-[#524E5E] truncate max-w-[160px]">{lead.intent}</td>
+                    <td className="py-3 px-3 text-[#8C879A]">{lead.agentName}</td>
                     <td className="py-3 px-4 text-right">
                       <button
                         type="button"
@@ -237,15 +226,15 @@ export function LeadsModule() {
         >
           <div className="space-y-4 text-xs">
             {/* Stage Selector Ribbon */}
-            <div className="p-3 rounded-xl bg-[#181724] border border-[#262438] flex items-center justify-between">
-              <span className="font-bold text-[#F7F7FB]">Pipeline Stage:</span>
+            <div className="p-3 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] flex items-center justify-between">
+              <span className="font-bold text-[#0F0E17]">Pipeline Stage:</span>
               <select
                 value={selectedLead.stage}
                 onChange={(e) => {
                   updateLeadStage(selectedLead.id, e.target.value);
                   setSelectedLead({ ...selectedLead, stage: e.target.value });
                 }}
-                className="bg-[#111019] border border-[#262438] rounded-lg px-2.5 py-1 text-xs text-[#F7F7FB] font-semibold focus:outline-none focus:border-[#6344E7]"
+                className="bg-white border border-[#E4E2EB] rounded-lg px-2.5 py-1 text-xs text-[#0F0E17] font-semibold focus:outline-none focus:border-[#6344E7] transition-colors"
               >
                 {stages.map((st) => (
                   <option key={st} value={st}>
@@ -256,28 +245,28 @@ export function LeadsModule() {
             </div>
 
             {/* Contact Details */}
-            <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-[#181724] border border-[#262438]">
+            <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB]">
               <div>
-                <span className="text-[10px] text-[#6E6B7B] uppercase block">Phone</span>
-                <span className="font-mono text-[#F7F7FB] font-semibold">{selectedLead.phone}</span>
+                <span className="text-[10px] text-[#8C879A] uppercase block">Phone</span>
+                <span className="font-mono text-[#0F0E17] font-semibold">{selectedLead.phone}</span>
               </div>
               <div>
-                <span className="text-[10px] text-[#6E6B7B] uppercase block">Email</span>
-                <span className="text-[#F7F7FB] truncate block">{selectedLead.email || 'None on file'}</span>
+                <span className="text-[10px] text-[#8C879A] uppercase block">Email</span>
+                <span className="text-[#0F0E17] truncate block">{selectedLead.email || 'None on file'}</span>
               </div>
               <div>
-                <span className="text-[10px] text-[#6E6B7B] uppercase block">Company</span>
-                <span className="text-[#F7F7FB] font-semibold">{selectedLead.company}</span>
+                <span className="text-[10px] text-[#8C879A] uppercase block">Company</span>
+                <span className="text-[#0F0E17] font-semibold">{selectedLead.company}</span>
               </div>
               <div>
-                <span className="text-[10px] text-[#6E6B7B] uppercase block">BANT Score</span>
-                <span className="font-mono font-bold text-[#22C55E]">{selectedLead.bantScore} / 100</span>
+                <span className="text-[10px] text-[#8C879A] uppercase block">BANT Score</span>
+                <span className="font-mono font-bold text-[#047857]">{selectedLead.bantScore} / 100</span>
               </div>
             </div>
 
             {/* AI Notes */}
             <div>
-              <label className="block text-xs font-bold text-[#F7F7FB] mb-1">
+              <label className="block text-xs font-bold text-[#0F0E17] mb-1">
                 AI Extracted Notes & Summary
               </label>
               <textarea
@@ -287,13 +276,13 @@ export function LeadsModule() {
                   updateLeadNotes(selectedLead.id, e.target.value);
                   setSelectedLead({ ...selectedLead, notes: e.target.value });
                 }}
-                className="w-full bg-[#181724] border border-[#262438] rounded-xl p-3 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-3 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
               />
             </div>
 
             {/* Modal Bottom CTA */}
-            <div className="flex items-center justify-between pt-3 border-t border-[#262438]">
-              <span className="text-[11px] text-[#6E6B7B]">CRM Synced: HubSpot Deal #489</span>
+            <div className="flex items-center justify-between pt-3 border-t border-[#E4E2EB]">
+              <span className="text-[11px] text-[#8C879A]">CRM Synced: HubSpot Deal #489</span>
               <TactileButton
                 variant="primary"
                 size="sm"

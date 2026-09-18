@@ -2,33 +2,33 @@ import React from 'react';
 
 /**
  * StatusBadge UI Primitive
- * Restrained semantic pill indicator for agent states, call outcomes, and lead pipeline stages.
+ * Semantic pill indicator with strict WCAG AA contrast for light backgrounds.
  */
 export function StatusBadge({ status, size = 'sm', className = '' }) {
   const norm = String(status || '').toLowerCase();
 
-  let styles = 'bg-[#181724] text-[#A19EAD] border-[#262438]';
-  let dotColor = 'bg-[#A19EAD]';
+  let styles = 'bg-[#F0EEF6] text-[#524E5E] border-[#E4E2EB]';
+  let dotColor = 'bg-[#524E5E]';
   let label = status;
 
   if (norm === 'active' || norm === 'qualified' || norm === 'meeting booked' || norm === 'resolved') {
-    styles = 'bg-[#22C55E]/15 text-[#22C55E] border-[#22C55E]/25';
-    dotColor = 'bg-[#22C55E]';
+    styles = 'bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]';
+    dotColor = 'bg-[#10B981]';
   } else if (norm === 'paused' || norm === 'draft' || norm === 'idle' || norm === 'new') {
-    styles = 'bg-[#F59E0B]/15 text-[#F59E0B] border-[#F59E0B]/25';
+    styles = 'bg-[#FFFBEB] text-[#92400E] border-[#FDE68A]';
     dotColor = 'bg-[#F59E0B]';
   } else if (norm === 'inbound') {
-    styles = 'bg-[#3B82F6]/15 text-[#3B82F6] border-[#3B82F6]/25';
+    styles = 'bg-[#EFF6FF] text-[#1E40AF] border-[#BFDBFE]';
     dotColor = 'bg-[#3B82F6]';
   } else if (norm === 'outbound') {
-    styles = 'bg-[#A855F7]/15 text-[#A855F7] border-[#A855F7]/25';
-    dotColor = 'bg-[#A855F7]';
+    styles = 'bg-[#F5F3FF] text-[#5B21B6] border-[#DDD6FE]';
+    dotColor = 'bg-[#8B5CF6]';
   } else if (norm === 'unqualified' || norm === 'failed' || norm === 'cancelled') {
-    styles = 'bg-[#EF4444]/15 text-[#EF4444] border-[#EF4444]/25';
+    styles = 'bg-[#FEF2F2] text-[#991B1B] border-[#FECACA]';
     dotColor = 'bg-[#EF4444]';
   } else if (norm === 'running') {
-    styles = 'bg-[#22C55E]/15 text-[#22C55E] border-[#22C55E]/25';
-    dotColor = 'bg-[#22C55E] animate-pulse';
+    styles = 'bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]';
+    dotColor = 'bg-[#10B981] animate-pulse';
   }
 
   const sizeClass = size === 'xs' ? 'px-2 py-0.5 text-[10px]' : 'px-2.5 py-1 text-xs';

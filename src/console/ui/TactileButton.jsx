@@ -17,7 +17,7 @@ export function TactileButton({
   ...props
 }) {
   const baseStyles =
-    'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6344E7] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0A10] disabled:opacity-45 disabled:pointer-events-none active:scale-[0.98]';
+    'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6344E7] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAF9FD] disabled:opacity-45 disabled:pointer-events-none active:scale-[0.98]';
 
   const sizeStyles = {
     xs: 'px-2.5 py-1 text-[11px] rounded-lg',
@@ -29,19 +29,21 @@ export function TactileButton({
 
   const variantStyles = {
     primary:
-      'bg-[#6344E7] hover:bg-[#7557F8] text-white shadow-sm border border-white/10',
-    white:
-      'bg-white hover:bg-[#F0EEF6] text-[#0F0E17] shadow-sm border border-transparent',
+      'bg-[#0F0E17] hover:bg-[#232130] text-white shadow-2xs border border-transparent',
+    brand:
+      'bg-[#6344E7] hover:bg-[#5034CE] text-white shadow-2xs border border-transparent',
     secondary:
-      'bg-[#181724] hover:bg-[#222033] text-[#F7F7FB] border border-[#262438] shadow-xs',
+      'bg-white hover:bg-[#FAF9FD] text-[#0F0E17] border border-[#E4E2EB] shadow-2xs',
+    white:
+      'bg-white hover:bg-[#FAF9FD] text-[#0F0E17] shadow-2xs border border-[#E4E2EB]',
     ghost:
-      'bg-transparent hover:bg-[#181724] text-[#A19EAD] hover:text-[#F7F7FB]',
+      'bg-transparent hover:bg-[#F0EEF6] text-[#524E5E] hover:text-[#0F0E17]',
     danger:
-      'bg-[#EF4444]/15 hover:bg-[#EF4444]/25 text-[#EF4444] border border-[#EF4444]/30',
+      'bg-[#FEF2F2] hover:bg-[#FEE2E2] text-[#DC2626] border border-[#FECACA]',
     success:
-      'bg-[#22C55E]/15 hover:bg-[#22C55E]/25 text-[#22C55E] border border-[#22C55E]/30',
+      'bg-[#ECFDF5] hover:bg-[#D1FAE5] text-[#059669] border border-[#A7F3D0]',
     outline:
-      'bg-transparent hover:bg-[#181724] text-[#F7F7FB] border border-[#262438]'
+      'bg-transparent hover:bg-[#FAF9FD] text-[#0F0E17] border border-[#E4E2EB]'
   };
 
   return (
@@ -49,7 +51,7 @@ export function TactileButton({
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
-      className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
+      className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant] || variantStyles.primary} ${className}`}
       {...props}
     >
       {loading ? (

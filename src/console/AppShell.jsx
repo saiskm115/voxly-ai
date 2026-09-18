@@ -61,7 +61,7 @@ export function AppShell({ onBackToLanding }) {
   };
 
   return (
-    <div className="flex h-screen bg-[#0B0A10] text-[#F7F7FB] overflow-hidden select-none font-sans antialiased">
+    <div className="flex h-screen bg-[#FAF9FD] text-[#0F0E17] overflow-hidden select-none font-sans antialiased">
       {/* Primary Vertical Navigation */}
       <Sidebar
         activeTab={activeTab}
@@ -76,7 +76,7 @@ export function AppShell({ onBackToLanding }) {
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#0B0A10]">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#FAF9FD]">
         <Topbar
           activeTab={activeTab}
           onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
@@ -90,7 +90,7 @@ export function AppShell({ onBackToLanding }) {
         />
 
         {/* Dynamic Viewport */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#0B0A10]">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#FAF9FD]">
           <div className="max-w-7xl mx-auto pb-12">
             {activeTab === 'overview' && (
               <OverviewModule

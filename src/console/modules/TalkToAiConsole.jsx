@@ -220,25 +220,25 @@ export function TalkToAiConsole() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Talk-To-AI Testing Lab</h1>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#6344E7]/15 text-[#9E8BFC] border border-[#6344E7]/30">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F0E17]">Talk-To-AI Testing Lab</h1>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#6344E7]/10 text-[#6344E7] border border-[#6344E7]/20">
               <Radio className="w-3 h-3 animate-pulse text-[#6344E7]" />
               Real-time WebRTC
             </span>
           </div>
-          <p className="text-sm text-[#8E8B9E] mt-1">
+          <p className="text-xs sm:text-sm text-[#524E5E] mt-1">
             Test conversational turns, barge-in behavior, latency metrics, and emotional sync directly in your browser.
           </p>
         </div>
 
         {/* Agent Selector Dropdown */}
         <div className="flex items-center gap-3">
-          <label className="text-xs font-medium text-[#8E8B9E]">Active Agent:</label>
+          <label className="text-xs font-semibold text-[#524E5E]">Active Agent:</label>
           <select
             value={selectedAgentId}
             onChange={(e) => setSelectedAgentId(e.target.value)}
             disabled={sessionState === 'CONNECTED'}
-            className="h-9 px-3 text-xs font-semibold bg-[#111019] text-white border border-[#262438] rounded-xl focus:border-[#6344E7] focus:outline-none transition-colors"
+            className="h-9 px-3 text-xs font-semibold bg-white text-[#0F0E17] border border-[#E4E2EB] rounded-xl focus:border-[#6344E7] focus:outline-none transition-colors shadow-craft-xs"
           >
             {workspace.agents.map(ag => (
               <option key={ag.id} value={ag.id}>
@@ -249,7 +249,7 @@ export function TalkToAiConsole() {
 
           {sessionState === 'CONNECTED' ? (
             <TactileButton variant="danger" size="sm" onClick={handleEndSession}>
-              <PhoneOff className="w-4 h-4 mr-1.5 text-rose-300" />
+              <PhoneOff className="w-4 h-4 mr-1.5 text-rose-100" />
               End Call
             </TactileButton>
           ) : (
@@ -268,71 +268,71 @@ export function TalkToAiConsole() {
 
       {/* Telemetry Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <SolidCard className="p-3 bg-[#111019] border-[#262438]">
-          <div className="text-[11px] font-medium text-[#8E8B9E] uppercase tracking-wider">STT Latency</div>
-          <div className="text-base font-bold text-white mt-1 flex items-baseline gap-1">
+        <SolidCard className="p-3">
+          <div className="text-[11px] font-semibold text-[#524E5E] uppercase tracking-wider">STT Latency</div>
+          <div className="text-base font-bold text-[#0F0E17] font-mono mt-1 flex items-baseline gap-1">
             <span>{sessionState === 'CONNECTED' ? telemetry.sttLatency : '--'}</span>
-            <span className="text-[10px] text-[#8E8B9E] font-normal">ms</span>
+            <span className="text-[10px] text-[#524E5E] font-normal">ms</span>
           </div>
-          <div className="text-[10px] text-emerald-400 mt-0.5">Whisper V3 Turbo</div>
+          <div className="text-[10px] text-[#15803D] font-medium mt-0.5">Whisper V3 Turbo</div>
         </SolidCard>
 
-        <SolidCard className="p-3 bg-[#111019] border-[#262438]">
-          <div className="text-[11px] font-medium text-[#8E8B9E] uppercase tracking-wider">TTFT (1st Token)</div>
-          <div className="text-base font-bold text-white mt-1 flex items-baseline gap-1">
+        <SolidCard className="p-3">
+          <div className="text-[11px] font-semibold text-[#524E5E] uppercase tracking-wider">TTFT (1st Token)</div>
+          <div className="text-base font-bold text-[#0F0E17] font-mono mt-1 flex items-baseline gap-1">
             <span>{sessionState === 'CONNECTED' ? telemetry.ttft : '--'}</span>
-            <span className="text-[10px] text-[#8E8B9E] font-normal">ms</span>
+            <span className="text-[10px] text-[#524E5E] font-normal">ms</span>
           </div>
-          <div className="text-[10px] text-[#9E8BFC] mt-0.5">Gemini 2.5 Flash</div>
+          <div className="text-[10px] text-[#6344E7] font-medium mt-0.5">Gemini 2.5 Flash</div>
         </SolidCard>
 
-        <SolidCard className="p-3 bg-[#111019] border-[#262438]">
-          <div className="text-[11px] font-medium text-[#8E8B9E] uppercase tracking-wider">TTS Latency</div>
-          <div className="text-base font-bold text-white mt-1 flex items-baseline gap-1">
+        <SolidCard className="p-3">
+          <div className="text-[11px] font-semibold text-[#524E5E] uppercase tracking-wider">TTS Latency</div>
+          <div className="text-base font-bold text-[#0F0E17] font-mono mt-1 flex items-baseline gap-1">
             <span>{sessionState === 'CONNECTED' ? telemetry.ttsLatency : '--'}</span>
-            <span className="text-[10px] text-[#8E8B9E] font-normal">ms</span>
+            <span className="text-[10px] text-[#524E5E] font-normal">ms</span>
           </div>
-          <div className="text-[10px] text-emerald-400 mt-0.5">Cartesia Sonic</div>
+          <div className="text-[10px] text-[#15803D] font-medium mt-0.5">Cartesia Sonic</div>
         </SolidCard>
 
-        <SolidCard className="p-3 bg-[#111019] border-[#262438]">
-          <div className="text-[11px] font-medium text-[#8E8B9E] uppercase tracking-wider">Full RTT</div>
-          <div className="text-base font-bold text-white mt-1 flex items-baseline gap-1">
-            <span className={sessionState === 'CONNECTED' && telemetry.rtt < 400 ? 'text-emerald-400' : 'text-amber-400'}>
+        <SolidCard className="p-3">
+          <div className="text-[11px] font-semibold text-[#524E5E] uppercase tracking-wider">Full RTT</div>
+          <div className="text-base font-bold font-mono mt-1 flex items-baseline gap-1">
+            <span className={sessionState === 'CONNECTED' && telemetry.rtt < 400 ? 'text-[#15803D]' : 'text-amber-600'}>
               {sessionState === 'CONNECTED' ? telemetry.rtt : '--'}
             </span>
-            <span className="text-[10px] text-[#8E8B9E] font-normal">ms</span>
+            <span className="text-[10px] text-[#524E5E] font-normal">ms</span>
           </div>
-          <div className="text-[10px] text-zinc-400 mt-0.5">&lt; 450ms target</div>
+          <div className="text-[10px] text-[#524E5E] mt-0.5">&lt; 450ms target</div>
         </SolidCard>
 
-        <SolidCard className="p-3 bg-[#111019] border-[#262438]">
-          <div className="text-[11px] font-medium text-[#8E8B9E] uppercase tracking-wider">Jitter / Loss</div>
-          <div className="text-base font-bold text-white mt-1 flex items-baseline gap-1">
+        <SolidCard className="p-3">
+          <div className="text-[11px] font-semibold text-[#524E5E] uppercase tracking-wider">Jitter / Loss</div>
+          <div className="text-base font-bold text-[#0F0E17] font-mono mt-1 flex items-baseline gap-1">
             <span>{sessionState === 'CONNECTED' ? `${telemetry.jitter}ms` : '--'}</span>
-            <span className="text-[10px] text-emerald-400 font-normal ml-1">0.0%</span>
+            <span className="text-[10px] text-[#15803D] font-medium ml-1">0.0%</span>
           </div>
-          <div className="text-[10px] text-emerald-400 mt-0.5">Opus / WebRTC</div>
+          <div className="text-[10px] text-[#15803D] font-medium mt-0.5">Opus / WebRTC</div>
         </SolidCard>
 
-        <SolidCard className="p-3 bg-[#111019] border-[#262438]">
-          <div className="text-[11px] font-medium text-[#8E8B9E] uppercase tracking-wider">Pipeline State</div>
-          <div className="text-base font-bold text-white mt-1">
+        <SolidCard className="p-3">
+          <div className="text-[11px] font-semibold text-[#524E5E] uppercase tracking-wider">Pipeline State</div>
+          <div className="text-base font-bold mt-1">
             {sessionState === 'CONNECTED' ? (
               <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-md ${
-                botState === 'SPEAKING' ? 'bg-emerald-500/20 text-emerald-400' :
-                botState === 'THINKING' ? 'bg-purple-500/20 text-purple-300 animate-pulse' :
-                botState === 'LISTENING' ? 'bg-cyan-500/20 text-cyan-300' :
-                botState === 'INTERRUPTED' ? 'bg-amber-500/20 text-amber-300' :
-                'bg-zinc-800 text-zinc-400'
+                botState === 'SPEAKING' ? 'bg-[#22C55E]/15 text-[#15803D]' :
+                botState === 'THINKING' ? 'bg-[#6344E7]/15 text-[#6344E7] animate-pulse' :
+                botState === 'LISTENING' ? 'bg-sky-500/15 text-sky-700' :
+                botState === 'INTERRUPTED' ? 'bg-amber-500/15 text-amber-700' :
+                'bg-[#F0EEF6] text-[#524E5E]'
               }`}>
                 {botState}
               </span>
             ) : (
-              <span className="text-xs font-semibold text-zinc-500">STANDBY</span>
+              <span className="text-xs font-semibold text-[#524E5E]">STANDBY</span>
             )}
           </div>
-          <div className="text-[10px] text-[#8E8B9E] mt-0.5">Barge-in: {bargeInSensitivity}</div>
+          <div className="text-[10px] text-[#524E5E] mt-0.5">Barge-in: {bargeInSensitivity}</div>
         </SolidCard>
       </div>
 
@@ -467,13 +467,13 @@ export function TalkToAiConsole() {
           </SolidCard>
 
           {/* Quick Synthetic Test Prompts */}
-          <SolidCard className="p-4 bg-[#111019] border-[#262438] space-y-3">
+          <SolidCard className="p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-white uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 text-[#A390FD]" />
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#0F0E17] uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-[#6344E7]" />
                 Synthetic Test Injection
               </div>
-              <span className="text-[10px] text-[#8E8B9E]">Click pill to simulate caller voice</span>
+              <span className="text-[10px] text-[#524E5E]">Click pill to simulate caller voice</span>
             </div>
 
             <div className="flex flex-wrap gap-2">
@@ -482,7 +482,7 @@ export function TalkToAiConsole() {
                   key={i}
                   disabled={sessionState !== 'CONNECTED'}
                   onClick={() => handleSendMessage(prompt)}
-                  className="text-left text-xs px-3 py-1.5 rounded-xl bg-[#181724] border border-[#262438] text-zinc-300 hover:border-[#6344E7] hover:text-white transition-all disabled:opacity-40 disabled:hover:border-[#262438] active:scale-[0.98]"
+                  className="text-left text-xs px-3 py-1.5 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] text-[#0F0E17] hover:border-[#6344E7] hover:text-[#6344E7] transition-all disabled:opacity-40 disabled:hover:border-[#E4E2EB] active:scale-[0.98] shadow-craft-xs"
                 >
                   &ldquo;{prompt}&rdquo;
                 </button>
@@ -492,20 +492,20 @@ export function TalkToAiConsole() {
         </div>
 
         {/* Right / Live Transcript & Intent Stream */}
-        <div className="lg:col-span-7 flex flex-col h-[580px] bg-[#111019] border border-[#262438] rounded-2xl overflow-hidden shadow-craft-sm">
+        <div className="lg:col-span-7 flex flex-col h-[580px] bg-white border border-[#E4E2EB] rounded-2xl overflow-hidden shadow-craft-xs">
           
           {/* Header */}
-          <div className="px-5 py-3.5 bg-[#181724] border-b border-[#262438] flex items-center justify-between">
+          <div className="px-5 py-3.5 bg-[#FAF9FD] border-b border-[#E4E2EB] flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs font-semibold text-white tracking-wide">Live Conversation Stream</span>
-              <span className="text-[11px] text-[#8E8B9E]">({transcript.length} turns)</span>
+              <div className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse" />
+              <span className="text-xs font-bold text-[#0F0E17] tracking-wide">Live Conversation Stream</span>
+              <span className="text-[11px] text-[#524E5E]">({transcript.length} turns)</span>
             </div>
 
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setTranscript([])}
-                className="text-xs text-[#8E8B9E] hover:text-white px-2 py-1 rounded-md hover:bg-[#262438] transition-colors"
+                className="text-xs text-[#524E5E] hover:text-[#0F0E17] px-2 py-1 rounded-md hover:bg-[#F0EEF6] transition-colors font-medium"
                 title="Clear transcript log"
               >
                 Clear Log
@@ -514,23 +514,23 @@ export function TalkToAiConsole() {
           </div>
 
           {/* Transcript Scroll Area */}
-          <div className="flex-1 p-5 overflow-y-auto space-y-4 font-sans text-sm">
+          <div className="flex-1 p-5 overflow-y-auto space-y-4 font-sans text-sm bg-[#FAF9FD]/40">
             {transcript.map((msg) => (
               <div
                 key={msg.id}
                 className={`flex flex-col ${msg.role === 'agent' ? 'items-start' : 'items-end'}`}
               >
-                <div className="flex items-center gap-2 mb-1 text-[11px] text-[#8E8B9E]">
-                  <span className="font-semibold text-white">{msg.speaker}</span>
+                <div className="flex items-center gap-2 mb-1 text-[11px] text-[#524E5E]">
+                  <span className="font-semibold text-[#0F0E17]">{msg.speaker}</span>
                   <span>•</span>
                   <span>{msg.time}</span>
                   {msg.latencyMs && (
-                    <span className="px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[10px]">
+                    <span className="px-1.5 py-0.2 rounded bg-[#22C55E]/10 text-[#15803D] font-mono text-[10px] font-medium">
                       ⚡ {msg.latencyMs}ms RTT
                     </span>
                   )}
                   {msg.intent && (
-                    <span className="px-1.5 py-0.2 rounded bg-[#6344E7]/15 text-[#A390FD] font-mono text-[10px]">
+                    <span className="px-1.5 py-0.2 rounded bg-[#6344E7]/10 text-[#6344E7] font-mono text-[10px] font-medium">
                       #{msg.intent}
                     </span>
                   )}
@@ -539,8 +539,8 @@ export function TalkToAiConsole() {
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed border ${
                     msg.role === 'agent'
-                      ? 'bg-[#181724] text-zinc-200 border-[#262438] rounded-tl-sm'
-                      : 'bg-[#6344E7] text-white border-[#6344E7] rounded-tr-sm shadow-craft-xs'
+                      ? 'bg-white text-[#0F0E17] border-[#E4E2EB] rounded-tl-sm shadow-craft-xs'
+                      : 'bg-[#0F0E17] text-white border-[#0F0E17] rounded-tr-sm shadow-craft-xs'
                   }`}
                 >
                   {msg.text}
@@ -551,7 +551,7 @@ export function TalkToAiConsole() {
           </div>
 
           {/* Prompt / Input Bar */}
-          <div className="p-3.5 bg-[#0F0E17] border-t border-[#262438]">
+          <div className="p-3.5 bg-white border-t border-[#E4E2EB]">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -569,7 +569,7 @@ export function TalkToAiConsole() {
                     : "Connect call above to start testing..."
                 }
                 disabled={sessionState !== 'CONNECTED'}
-                className="flex-1 h-10 px-4 bg-[#181724] text-white placeholder-[#8E8B9E] text-xs font-medium rounded-xl border border-[#262438] focus:border-[#6344E7] focus:outline-none transition-colors disabled:opacity-50"
+                className="flex-1 h-10 px-4 bg-[#FAF9FD] text-[#0F0E17] placeholder-[#8E8B9E] text-xs font-medium rounded-xl border border-[#E4E2EB] focus:border-[#6344E7] focus:outline-none transition-colors disabled:opacity-50 shadow-craft-xs"
               />
               <TactileButton
                 type="submit"

@@ -4,14 +4,7 @@ import {
   Plus,
   Play,
   Pause,
-  Clock,
-  Users,
-  CheckCircle2,
-  FileSpreadsheet,
-  Settings,
-  Phone,
-  Radio,
-  ArrowRight
+  FileSpreadsheet
 } from 'lucide-react';
 import { SolidCard } from '../ui/SolidCard';
 import { StatusBadge } from '../ui/StatusBadge';
@@ -20,7 +13,7 @@ import { Modal } from '../ui/Modal';
 import { useWorkspace } from '../context/WorkspaceContext';
 
 export function CampaignsModule() {
-  const { campaigns, createCampaign, toggleCampaignStatus, agents, phoneNumbers } = useWorkspace();
+  const { campaigns, createCampaign, toggleCampaignStatus, agents } = useWorkspace();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   // Wizard state
@@ -52,10 +45,10 @@ export function CampaignsModule() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-[#F7F7FB] tracking-tight">
+          <h2 className="text-xl font-bold text-[#0F0E17] tracking-tight">
             Bulk Outbound Campaigns ({campaigns.length})
           </h2>
-          <p className="text-xs text-[#A19EAD] mt-0.5">
+          <p className="text-xs text-[#524E5E] mt-0.5">
             Automate phone outreach at scale with AI agents, smart pacing, and Answering Machine Detection (AMD).
           </p>
         </div>
@@ -75,18 +68,18 @@ export function CampaignsModule() {
         {campaigns.map((camp) => (
           <SolidCard key={camp.id} className="space-y-4">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#262438]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E4E2EB]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#111019] border border-[#262438] flex items-center justify-center text-[#6344E7]">
+                <div className="w-10 h-10 rounded-xl bg-[#F0EEF6] border border-[#E4E2EB] flex items-center justify-center text-[#6344E7] shadow-2xs">
                   <Megaphone className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-bold text-[#F7F7FB]">{camp.name}</h3>
+                    <h3 className="text-sm font-bold text-[#0F0E17]">{camp.name}</h3>
                     <StatusBadge status={camp.status} size="xs" />
                   </div>
-                  <div className="text-xs text-[#A19EAD] mt-0.5">
-                    Agent: <span className="font-semibold text-[#F7F7FB]">{camp.agentName}</span> • Number: <span className="font-mono">{camp.assignedNumber}</span>
+                  <div className="text-xs text-[#524E5E] mt-0.5">
+                    Agent: <span className="font-semibold text-[#0F0E17]">{camp.agentName}</span> • Number: <span className="font-mono">{camp.assignedNumber}</span>
                   </div>
                 </div>
               </div>
@@ -105,42 +98,42 @@ export function CampaignsModule() {
             </div>
 
             {/* Metrics Ribbon */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 p-3.5 rounded-xl bg-[#111019] border border-[#262438] text-center font-mono">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 p-3.5 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] text-center font-mono">
               <div>
-                <span className="text-[10px] text-[#6E6B7B] uppercase block">Total Contacts</span>
-                <span className="text-sm font-bold text-[#F7F7FB]">{camp.totalContacts.toLocaleString()}</span>
+                <span className="text-[10px] text-[#8C879A] uppercase block">Total Contacts</span>
+                <span className="text-sm font-bold text-[#0F0E17]">{camp.totalContacts.toLocaleString()}</span>
               </div>
               <div>
-                <span className="text-[10px] text-[#6E6B7B] uppercase block">Answer Rate</span>
-                <span className="text-sm font-bold text-[#22C55E]">{camp.answerRate}%</span>
+                <span className="text-[10px] text-[#8C879A] uppercase block">Answer Rate</span>
+                <span className="text-sm font-bold text-[#047857]">{camp.answerRate}%</span>
               </div>
               <div>
-                <span className="text-[10px] text-[#6E6B7B] uppercase block">Connected Calls</span>
-                <span className="text-sm font-bold text-[#F7F7FB]">{camp.connectedCalls}</span>
+                <span className="text-[10px] text-[#8C879A] uppercase block">Connected Calls</span>
+                <span className="text-sm font-bold text-[#0F0E17]">{camp.connectedCalls}</span>
               </div>
               <div>
-                <span className="text-[10px] text-[#6E6B7B] uppercase block">Leads Generated</span>
+                <span className="text-[10px] text-[#8C879A] uppercase block">Leads Generated</span>
                 <span className="text-sm font-bold text-[#6344E7]">{camp.leadsGenerated}</span>
               </div>
               <div>
-                <span className="text-[10px] text-[#6E6B7B] uppercase block">Cost Incurred</span>
-                <span className="text-sm font-bold text-[#F7F7FB]">{camp.costIncurred}</span>
+                <span className="text-[10px] text-[#8C879A] uppercase block">Cost Incurred</span>
+                <span className="text-sm font-bold text-[#0F0E17]">{camp.costIncurred}</span>
               </div>
             </div>
 
             {/* Progress Bar & Concurrency Gauge */}
             <div className="space-y-1.5">
-              <div className="flex justify-between text-xs text-[#A19EAD]">
+              <div className="flex justify-between text-xs text-[#524E5E]">
                 <span>Progress ({camp.completedCalls} / {camp.totalContacts} completed)</span>
-                <span className="font-mono font-bold text-[#F7F7FB]">{camp.progressPercent}%</span>
+                <span className="font-mono font-bold text-[#0F0E17]">{camp.progressPercent}%</span>
               </div>
-              <div className="h-2 w-full bg-[#111019] rounded-full overflow-hidden border border-[#262438]">
+              <div className="h-2 w-full bg-[#F0EEF6] rounded-full overflow-hidden border border-[#E4E2EB]">
                 <div
                   style={{ width: `${camp.progressPercent}%` }}
                   className="h-full bg-[#6344E7] rounded-full transition-all"
                 />
               </div>
-              <div className="flex justify-between text-[11px] text-[#6E6B7B] font-mono pt-1">
+              <div className="flex justify-between text-[11px] text-[#8C879A] font-mono pt-1">
                 <span>Concurrency: {camp.concurrencyLimit} simultaneous lines</span>
                 <span>{camp.callingHours}</span>
               </div>
@@ -161,22 +154,22 @@ export function CampaignsModule() {
           {step === 1 && (
             <div className="space-y-4">
               <div>
-                <label className="block font-bold text-[#F7F7FB] mb-1">Campaign Title *</label>
+                <label className="block font-bold text-[#0F0E17] mb-1">Campaign Title *</label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="e.g. Q4 Dental Hygiene Recall"
-                  className="w-full bg-[#181724] border border-[#262438] rounded-xl p-2.5 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-2.5 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-[#F7F7FB] mb-1">Select AI Employee</label>
+                <label className="block font-bold text-[#0F0E17] mb-1">Select AI Employee</label>
                 <select
                   value={formData.agentId}
                   onChange={(e) => setFormData({ ...formData, agentId: e.target.value })}
-                  className="w-full bg-[#181724] border border-[#262438] rounded-xl p-2.5 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-2.5 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 >
                   {agents.map((a) => (
                     <option key={a.id} value={a.id}>
@@ -187,15 +180,15 @@ export function CampaignsModule() {
               </div>
 
               {/* Upload Contacts CSV */}
-              <div className="p-6 rounded-xl border-2 border-dashed border-[#262438] bg-[#181724] text-center">
+              <div className="p-6 rounded-xl border-2 border-dashed border-[#E4E2EB] bg-[#FAF9FD] text-center">
                 <FileSpreadsheet className="w-8 h-8 text-[#6344E7] mx-auto mb-2" />
-                <h4 className="font-bold text-[#F7F7FB]">Upload Contact List CSV</h4>
-                <p className="text-[11px] text-[#A19EAD] mt-1">
+                <h4 className="font-bold text-[#0F0E17]">Upload Contact List CSV</h4>
+                <p className="text-[11px] text-[#524E5E] mt-1">
                   Columns: phone, contact_name, service_type, appointment_date
                 </p>
                 <button
                   type="button"
-                  className="mt-3 px-3 py-1.5 rounded-lg bg-[#6344E7]/15 text-[#6344E7] font-semibold border border-[#6344E7]/30 hover:bg-[#6344E7]/25 transition-all"
+                  className="mt-3 px-3 py-1.5 rounded-lg bg-white text-[#0F0E17] font-semibold border border-[#E4E2EB] hover:bg-[#F0EEF6] transition-all shadow-2xs"
                 >
                   Select contacts.csv (1,500 rows loaded)
                 </button>
@@ -212,7 +205,7 @@ export function CampaignsModule() {
           {step === 2 && (
             <div className="space-y-4">
               <div>
-                <label className="block font-bold text-[#F7F7FB] mb-1">
+                <label className="block font-bold text-[#0F0E17] mb-1">
                   Max Concurrent Lines: {formData.concurrencyLimit} calls
                 </label>
                 <input
@@ -224,43 +217,43 @@ export function CampaignsModule() {
                   onChange={(e) => setFormData({ ...formData, concurrencyLimit: parseInt(e.target.value) })}
                   className="w-full accent-[#6344E7]"
                 />
-                <span className="text-[10px] text-[#6E6B7B] mt-1 block font-mono">
+                <span className="text-[10px] text-[#524E5E] mt-1 block font-mono">
                   Controls how many calls dial simultaneously. Paced to avoid carrier line congestion.
                 </span>
               </div>
 
               <div>
-                <label className="block font-bold text-[#F7F7FB] mb-1">
+                <label className="block font-bold text-[#0F0E17] mb-1">
                   TCPA Calling Hours Window
                 </label>
                 <input
                   type="text"
                   value={formData.callingHours}
                   onChange={(e) => setFormData({ ...formData, callingHours: e.target.value })}
-                  className="w-full bg-[#181724] border border-[#262438] rounded-xl p-2.5 text-xs text-[#F7F7FB] focus:outline-none focus:border-[#6344E7]"
+                  className="w-full bg-[#FAF9FD] border border-[#E4E2EB] rounded-xl p-2.5 text-xs text-[#0F0E17] focus:outline-none focus:border-[#6344E7] transition-colors"
                 />
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#181724] border border-[#262438] space-y-1 font-mono text-[11px]">
-                <div className="flex justify-between text-[#A19EAD]">
+              <div className="p-3.5 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] space-y-1 font-mono text-[11px]">
+                <div className="flex justify-between text-[#524E5E]">
                   <span>Total Contacts</span>
-                  <span className="text-[#F7F7FB]">1,500</span>
+                  <span className="text-[#0F0E17] font-bold">1,500</span>
                 </div>
-                <div className="flex justify-between text-[#A19EAD]">
+                <div className="flex justify-between text-[#524E5E]">
                   <span>Est. Talk Time</span>
-                  <span className="text-[#F7F7FB]">~3,200 min</span>
+                  <span className="text-[#0F0E17] font-bold">~3,200 min</span>
                 </div>
-                <div className="flex justify-between text-[#A19EAD]">
+                <div className="flex justify-between text-[#524E5E]">
                   <span>Est. Total Cost</span>
-                  <span className="font-bold text-[#22C55E]">$152.00 USD</span>
+                  <span className="font-bold text-[#047857]">$152.00 USD</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-[#262438]">
+              <div className="flex items-center justify-between pt-3 border-t border-[#E4E2EB]">
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="text-xs text-[#A19EAD] hover:text-[#F7F7FB]"
+                  className="text-xs font-semibold text-[#524E5E] hover:text-[#0F0E17]"
                 >
                   Back
                 </button>

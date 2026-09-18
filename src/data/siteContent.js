@@ -1,34 +1,21 @@
 export const NAV_LINKS = [
+  { name: 'Live Voice Test', href: '#talk-to-ai' },
+  { name: 'AI Employees', href: '#team' },
+  { name: 'How It Works', href: '#how-it-works' },
+  { name: 'Telephony Channels', href: '#phone' },
   {
-    name: 'Product',
+    name: 'Platform',
     href: '#capabilities',
     dropdown: [
-      { title: 'Capabilities', desc: 'What your AI employee can do', href: '#capabilities' },
-      { title: 'Build Agent', desc: 'Create an AI employee in minutes', href: '#build' },
-      { title: 'Talk to AI', desc: 'Live voice test experience', href: '#talk-to-ai' },
-      { title: 'Phone Channels', desc: 'Inbound, outbound & campaigns', href: '#phone' },
+      { title: 'Core Capabilities', desc: 'Scheduling, CRM sync & workflows', href: '#capabilities' },
+      { title: 'Lead Engine', desc: 'Turn calls into qualified BANT deals', href: '#leads' },
+      { title: 'Bulk Campaigns', desc: 'Dial contact lists concurrently at scale', href: '#campaigns' },
+      { title: 'Knowledge Base & RAG', desc: 'Upload PDFs, SOPs and sales guides', href: '#train' },
+      { title: 'Call Audit & Transcripts', desc: 'Diarized turns, sentiment & waveforms', href: '#conversations' },
+      { title: 'Operational Analytics', desc: '12k+ calls, SLA & resolution rates', href: '#analytics' },
+      { title: 'Industry Playbooks', desc: 'Tailored solutions for healthcare, auto & SaaS', href: '#industries' },
     ],
   },
-  {
-    name: 'Workflows',
-    href: '#leads',
-    dropdown: [
-      { title: 'Lead Engine', desc: 'Turn calls into qualified leads', href: '#leads' },
-      { title: 'Bulk Campaigns', desc: 'Dial lists at massive scale', href: '#campaigns' },
-      { title: 'Train Your AI', desc: 'Knowledge, prompts & policies', href: '#train' },
-      { title: 'AI Team', desc: 'Sales, support, frontdesk & follow-up', href: '#team' },
-    ],
-  },
-  {
-    name: 'Intelligence',
-    href: '#conversations',
-    dropdown: [
-      { title: 'Call History', desc: 'Transcripts & sentiment analysis', href: '#conversations' },
-      { title: 'Performance', desc: '12k+ calls, resolution & funnels', href: '#analytics' },
-      { title: 'Industries', desc: 'Solutions for every vertical', href: '#industries' },
-    ],
-  },
-  { name: 'How It Works', href: '#how-it-works' },
   { name: 'Pricing', href: '#pricing' },
   { name: 'FAQ', href: '#faq' },
 ];

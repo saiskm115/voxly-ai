@@ -6,14 +6,17 @@ import {
   BookOpen,
   Save,
   Play,
+  Square,
   Plus,
   Trash2,
-  CheckCircle2
+  CheckCircle2,
+  Radio
 } from 'lucide-react';
 import { SolidCard } from '../ui/SolidCard';
 import { StatusBadge } from '../ui/StatusBadge';
 import { TactileButton } from '../ui/TactileButton';
 import { useWorkspace } from '../context/WorkspaceContext';
+import { voiceAgent } from '../../services/voiceAgent';
 
 export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
   const {
@@ -26,6 +29,7 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
 
   const [activeTab, setActiveTab] = useState('script');
   const [isSaved, setIsSaved] = useState(false);
+  const [isPlayingVoice, setIsPlayingVoice] = useState(false);
 
   // Local editor form state
   const [formData, setFormData] = useState({
@@ -86,6 +90,41 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
       ...prev,
       objectionRules: prev.objectionRules.filter((_, i) => i !== index)
     }));
+  };
+
+  // Cleanup audio preview on unmount
+  useEffect(() => {
+    return () => {
+      voiceAgent.stopTTS();
+      setIsPlayingVoice(false);
+    };
+  }, []);
+
+  const handlePlayVoicePreview = () => {
+    if (isPlayingVoice) {
+      voiceAgent.stopTTS();
+      setIsPlayingVoice(false);
+      return;
+    }
+
+    const previewText = formData.greeting || `Hi there! I am ${formData.name}. I am calibrated and ready to take your calls.`;
+    setIsPlayingVoice(true);
+
+    voiceAgent.playTTS(
+      previewText,
+      () => {
+        setIsPlayingVoice(false);
+      },
+      () => {
+        setIsPlayingVoice(true);
+      },
+      {
+        speed: formData.voice?.speed || 1.0,
+        pitch: formData.voice?.pitch || 0.0,
+        voiceName: formData.voice?.voiceName || formData.name,
+        provider: formData.voice?.provider
+      }
+    );
   };
 
   return (
@@ -389,14 +428,14 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
               <div>
                 <div className="flex justify-between text-xs mb-1.5">
                   <span className="font-semibold text-[#0F0E17]">Stability & Consistency</span>
-                  <span className="font-mono text-[#6344E7] font-bold">{formData.voice.stability}</span>
+                  <span className="font-mono text-[#6344E7] font-bold">{formData.voice?.stability || 0.75}</span>
                 </div>
                 <input
                   type="range"
                   min="0.3"
                   max="1.0"
                   step="0.05"
-                  value={formData.voice.stability}
+                  value={formData.voice?.stability || 0.75}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
@@ -406,6 +445,66 @@ export function AgentStudioModule({ onNavigate, onOpenBuyNumber }) {
                   className="w-full accent-[#6344E7]"
                 />
               </div>
+            </div>
+          </SolidCard>
+
+          {/* Interactive Voice Test & Preview Card */}
+          <SolidCard className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xs font-bold text-[#0F0E17] flex items-center gap-2">
+                  <Radio className="w-3.5 h-3.5 text-[#6344E7]" />
+                  <span>Acoustic Voice Preview & Live Test</span>
+                </h3>
+                <p className="text-[11px] text-[#524E5E]">Hear this voice speak the opening greeting using the calibrated speed and pitch.</p>
+              </div>
+
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md border font-semibold ${
+                isPlayingVoice
+                  ? 'bg-[#22C55E]/15 text-[#15803D] border-[#22C55E]/30 animate-pulse'
+                  : 'bg-[#F0EEF6] text-[#524E5E] border-[#E4E2EB]'
+              }`}>
+                {isPlayingVoice ? '● Audio Playing' : 'Ready'}
+              </span>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[#FAF9FD] border border-[#E4E2EB] space-y-3">
+              <div className="text-xs font-medium text-[#0F0E17] leading-relaxed italic">
+                "{formData.greeting || `Hi there! I am ${formData.name}. I am calibrated and ready to take your calls.`}"
+              </div>
+
+              {/* Sound visualizer animation when playing */}
+              {isPlayingVoice && (
+                <div className="flex items-center gap-1 h-5 px-3 py-1 rounded-lg bg-white border border-[#E4E2EB]">
+                  {[12, 22, 16, 26, 14, 20, 10, 24, 18, 14, 22, 16].map((h, i) => (
+                    <span
+                      key={i}
+                      className="w-1 bg-[#6344E7] rounded-full animate-pulse"
+                      style={{ height: `${h}px`, animationDelay: `${i * 70}ms` }}
+                    />
+                  ))}
+                  <span className="text-[10px] font-mono text-[#524E5E] ml-auto">Synthesizing Speech...</span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-3 pt-1">
+              <TactileButton
+                variant={isPlayingVoice ? 'danger' : 'primary'}
+                size="sm"
+                icon={isPlayingVoice ? Square : Play}
+                onClick={handlePlayVoicePreview}
+              >
+                {isPlayingVoice ? 'Stop Audio' : 'Preview Voice'}
+              </TactileButton>
+
+              <TactileButton
+                variant="secondary"
+                size="sm"
+                onClick={() => onNavigate('talk-to-ai')}
+              >
+                Open Full WebRTC Voice Lab
+              </TactileButton>
             </div>
           </SolidCard>
         </div>

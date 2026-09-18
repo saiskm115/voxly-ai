@@ -96,9 +96,9 @@ export function App() {
               }}
             />
 
-      {/* Main Content Sections: Exact 15-Stage Ordered Architecture */}
+      {/* Main Content Sections: Streamlined, Intuitive User Architecture */}
       <main className="flex-1">
-        {/* 01: Hero — AI Voice Agent */}
+        {/* 01: Hero — AI Voice Agent & 3D Interactive Mascot */}
         <Hero
           botState={botState}
           setBotState={setBotState}
@@ -109,56 +109,56 @@ export function App() {
           isModalOpen={isDemoModalOpen || isTalkModalOpen}
         />
 
-        {/* 02: What Can Your AI Employee Do? & Build in Minutes */}
-        <AiEmployeeSection
-          onGetStarted={handleGetStarted}
-        />
-
-        {/* 03: Talk to Your AI (Live Audio & Architecture) */}
+        {/* 02: Immediate Live Voice Lab & Speech Acoustic Player */}
         <TalkToAiSection
           onOpenTalkModal={() => setIsTalkModalOpen(true)}
         />
 
-        {/* 04: AI That Actually Works on the Phone (Inbound, Outbound, Campaigns) */}
-        <PhoneChannelsSection
-          onGetStarted={handleGetStarted}
-        />
-
-        {/* 05: Turn Calls Into Leads (Pipeline & Intelligence) */}
-        <LeadEngineSection
-          onGetStarted={handleGetStarted}
-        />
-
-        {/* 06: Run Campaigns at Scale (Bulk Dialing Engine) */}
-        <CampaignScaleSection
-          onGetStarted={handleGetStarted}
-        />
-
-        {/* 07: Train Your AI (Business Knowledge & AI Brain) */}
-        <TrainingSection />
-
-        {/* 08: Build an AI Team (Sales, Support, Receptionist, Follow-up) */}
+        {/* 03: Autonomous AI Workforce Fleet (Sales, Support, Receptionist, Follow-up) */}
         <AiTeamSection
           onGetStarted={handleGetStarted}
         />
 
-        {/* 09: Conversations & Call History (Transcripts & Sentiment) */}
-        <ConversationHistorySection />
-
-        {/* 10: AI Performance Dashboard (12k+ Calls & Telemetry) */}
-        <AnalyticsSection />
-
-        {/* 11: Industries / Use Cases (6 Vertical Solutions) */}
-        <IndustriesSection
-          onGetStarted={handleGetStarted}
-        />
-
-        {/* 12: Simple Setup (5 Steps) & Transparent Usage Billing */}
+        {/* 04: Fast Setup & Production Telephony Onboarding (5 Steps) */}
         <HowItWorksSection
           onGetStarted={handleGetStarted}
         />
 
-        {/* 13: Pricing (Plans & Minutes) */}
+        {/* 05: Telephony Channels (Inbound 24/7, Outbound SDR, Virtual DIDs) */}
+        <PhoneChannelsSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 06: Core Capabilities & Visual Agent Builder */}
+        <AiEmployeeSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 07: Autonomous Lead Qualification Engine (BANT Deals & Pipeline) */}
+        <LeadEngineSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 08: Bulk Outbound Campaigns at Scale (Dialing Engine) */}
+        <CampaignScaleSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 09: Train Your AI (Knowledge Base, SOP Documents & AI Brain) */}
+        <TrainingSection />
+
+        {/* 10: Call History & Diarized Transcript Inspector */}
+        <ConversationHistorySection />
+
+        {/* 11: Operational Intelligence Dashboard (12k+ Calls & Telemetry) */}
+        <AnalyticsSection />
+
+        {/* 12: Vertical Industry Playbooks (Healthcare, Finance, Real Estate, SaaS) */}
+        <IndustriesSection
+          onGetStarted={handleGetStarted}
+        />
+
+        {/* 13: Transparent Economics & Fleet Pricing */}
         <PricingSection
           onSelectPlan={handleSelectPlan}
         />
@@ -166,7 +166,7 @@ export function App() {
         {/* 14: Frequently Asked Questions */}
         <FAQSection />
 
-        {/* 15: Final Call to Action */}
+        {/* 15: Executive Call to Action */}
         <FinalCTA
           onGetStarted={handleGetStarted}
           onTalkToMe={() => setIsTalkModalOpen(true)}

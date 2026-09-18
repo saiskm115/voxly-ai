@@ -20,6 +20,19 @@ class VoiceAgentAdapter {
       "Would you like me to start a live inbound qualification demo or schedule a workflow test for your team?",
     ];
     this.responseIndex = 0;
+    this.availableVoices = [];
+
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      const loadVoices = () => {
+        try {
+          this.availableVoices = window.speechSynthesis.getVoices() || [];
+        } catch (e) {
+          this.availableVoices = [];
+        }
+      };
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
   }
 
   ensureAudioContext() {
@@ -33,7 +46,7 @@ class VoiceAgentAdapter {
       }
     }
     if (this.audioContext && this.audioContext.state === 'suspended') {
-      this.audioContext.resume();
+      this.audioContext.resume().catch(() => {});
     }
     return this.audioContext;
   }
@@ -50,7 +63,9 @@ class VoiceAgentAdapter {
 
   notify(event, data) {
     for (const listener of this.listeners) {
-      listener(event, data);
+      try {
+        listener(event, data);
+      } catch (e) {}
     }
   }
 
@@ -67,11 +82,18 @@ class VoiceAgentAdapter {
       this.isListening = true;
       this.notify('stateChange', { state: 'LISTENING', text: 'Listening to your voice...' });
 
-      // Connect microphone to an analyser if desired
-      const source = this.audioContext.createMediaStreamSource(this.mediaStream);
-      // We don't route microphone to audioContext.destination to avoid acoustic feedback!
+      // Connect microphone to an analyser
+      if (this.audioContext && this.mediaStream) {
+        try {
+          const source = this.audioContext.createMediaStreamSource(this.mediaStream);
+          // Only route to analyser, NOT to audioContext.destination to avoid feedback loop
+          if (this.analyser) {
+            source.connect(this.analyser);
+          }
+        } catch (e) {}
+      }
 
-      // Check SpeechRecognition support for demo transcript
+      // SpeechRecognition support
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
@@ -80,17 +102,16 @@ class VoiceAgentAdapter {
         recognition.lang = 'en-US';
 
         recognition.onresult = (event) => {
-          const transcript = event.results[0][0].transcript;
+          const transcript = event.results[0]?.[0]?.transcript || '';
           this.stopListening();
           if (onSpeechResult) onSpeechResult(transcript);
           this.handleUserInput(transcript);
         };
 
         recognition.onerror = (e) => {
-          console.warn("Speech recognition error:", e.error);
           this.stopListening();
-          // Fallback demo input if speech recognition fails or is silent
-          this.handleUserInput("Tell me how Voxly qualifies leads.");
+          if (onSpeechResult) onSpeechResult("Can you tell me how Voxly handles voice calls?");
+          this.handleUserInput("Can you tell me how Voxly handles voice calls?");
         };
 
         recognition.start();
@@ -100,9 +121,11 @@ class VoiceAgentAdapter {
         setTimeout(() => {
           if (this.isListening) {
             this.stopListening();
-            this.handleUserInput("Tell me how Voxly qualifies leads.");
+            const fallbackText = "Tell me how Voxly qualifies inbound leads.";
+            if (onSpeechResult) onSpeechResult(fallbackText);
+            this.handleUserInput(fallbackText);
           }
-        }, 3200);
+        }, 2800);
       }
 
       return true;
@@ -116,37 +139,54 @@ class VoiceAgentAdapter {
 
   stopListening() {
     this.isListening = false;
-    if (this.mediaStream) {
-      this.mediaStream.getTracks().forEach((track) => track.stop());
-      this.mediaStream = null;
-    }
     if (this.recognition) {
       try {
         this.recognition.stop();
       } catch (e) {}
       this.recognition = null;
     }
+    if (this.mediaStream) {
+      this.mediaStream.getTracks().forEach((track) => {
+        try {
+          track.stop();
+        } catch (e) {}
+      });
+      this.mediaStream = null;
+    }
   }
 
-  async handleUserInput(userText) {
+  handleUserInput(userText) {
     this.notify('stateChange', { state: 'THINKING', userText });
 
-    // Simulate AI thinking latency (sub-500ms feel)
+    // Response generation with natural latency
     setTimeout(() => {
-      const response = this.mockResponses[this.responseIndex % this.mockResponses.length];
+      let response = this.mockResponses[this.responseIndex % this.mockResponses.length];
       this.responseIndex++;
+
+      const lower = userText.toLowerCase();
+      if (lower.includes('price') || lower.includes('cost')) {
+        response = "We charge a simple flat rate of 9.5 cents per minute with pure per-second metering. Unanswered rings and busy signals are always completely free.";
+      } else if (lower.includes('transfer') || lower.includes('human')) {
+        response = "I immediately perform warm transfers to your human team members, passing a full live audio transcript so they have complete context.";
+      } else if (lower.includes('crm') || lower.includes('integrate') || lower.includes('salesforce') || lower.includes('hubspot')) {
+        response = "I sync bi-directionally with HubSpot, Salesforce, Cal.com, and Google Calendar. Every qualified lead and appointment is posted autonomously.";
+      } else if (lower.includes('fast') || lower.includes('latency') || lower.includes('speed')) {
+        response = "My voice response latency is under 350 milliseconds — completely imperceptible from human conversation.";
+      }
+
       this.playTTS(response);
-    }, 700);
+    }, 450);
   }
 
-  playTTS(text, { onStart, onEnd } = {}) {
-    const ctx = this.ensureAudioContext();
+  playTTS(text, onEnd, onStart, options = {}) {
+    this.ensureAudioContext();
     this.isSpeaking = true;
     this.notify('stateChange', { state: 'TALKING', responseText: text });
 
-    // Play a gentle, high-tech robot chime so user immediately hears audio feedback on click
-    if (ctx) {
+    // Subtle acoustic connect chime
+    if (this.audioContext && this.audioContext.state === 'running') {
       try {
+        const ctx = this.audioContext;
         const now = ctx.currentTime;
         const osc1 = ctx.createOscillator();
         const osc2 = ctx.createOscillator();
@@ -154,13 +194,13 @@ class VoiceAgentAdapter {
 
         osc1.type = 'sine';
         osc2.type = 'triangle';
-        osc1.frequency.setValueAtTime(587.33, now); // D5
-        osc1.frequency.exponentialRampToValueAtTime(880.0, now + 0.12); // A5
-        osc2.frequency.setValueAtTime(440.0, now); // A4
-        osc2.frequency.exponentialRampToValueAtTime(659.25, now + 0.12); // E5
+        osc1.frequency.setValueAtTime(587.33, now);
+        osc1.frequency.exponentialRampToValueAtTime(880.0, now + 0.1);
+        osc2.frequency.setValueAtTime(440.0, now);
+        osc2.frequency.exponentialRampToValueAtTime(659.25, now + 0.1);
 
-        chimeGain.gain.setValueAtTime(0.08, now);
-        chimeGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        chimeGain.gain.setValueAtTime(0.06, now);
+        chimeGain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
 
         osc1.connect(chimeGain);
         osc2.connect(chimeGain);
@@ -172,30 +212,36 @@ class VoiceAgentAdapter {
 
         osc1.start(now);
         osc2.start(now);
-        osc1.stop(now + 0.36);
-        osc2.stop(now + 0.36);
+        osc1.stop(now + 0.26);
+        osc2.stop(now + 0.26);
       } catch (e) {}
     }
 
-    if ('speechSynthesis' in window) {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       try {
-        if (window.speechSynthesis.speaking) {
+        if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
           window.speechSynthesis.cancel();
         }
         window.speechSynthesis.resume();
       } catch (e) {}
 
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 1.02;
-      utterance.pitch = 1.1;
-      utterance.volume = 1.0;
+      utterance.rate = options.rate || options.speed || 1.02;
+      utterance.pitch = options.pitch !== undefined ? (1.0 + options.pitch) : 1.05;
+      utterance.volume = options.volume || 1.0;
 
-      // Pick a friendly, high-quality voice if available
-      const voices = window.speechSynthesis.getVoices();
+      // Pick a friendly, high-quality voice
+      const voices = this.availableVoices.length > 0 ? this.availableVoices : window.speechSynthesis.getVoices();
       if (voices && voices.length > 0) {
-        const preferredVoice = voices.find(
-          (v) => v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha') || v.name.includes('Female') || v.name.includes('Zira') || v.name.includes('Jenny'))
-        );
+        let preferredVoice = null;
+        if (options.voiceName) {
+          preferredVoice = voices.find((v) => v.name.toLowerCase().includes(options.voiceName.toLowerCase()));
+        }
+        if (!preferredVoice) {
+          preferredVoice = voices.find(
+            (v) => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Jenny') || v.name.includes('Zira'))
+          ) || voices.find((v) => v.lang.startsWith('en'));
+        }
         if (preferredVoice) utterance.voice = preferredVoice;
       }
 
@@ -207,14 +253,17 @@ class VoiceAgentAdapter {
           osc = this.audioContext.createOscillator();
           gain = this.audioContext.createGain();
           gain.gain.value = 0.0001;
-          osc.frequency.setValueAtTime(220, this.audioContext.currentTime);
+          osc.frequency.setValueAtTime(240, this.audioContext.currentTime);
           osc.connect(gain);
           gain.connect(this.analyser);
           osc.start();
         } catch (e) {}
       }
 
+      let hasCleanedUp = false;
       const cleanup = () => {
+        if (hasCleanedUp) return;
+        hasCleanedUp = true;
         if (osc) {
           try {
             osc.stop();
@@ -223,6 +272,7 @@ class VoiceAgentAdapter {
           osc = null;
         }
         this.isSpeaking = false;
+        this.currentUtterance = null;
         this.notify('stateChange', { state: 'IDLE' });
       };
 
@@ -237,16 +287,26 @@ class VoiceAgentAdapter {
 
       utterance.onerror = () => {
         cleanup();
+        if (onEnd) onEnd();
       };
 
       this.currentUtterance = utterance;
 
-      // Speak SYNCHRONOUSLY within user gesture call stack
       try {
         window.speechSynthesis.speak(utterance);
       } catch (e) {
         cleanup();
+        if (onEnd) onEnd();
       }
+
+      // Safety timeout: Chrome can sometimes hang onend for long utterances
+      const estimatedDurationMs = Math.max(2000, (text.split(' ').length / 2.5) * 1000 + 1500);
+      setTimeout(() => {
+        if (this.isSpeaking && this.currentUtterance === utterance) {
+          cleanup();
+          if (onEnd) onEnd();
+        }
+      }, estimatedDurationMs);
     } else {
       setTimeout(() => {
         this.isSpeaking = false;
@@ -257,13 +317,14 @@ class VoiceAgentAdapter {
   }
 
   stopTTS() {
-    if ('speechSynthesis' in window) {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       try {
         window.speechSynthesis.cancel();
       } catch (e) {}
     }
     this.isSpeaking = false;
     this.currentUtterance = null;
+    this.notify('stateChange', { state: 'IDLE' });
   }
 
   stopConversation() {

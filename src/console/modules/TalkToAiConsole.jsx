@@ -111,6 +111,13 @@ export function TalkToAiConsole() {
     return () => clearInterval(interval);
   }, [sessionState]);
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      voiceAgent.stopConversation();
+    };
+  }, []);
+
   // Start Session
   const handleStartSession = () => {
     setSessionState('CONNECTING');
@@ -119,11 +126,12 @@ export function TalkToAiConsole() {
       setBotState('SPEAKING');
       voiceAgent.ensureAudioContext();
       
+      const welcomeText = `Connected! I'm ${activeAgent?.name || 'your agent'}, running live on WebRTC. How can I assist you with your appointment or inquiry today?`;
       const welcomeMsg = {
         id: `t-${Date.now()}`,
         role: 'agent',
         speaker: activeAgent?.name || 'Voice AI',
-        text: `Connected! I'm ${activeAgent?.name || 'your agent'}, running live on WebRTC. How can I help?`,
+        text: welcomeText,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
         intent: 'session_init',
         sentiment: 'positive',
@@ -131,31 +139,82 @@ export function TalkToAiConsole() {
       };
       setTranscript(prev => [...prev, welcomeMsg]);
 
-      setTimeout(() => {
-        setBotState('LISTENING');
-      }, 2400);
-    }, 1200);
+      // Speak welcome message through speech synthesis
+      voiceAgent.playTTS(
+        welcomeText,
+        () => {
+          setBotState('LISTENING');
+          if (!isMuted) {
+            voiceAgent.startListening({
+              onSpeechResult: (spokenText) => {
+                handleSendMessage(spokenText);
+              }
+            });
+          }
+        },
+        () => {
+          setBotState('SPEAKING');
+        },
+        {
+          speed: activeAgent?.voice?.speed || 1.0,
+          pitch: activeAgent?.voice?.pitch || 0.0,
+          voiceName: activeAgent?.voice?.voiceName || activeAgent?.name
+        }
+      );
+    }, 1000);
   };
 
   // End Session
   const handleEndSession = () => {
+    voiceAgent.stopConversation();
     setSessionState('DISCONNECTED');
     setBotState('IDLE');
+    setIsMuted(false);
   };
 
   // Force Interrupt
   const handleForceInterrupt = () => {
     if (sessionState !== 'CONNECTED') return;
+    voiceAgent.stopTTS();
     setBotState('INTERRUPTED');
     setTimeout(() => {
       setBotState('LISTENING');
-    }, 450);
+      if (!isMuted) {
+        voiceAgent.startListening({
+          onSpeechResult: (spokenText) => {
+            handleSendMessage(spokenText);
+          }
+        });
+      }
+    }, 350);
+  };
+
+  // Toggle Microphone
+  const handleToggleMic = async () => {
+    if (sessionState !== 'CONNECTED') return;
+    if (!isMuted) {
+      voiceAgent.stopListening();
+      setIsMuted(true);
+    } else {
+      setIsMuted(false);
+      setBotState('LISTENING');
+      await voiceAgent.startListening({
+        onSpeechResult: (spokenText) => {
+          handleSendMessage(spokenText);
+        },
+        onError: () => {
+          setIsMuted(true);
+        }
+      });
+    }
   };
 
   // Send User Message / Inject Prompt
   const handleSendMessage = (textToSend) => {
     const query = textToSend || textInput;
     if (!query.trim() || sessionState !== 'CONNECTED') return;
+
+    voiceAgent.stopListening();
 
     const userEntry = {
       id: `t-user-${Date.now()}`,
@@ -178,20 +237,20 @@ export function TalkToAiConsole() {
       let replyText = "I understand completely. Let me verify that in our database.";
       let intentTag = "general_inquiry";
 
-      if (query.toLowerCase().includes("cost") || query.toLowerCase().includes("implant")) {
+      if (query.toLowerCase().includes("cost") || query.toLowerCase().includes("implant") || query.toLowerCase().includes("pricing")) {
         replyText = "Single tooth dental implants typically start from $1,850 including the abutment and crown. We also provide zero-interest financing through CareCredit.";
         intentTag = "pricing_inquiry";
-      } else if (query.toLowerCase().includes("friday") || query.toLowerCase().includes("appointment")) {
-        replyText = "I have a 3:00 PM opening this Friday with Dr. Chen. Shall I reserve that slot under your name?";
+      } else if (query.toLowerCase().includes("friday") || query.toLowerCase().includes("appointment") || query.toLowerCase().includes("schedule")) {
+        replyText = "I have an opening this Friday at 3:00 PM with Dr. Chen. Shall I reserve that slot under your name?";
         intentTag = "booking_request";
-      } else if (query.toLowerCase().includes("human") || query.toLowerCase().includes("ai")) {
+      } else if (query.toLowerCase().includes("human") || query.toLowerCase().includes("ai") || query.toLowerCase().includes("real")) {
         replyText = "I am an autonomous voice assistant engineered by Voxly, but I have direct access to clinic schedules and can transfer you to our front desk anytime.";
         intentTag = "identity_verification";
-      } else if (query.toLowerCase().includes("insurance") || query.toLowerCase().includes("dental")) {
+      } else if (query.toLowerCase().includes("insurance") || query.toLowerCase().includes("dental") || query.toLowerCase().includes("ppo")) {
         replyText = "Yes! We are an in-network provider for Delta Dental Premier and PPO plans. We can perform real-time benefits verification before your visit.";
         intentTag = "insurance_check";
-      } else if (query.toLowerCase().includes("doctor")) {
-        replyText = "Dr. Miller is currently in a restorative procedure, but I can flag an urgent priority callback or warm transfer you to head nurse Sarah.";
+      } else if (query.toLowerCase().includes("doctor") || query.toLowerCase().includes("urgent") || query.toLowerCase().includes("pain")) {
+        replyText = "Dr. Miller is currently in a restorative procedure, but I can flag an urgent priority callback or warm transfer you to head nurse Sarah right away.";
         intentTag = "escalation_transfer";
       }
 
@@ -208,10 +267,29 @@ export function TalkToAiConsole() {
 
       setTranscript(prev => [...prev, agentReply]);
 
-      setTimeout(() => {
-        setBotState('LISTENING');
-      }, 3500);
-    }, 480);
+      // Speak response through voiceAgent
+      voiceAgent.playTTS(
+        replyText,
+        () => {
+          setBotState('LISTENING');
+          if (!isMuted) {
+            voiceAgent.startListening({
+              onSpeechResult: (spokenText) => {
+                handleSendMessage(spokenText);
+              }
+            });
+          }
+        },
+        () => {
+          setBotState('SPEAKING');
+        },
+        {
+          speed: activeAgent?.voice?.speed || 1.0,
+          pitch: activeAgent?.voice?.pitch || 0.0,
+          voiceName: activeAgent?.voice?.voiceName || activeAgent?.name
+        }
+      );
+    }, 450);
   };
 
   return (
@@ -405,10 +483,10 @@ export function TalkToAiConsole() {
                   <TactileButton
                     variant={isMuted ? 'danger' : 'secondary'}
                     size="sm"
-                    onClick={() => setIsMuted(!isMuted)}
+                    onClick={handleToggleMic}
                     disabled={sessionState !== 'CONNECTED'}
                   >
-                    {isMuted ? <MicOff className="w-4 h-4 mr-1 text-rose-400" /> : <Mic className="w-4 h-4 mr-1" />}
+                    {isMuted ? <MicOff className="w-4 h-4 mr-1 text-rose-400" /> : <Mic className="w-4 h-4 mr-1 text-emerald-400" />}
                     {isMuted ? 'Muted' : 'Mic Live'}
                   </TactileButton>
 

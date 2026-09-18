@@ -237,16 +237,31 @@ export function Navbar({ onGetStarted, onWatchDemo, onSignIn, onOpenDashboard })
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-b border-[#E4E2EB] px-6 py-5 space-y-4 shadow-xl">
-          <div className="space-y-2">
+          <div className="space-y-1">
             {NAV_LINKS.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 text-sm font-semibold text-[#0F0E17] hover:text-[#6344E7]"
-              >
-                {link.name}
-              </a>
+              <div key={link.name}>
+                <a
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-2 text-sm font-semibold text-[#0F0E17] hover:text-[#6344E7]"
+                >
+                  {link.name}
+                </a>
+                {link.dropdown && (
+                  <div className="pl-3 pb-2 space-y-1 border-l-2 border-[#E4E2EB] ml-1">
+                    {link.dropdown.map((sub) => (
+                      <a
+                        key={sub.title}
+                        href={sub.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-1 text-xs text-[#524E5E] hover:text-[#0F0E17]"
+                      >
+                        {sub.title}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
           <div className="pt-3 border-t border-[#E4E2EB] flex flex-col gap-2.5">

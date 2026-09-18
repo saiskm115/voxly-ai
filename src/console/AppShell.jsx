@@ -28,14 +28,20 @@ export function AppShell({ onBackToLanding }) {
     setIsCommandPaletteOpen
   } = useWorkspace();
 
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(() => {
+    if (typeof window !== 'undefined' && window.location.hash.startsWith('#dashboard/')) {
+      const tab = window.location.hash.replace('#dashboard/', '').split('?')[0];
+      return tab || 'overview';
+    }
+    return 'overview';
+  });
 
   // Handle hash changes if hash points to a specific tab
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash;
       if (hash.startsWith('#dashboard/')) {
-        const tab = hash.replace('#dashboard/', '');
+        const tab = hash.replace('#dashboard/', '').split('?')[0];
         if (tab) setActiveTab(tab);
       }
     };

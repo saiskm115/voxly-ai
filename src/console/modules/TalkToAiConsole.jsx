@@ -36,8 +36,8 @@ const SAMPLE_PROMPTS = [
 ];
 
 export function TalkToAiConsole() {
-  const { workspace } = useWorkspace();
-  const [selectedAgentId, setSelectedAgentId] = useState(workspace.agents[0]?.id || 'ag-1');
+  const { agents = [] } = useWorkspace();
+  const [selectedAgentId, setSelectedAgentId] = useState(agents[0]?.id || 'agent-maya');
   const [sessionState, setSessionState] = useState('DISCONNECTED'); // DISCONNECTED | CONNECTING | CONNECTED
   const [botState, setBotState] = useState('IDLE'); // IDLE | LISTENING | THINKING | SPEAKING | INTERRUPTED
   const [isMuted, setIsMuted] = useState(false);
@@ -71,7 +71,7 @@ export function TalkToAiConsole() {
 
   const [bars, setBars] = useState(Array.from({ length: 24 }, () => 15));
   const transcriptEndRef = useRef(null);
-  const activeAgent = workspace.agents.find(a => a.id === selectedAgentId) || workspace.agents[0];
+  const activeAgent = (agents && agents.find(a => a.id === selectedAgentId)) || (agents && agents[0]) || { name: 'Maya', role: 'Inbound Receptionist' };
 
   // Auto-scroll transcript
   useEffect(() => {
@@ -318,7 +318,7 @@ export function TalkToAiConsole() {
             disabled={sessionState === 'CONNECTED'}
             className="h-9 px-3 text-xs font-semibold bg-white text-[#0F0E17] border border-[#E4E2EB] rounded-xl focus:border-[#6344E7] focus:outline-none transition-colors shadow-craft-xs"
           >
-            {workspace.agents.map(ag => (
+            {agents.map(ag => (
               <option key={ag.id} value={ag.id}>
                 {ag.name} ({ag.role})
               </option>

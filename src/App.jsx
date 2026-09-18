@@ -1,5 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { AuthProvider } from './context/AuthContext';
+import { WorkspaceProvider } from './console/context/WorkspaceContext';
+import { AppShell } from './console/AppShell';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AiEmployeeSection } from './components/AiEmployeeSection';
@@ -23,6 +25,13 @@ import { LegalModals } from './components/LegalModals';
 import { AuthModal } from './components/AuthModal';
 
 export function App() {
+  const [currentView, setCurrentView] = useState(() => {
+    if (typeof window !== 'undefined' && window.location.hash.startsWith('#dashboard')) {
+      return 'dashboard';
+    }
+    return 'landing';
+  });
+
   const [botState, setBotState] = useState('IDLE');
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isTalkModalOpen, setIsTalkModalOpen] = useState(false);
@@ -32,17 +41,31 @@ export function App() {
   const [legalModalTab, setLegalModalTab] = useState('privacy');
   const botControllerRef = useRef(null);
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash.startsWith('#dashboard')) {
+        setCurrentView('dashboard');
+      } else if (!window.location.hash || window.location.hash === '#' || !window.location.hash.includes('dashboard')) {
+        setCurrentView('landing');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   const handleOpenSignIn = (mode = 'signin') => {
     setAuthModalMode(mode);
     setIsAuthModalOpen(true);
   };
 
   const handleGetStarted = () => {
-    handleOpenSignIn('signup');
+    setCurrentView('dashboard');
+    window.location.hash = '#dashboard/employees';
   };
 
   const handleSelectPlan = (planName) => {
-    handleOpenSignIn('signup');
+    setCurrentView('dashboard');
+    window.location.hash = '#dashboard/billing';
   };
 
   const handleOpenLegal = (tab = 'privacy') => {
@@ -52,13 +75,26 @@ export function App() {
 
   return (
     <AuthProvider>
-      <div className="min-h-screen flex flex-col bg-[#FAF9FD] selection:bg-[#F0EEF6] selection:text-[#6344E7]">
-        {/* Navigation Header */}
-        <Navbar
-          onGetStarted={handleGetStarted}
-          onWatchDemo={() => setIsDemoModalOpen(true)}
-          onSignIn={() => handleOpenSignIn('signin')}
-        />
+      <WorkspaceProvider>
+        {currentView === 'dashboard' ? (
+          <AppShell
+            onBackToLanding={() => {
+              setCurrentView('landing');
+              window.location.hash = '';
+            }}
+          />
+        ) : (
+          <div className="min-h-screen flex flex-col bg-[#FAF9FD] selection:bg-[#F0EEF6] selection:text-[#6344E7]">
+            {/* Navigation Header */}
+            <Navbar
+              onGetStarted={handleGetStarted}
+              onWatchDemo={() => setIsDemoModalOpen(true)}
+              onSignIn={() => handleOpenSignIn('signin')}
+              onOpenDashboard={(tab) => {
+                setCurrentView('dashboard');
+                window.location.hash = tab ? `#dashboard/${tab}` : '#dashboard';
+              }}
+            />
 
       {/* Main Content Sections: Exact 15-Stage Ordered Architecture */}
       <main className="flex-1">
@@ -159,13 +195,19 @@ export function App() {
         defaultTab={legalModalTab}
       />
 
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        initialMode={authModalMode}
-      />
-    </div>
-  </AuthProvider>
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          initialMode={authModalMode}
+          onAuthSuccess={() => {
+            setCurrentView('dashboard');
+            window.location.hash = '#dashboard';
+          }}
+        />
+      </div>
+        )}
+      </WorkspaceProvider>
+    </AuthProvider>
   );
 }
 

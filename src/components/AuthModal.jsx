@@ -3,7 +3,7 @@ import { X, Lock, Mail, ArrowRight, CheckCircle2, Shield, Eye, EyeOff, Building,
 import { useAuth } from '../context/AuthContext';
 import { analytics } from '../services/analytics';
 
-export function AuthModal({ isOpen, onClose, initialMode = 'signin' }) {
+export function AuthModal({ isOpen, onClose, initialMode = 'signin', onAuthSuccess }) {
   const {
     loginWithGoogle,
     loginWithGithub,
@@ -50,6 +50,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }) {
       setSuccessMessage(`Welcome back, ${user.name}!`);
       setTimeout(() => {
         onClose();
+        if (onAuthSuccess) onAuthSuccess(user);
       }, 600);
     } catch (err) {
       setErrorMessage(err.message || 'Failed to sign in with Google.');
@@ -67,6 +68,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }) {
       setSuccessMessage(`Welcome back, ${user.name}!`);
       setTimeout(() => {
         onClose();
+        if (onAuthSuccess) onAuthSuccess(user);
       }, 600);
     } catch (err) {
       setErrorMessage(err.message || 'Failed to sign in with GitHub.');
@@ -80,16 +82,17 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }) {
     setErrorMessage('');
 
     try {
+      let authedUser = null;
       if (mode === 'signup') {
         setLoadingMethod('email');
-        const user = await signupWithEmail(name, email, password);
-        analytics.track('auth_signup_success', { userId: user.id });
-        setSuccessMessage(`Account created! Welcome to Voxly, ${user.name}.`);
+        authedUser = await signupWithEmail(name, email, password);
+        analytics.track('auth_signup_success', { userId: authedUser.id });
+        setSuccessMessage(`Account created! Welcome to Voxly, ${authedUser.name}.`);
       } else if (mode === 'signin') {
         setLoadingMethod('email');
-        const user = await loginWithEmail(email, password);
-        analytics.track('auth_signin_success', { userId: user.id });
-        setSuccessMessage(`Welcome back, ${user.name}!`);
+        authedUser = await loginWithEmail(email, password);
+        analytics.track('auth_signin_success', { userId: authedUser.id });
+        setSuccessMessage(`Welcome back, ${authedUser.name}!`);
       } else if (mode === 'magic') {
         setLoadingMethod('magic');
         await loginWithMagicLink(email);
@@ -98,6 +101,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }) {
       }
       setTimeout(() => {
         onClose();
+        if (onAuthSuccess) onAuthSuccess(authedUser);
       }, 700);
     } catch (err) {
       setErrorMessage(err.message || 'Authentication error.');
@@ -116,6 +120,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }) {
       setSuccessMessage(`Authenticated via SSO for ${ssoDomain}!`);
       setTimeout(() => {
         onClose();
+        if (onAuthSuccess) onAuthSuccess(user);
       }, 700);
     } catch (err) {
       setErrorMessage(err.message || 'SSO authentication failed.');

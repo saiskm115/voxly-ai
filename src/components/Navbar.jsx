@@ -3,7 +3,7 @@ import { NAV_LINKS } from '../data/siteContent';
 import { ChevronDown, Menu, X, ArrowRight, User, LogOut, Settings, LayoutDashboard, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-export function Navbar({ onGetStarted, onWatchDemo, onSignIn }) {
+export function Navbar({ onGetStarted, onWatchDemo, onSignIn, onOpenDashboard }) {
   const { user, isAuthenticated, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -148,30 +148,36 @@ export function Navbar({ onGetStarted, onWatchDemo, onSignIn }) {
                   </div>
 
                   <div className="space-y-1 text-xs font-medium">
-                    <a
-                      href="#capabilities"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FAF9FD] text-[#0F0E17] transition-colors"
+                    <button
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        if (onOpenDashboard) onOpenDashboard('employees');
+                      }}
+                      className="w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FAF9FD] text-[#0F0E17] transition-colors text-left"
                     >
                       <LayoutDashboard className="w-3.5 h-3.5 text-[#524E5E]" />
                       <span>Agent Fleet Studio</span>
-                    </a>
-                    <a
-                      href="#how-it-works"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FAF9FD] text-[#0F0E17] transition-colors"
+                    </button>
+                    <button
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        if (onOpenDashboard) onOpenDashboard('billing');
+                      }}
+                      className="w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FAF9FD] text-[#0F0E17] transition-colors text-left"
                     >
                       <ShieldCheck className="w-3.5 h-3.5 text-[#524E5E]" />
                       <span>Usage & Minutes Meter</span>
-                    </a>
-                    <a
-                      href="#pricing"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FAF9FD] text-[#0F0E17] transition-colors"
+                    </button>
+                    <button
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        if (onOpenDashboard) onOpenDashboard('settings');
+                      }}
+                      className="w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FAF9FD] text-[#0F0E17] transition-colors text-left"
                     >
                       <Settings className="w-3.5 h-3.5 text-[#524E5E]" />
                       <span>Fleet Settings</span>
-                    </a>
+                    </button>
                   </div>
 
                   <div className="pt-2 mt-2 border-t border-[#E4E2EB]">
@@ -198,6 +204,16 @@ export function Navbar({ onGetStarted, onWatchDemo, onSignIn }) {
               Sign in
             </button>
           )}
+
+          {/* User Console Direct Entry Button */}
+          <button
+            onClick={() => onOpenDashboard && onOpenDashboard('overview')}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#0F0E17] bg-[#FAF9FD] hover:bg-[#F0EEF6] border border-[#E4E2EB] active:scale-[0.98] transition-all shadow-2xs"
+            title="Open User Console & Agent Fleet Management"
+          >
+            <LayoutDashboard className="w-3.5 h-3.5 text-[#6344E7]" />
+            <span>Console</span>
+          </button>
 
           <button
             onClick={onGetStarted}
@@ -255,6 +271,15 @@ export function Navbar({ onGetStarted, onWatchDemo, onSignIn }) {
                 Sign in
               </button>
             )}
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                if (onOpenDashboard) onOpenDashboard('overview');
+              }}
+              className="w-full py-2.5 text-center text-xs font-semibold text-[#0F0E17] rounded-xl bg-[#FAF9FD] hover:bg-[#F0EEF6] border border-[#E4E2EB]"
+            >
+              Open User Console
+            </button>
             <button
               onClick={() => {
                 setMobileMenuOpen(false);

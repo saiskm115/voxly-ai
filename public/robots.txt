@@ -1,6 +1,7 @@
 # Voxly AI Robots.txt
 User-agent: *
 Allow: /
+Disallow: /dashboard/*
 
 # Sitemaps
 Sitemap: https://voxly.ai/sitemap.xml

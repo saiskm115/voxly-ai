@@ -6,6 +6,9 @@ export function AmbientElements() {
   const sphere1 = useRef();
   const sphere2 = useRef();
   const sphere3 = useRef();
+  const aura = useRef();
+  const orbit = useRef();
+  const orbitInner = useRef();
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
@@ -21,10 +24,36 @@ export function AmbientElements() {
       sphere3.current.position.y = 0.9 + Math.sin(t * 1.3 + 3.0) * 0.09;
       sphere3.current.position.x = 2.1 + Math.cos(t * 0.8 + 2.0) * 0.07;
     }
+    if (aura.current) {
+      aura.current.material.opacity = 0.10 + Math.sin(t * 2.1) * 0.025;
+      aura.current.scale.setScalar(1 + Math.sin(t * 1.4) * 0.045);
+    }
+    if (orbit.current) {
+      orbit.current.rotation.z = t * 0.28;
+      orbit.current.material.opacity = 0.30 + Math.sin(t * 2.4) * 0.08;
+    }
+    if (orbitInner.current) {
+      orbitInner.current.rotation.z = -t * 0.42;
+      orbitInner.current.material.opacity = 0.20 + Math.sin(t * 2.4 + 1) * 0.07;
+    }
   });
 
   return (
     <group position={[0, 0, 0]}>
+      {/* Soft aura and orbiting signal rings: these remain deliberately subtle so
+          they read as premium glow even on displays without post-processing bloom. */}
+      <mesh ref={aura} position={[0, 0.1, -0.7]}>
+        <circleGeometry args={[1.75, 64]} />
+        <meshBasicMaterial color="#8D6BFF" transparent opacity={0.12} depthWrite={false} />
+      </mesh>
+      <mesh ref={orbit} position={[0, -1.42, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[1.32, 0.018, 10, 72]} />
+        <meshBasicMaterial color="#A88BFF" transparent opacity={0.32} depthWrite={false} />
+      </mesh>
+      <mesh ref={orbitInner} position={[0, -1.4, 0.03]} rotation={[-Math.PI / 2, 0, 0.65]}>
+        <torusGeometry args={[0.92, 0.012, 10, 56]} />
+        <meshBasicMaterial color="#D6C9FF" transparent opacity={0.24} depthWrite={false} />
+      </mesh>
 
       {/* Glossy lavender floating orb 1 (top-left) */}
       <mesh ref={sphere1} position={[-1.95, 1.35, 0.2]}>

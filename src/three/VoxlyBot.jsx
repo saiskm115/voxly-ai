@@ -105,9 +105,9 @@ export function VoxlyBot({
     const basePosY = size.width < 640 ? -1.02 : -0.95;
     const baseScale = size.width < 480 ? 0.38 : size.width < 640 ? 0.40 : 0.42;
 
-    // Snappy, silky-smooth dampening (factor 14 instead of sluggish 8) for immediate responsiveness without lag
-    const targetBodyYaw = MathUtils.clamp(pX, -1, 1) * MathUtils.degToRad(50);
-    const targetBodyPitch = MathUtils.clamp(-pY, -1, 1) * MathUtils.degToRad(14);
+    // Snappy, silky-smooth dampening reduced by 20% for natural, precise mouse tracking
+    const targetBodyYaw = MathUtils.clamp(pX, -1, 1) * MathUtils.degToRad(40);
+    const targetBodyPitch = MathUtils.clamp(-pY, -1, 1) * MathUtils.degToRad(11.2);
 
     bodyYawRef.current = MathUtils.damp(bodyYawRef.current, targetBodyYaw, 14, delta);
     bodyPitchRef.current = MathUtils.damp(bodyPitchRef.current, targetBodyPitch, 14, delta);
@@ -127,10 +127,10 @@ export function VoxlyBot({
       // Floating hover motion with celebratory roll hop
       groupRef.current.position.y = basePosY + Math.sin(time * 2.4) * 0.06 + rollHop;
       groupRef.current.scale.setScalar(baseScale);
-      // Body rotation following cursor + lively jiggle + 360 roll
+      // Body rotation following cursor + lively jiggle + 360 roll (dampened by 20%)
       groupRef.current.rotation.y = bodyYawRef.current + Math.sin(time * 1.5) * 0.02 + rollAngle;
       groupRef.current.rotation.x = bodyPitchRef.current;
-      groupRef.current.rotation.z = Math.sin(time * 3.0) * 0.012 - MathUtils.clamp(pX, -1, 1) * MathUtils.degToRad(3) + rollTilt;
+      groupRef.current.rotation.z = Math.sin(time * 3.0) * 0.012 - MathUtils.clamp(pX, -1, 1) * MathUtils.degToRad(2.4) + rollTilt;
     }
 
     if (controller) {

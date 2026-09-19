@@ -5,7 +5,9 @@ import { voiceAgent } from '../services/voiceAgent';
 import { Check, Mic, X } from 'lucide-react';
 
 
-const SEQUENCE_STEPS = [
+// CLICK_INTERACTIONS: Each click on the robot triggers the next interaction in sequence.
+// First click is always a friendly wave greeting. Subsequent clicks cycle through varied responses.
+const CLICK_INTERACTIONS = [
   {
     title: "Voxly",
     message: "Hello! Hiii! 👋 I'm Voxly! Nice to meet you!",
@@ -34,24 +36,6 @@ const SEQUENCE_STEPS = [
     mood: "celebration",
   },
   {
-    title: "Voxly",
-    message: "Don't tickle me! Haha! Double hi to you! 👋😄👋",
-    speech: "Don't tickle me! Haha! Double high five to you!",
-    audioSrc: "/audio/voxly/hero_step4.mp3",
-    expression: "EXCITED",
-    gesture: "DOUBLE_WAVE",
-    mood: "playful",
-  },
-  {
-    title: "Voxly",
-    message: "Double barrel roll & high five! 🚀✨ Let's conquer customer calls!",
-    speech: "Double barrel roll and high five! Let's conquer customer calls!",
-    audioSrc: "/audio/voxly/hero_step5.mp3",
-    expression: "EXCITED",
-    gesture: "DOUBLE_ROLL_DOUBLE_WAVE",
-    mood: "celebration",
-  },
-  {
     title: "Voxly • RAG Intelligence",
     message: "Analyzing your knowledge base... 💡 I can resolve 85% of tier-one questions instantly!",
     speech: "Analyzing your knowledge base... I can resolve 85 percent of tier-one questions instantly!",
@@ -59,6 +43,15 @@ const SEQUENCE_STEPS = [
     expression: "THINKING",
     gesture: "THINKING",
     mood: "smart",
+  },
+  {
+    title: "Voxly",
+    message: "Don't tickle me! Haha! Double hi to you! 👋😄👋",
+    speech: "Don't tickle me! Haha! Double high five to you!",
+    audioSrc: "/audio/voxly/hero_step4.mp3",
+    expression: "EXCITED",
+    gesture: "DOUBLE_WAVE",
+    mood: "playful",
   },
   {
     title: "Voxly • Pipeline Qualified",
@@ -79,6 +72,15 @@ const SEQUENCE_STEPS = [
     mood: "playful",
   },
   {
+    title: "Voxly",
+    message: "Double barrel roll & high five! 🚀✨ Let's conquer customer calls!",
+    speech: "Double barrel roll and high five! Let's conquer customer calls!",
+    audioSrc: "/audio/voxly/hero_step5.mp3",
+    expression: "EXCITED",
+    gesture: "DOUBLE_ROLL_DOUBLE_WAVE",
+    mood: "celebration",
+  },
+  {
     title: "Voxly • Double High-Five",
     message: "Double high-five! 🚀✨ Ready to handle 500 simultaneous calls!",
     speech: "Double high-five! Ready to handle 500 simultaneous calls!",
@@ -95,6 +97,78 @@ const SEQUENCE_STEPS = [
     expression: "SURPRISED",
     gesture: "RIGHT_HAND_WAVE",
     mood: "fast",
+  },
+  {
+    title: "Voxly • Smart Routing",
+    message: "I route calls to the right team instantly! 🧠 No more phone tag!",
+    speech: "I route calls to the right team instantly! No more phone tag!",
+    audioSrc: "/audio/voxly/hero_think.mp3",
+    expression: "THINKING",
+    gesture: "THINKING",
+    mood: "smart",
+  },
+  {
+    title: "Voxly • Celebration Mode",
+    message: "Another happy customer! 🎊 That's what I live for!",
+    speech: "Another happy customer! That's what I live for!",
+    audioSrc: "/audio/voxly/hero_celebrate.mp3",
+    expression: "EXCITED",
+    gesture: "CELEBRATE",
+    mood: "celebration",
+  },
+  {
+    title: "Voxly • Dance Break",
+    message: "Time for a victory dance! 💃🕺 Zero hold times, maximum groove!",
+    speech: "Time for a victory dance! Zero hold times, maximum groove!",
+    audioSrc: "/audio/voxly/hero_dance.mp3",
+    expression: "HAPPY",
+    gesture: "DANCE",
+    mood: "playful",
+  },
+  {
+    title: "Voxly • Wave Hello",
+    message: "Hey there! 👋 Still exploring? Ask me anything about voice AI!",
+    speech: "Hey there! Still exploring? Ask me anything about voice AI!",
+    audioSrc: "/audio/voxly/hero_wave.mp3",
+    expression: "HAPPY",
+    gesture: "RIGHT_HAND_WAVE",
+    mood: "friendly",
+  },
+  {
+    title: "Voxly • Always Listening",
+    message: "I’m all ears. 🎧 Tell me what a great customer conversation sounds like, and I’ll help make it repeatable.",
+    speech: "I'm all ears. Tell me what a great customer conversation sounds like, and I'll help make it repeatable.",
+    audioSrc: "/audio/voxly/hero_wave.mp3",
+    expression: "LISTENING",
+    gesture: "LEFT_HAND_WAVE",
+    mood: "curious",
+  },
+  {
+    title: "Voxly • Confident Follow-up",
+    message: "A warm follow-up, exactly on time. ✨ I keep every promising conversation moving forward.",
+    speech: "A warm follow-up, exactly on time. I keep every promising conversation moving forward.",
+    audioSrc: "/audio/voxly/hero_step2.mp3",
+    expression: "CONFIDENT",
+    gesture: "RIGHT_HAND_WAVE",
+    mood: "confident",
+  },
+  {
+    title: "Voxly • Curious Mode",
+    message: "Ooh, a new challenge! 💫 I can learn your playbook, tone, and handoff rules in one place.",
+    speech: "Ooh, a new challenge. I can learn your playbook, tone, and handoff rules in one place.",
+    audioSrc: "/audio/voxly/hero_surprise.mp3",
+    expression: "CURIOUS",
+    gesture: "THINKING",
+    mood: "curious",
+  },
+  {
+    title: "Voxly • Team Win",
+    message: "That’s a win for your team! 🌟 I’ll celebrate the booked meeting and tee up the next best action.",
+    speech: "That's a win for your team. I'll celebrate the booked meeting and tee up the next best action.",
+    audioSrc: "/audio/voxly/hero_celebrate.mp3",
+    expression: "EXCITED",
+    gesture: "CELEBRATE",
+    mood: "celebration",
   },
 ];
 
@@ -122,11 +196,12 @@ export function Hero({
   const popupAutoDismissTimerRef = useRef(null);
   const loopIndexRef = useRef(0);
   const isHoveredRef = useRef(false);
+  const isInteractingRef = useRef(false);
 
   // Preload all robot voice audio clips for zero-delay instant playback
   useEffect(() => {
     const audioUrls = [
-      ...SEQUENCE_STEPS.map((s) => s.audioSrc).filter(Boolean),
+      ...CLICK_INTERACTIONS.map((s) => s.audioSrc).filter(Boolean),
       '/audio/voxly/hero_pouty.mp3',
       '/audio/voxly/hero_wave.mp3',
       '/audio/voxly/hero_roll.mp3',
@@ -181,6 +256,7 @@ export function Hero({
     popupAutoDismissTimerRef.current = setTimeout(() => {
       if (!isHoveredRef.current && !voiceAgent.isSpeaking) {
         setActivePopup(null);
+        isInteractingRef.current = false;
       } else if (voiceAgent.isSpeaking) {
         resetDismissTimer(1000);
       }
@@ -189,6 +265,11 @@ export function Hero({
 
   // Centralized step execution for user-initiated interactions
   const executeStep = (stepData) => {
+    isInteractingRef.current = true;
+
+    // 1. Immediately halt any active voice to ensure zero overlapping or duplicate audio
+    voiceAgent.stopTTS();
+
     setActivePopup(stepData);
 
     // Cancel dismiss timer while audio is speaking
@@ -229,6 +310,7 @@ export function Hero({
       if (setBotState) setBotState('IDLE');
       // Speech finished: dismiss dialogue box after 3 seconds
       resetDismissTimer(3000);
+      isInteractingRef.current = false;
     };
 
     const onAudioStart = () => {
@@ -270,6 +352,7 @@ export function Hero({
     if (!isHeroInView || isModalOpen) {
       if (popupAutoDismissTimerRef.current) clearTimeout(popupAutoDismissTimerRef.current);
       setActivePopup(null);
+      isInteractingRef.current = false;
       clickCountRef.current = 0;
       loopIndexRef.current = 0;
       if (botControllerRef?.current) {
@@ -349,16 +432,17 @@ export function Hero({
   }, []);
 
   // MANUAL CLICKS:
-  // Debounced (500ms) so 1 physical click = 1 action increment
-  // Manual clicks initiate interaction mode and display dialogue
+  // First click is always "Hi!" with right hand raised high waving palm front.
+  // Subsequent clicks cycle through dialogue responses, voices, and body interaction states.
+  // Protection: when clicking initiates an interaction, until that interaction is completed
+  // the 3D model does NOT jump to a different interaction (prevents manhandling/click-spam).
   const handleBotClick = () => {
-    // If voiceAgent is currently speaking, do not interrupt the speech
-    if (voiceAgent.isSpeaking) {
+    if (voiceAgent.isSpeaking || isInteractingRef.current) {
       return;
     }
 
     const now = Date.now();
-    if (now - lastClickTimeRef.current < 500) {
+    if (now - lastClickTimeRef.current < 400) {
       return; // Ignore duplicate synthetic/bubbling events
     }
     lastClickTimeRef.current = now;
@@ -367,11 +451,11 @@ export function Hero({
     const count = clickCountRef.current;
 
     let stepData = null;
-    if (count <= SEQUENCE_STEPS.length) {
-      stepData = SEQUENCE_STEPS[count - 1];
-      loopIndexRef.current = count % SEQUENCE_STEPS.length;
+    if (count <= CLICK_INTERACTIONS.length) {
+      stepData = CLICK_INTERACTIONS[count - 1];
+      loopIndexRef.current = count % CLICK_INTERACTIONS.length;
     } else {
-      // 11th click+: Pouty / angry expression
+      // Excess clicks: Pouty / angry expression
       stepData = {
         title: "Voxly (Pouty)",
         message: "Hey! Don't poke me, I have calls to make! 😤 Click 'Live Mic Chat' instead!",
@@ -381,7 +465,7 @@ export function Hero({
         gesture: null,
         mood: "angry",
       };
-      // Reset counter after angry poke so next clicks restart fresh
+      // Reset counter after angry poke so next clicks restart fresh from Step 1
       clickCountRef.current = 0;
       loopIndexRef.current = 0;
     }
@@ -472,6 +556,14 @@ export function Hero({
                 }}
               />
 
+              {/* A lightweight, persistent invitation makes the character's rich
+                  click flow discoverable without competing with its dialogue. */}
+              {!activePopup && (
+                <div className="absolute top-3 left-1/2 -translate-x-1/2 rounded-full border border-[#DCD5FF] bg-white/85 px-3 py-1.5 text-[10px] font-bold tracking-wide text-[#6344E7] shadow-sm backdrop-blur-sm pointer-events-none animate-pulse">
+                  Tap Voxly for a surprise ✨
+                </div>
+              )}
+
               {/* Dynamic Interactive Dialogue Box on Interaction:
                   Positioned at top-right corner near the robot without touching it.
                   Displays messages only without interaction buttons, ensuring zero visual clutter. */}
@@ -483,6 +575,8 @@ export function Hero({
                   className={`absolute top-1 right-1 sm:top-2 sm:right-2 md:top-2 md:right-3 lg:top-2 lg:right-0 xl:top-2 xl:right-1 w-[calc(100%-20px)] max-w-[245px] sm:max-w-[265px] p-3.5 rounded-2xl shadow-xl border z-30 transition-all ${
                     activePopup.mood === 'angry'
                       ? 'bg-[#111019] text-white border-red-500/40 shadow-xl'
+                      : activePopup.mood === 'curious'
+                      ? 'bg-[#F7F3FF] text-[#0F0E17] border-[#DCD5FF] shadow-craft-md'
                       : 'bg-white text-[#0F0E17] border-[#E4E2EB] shadow-craft-md'
                   }`}
                 >
@@ -513,6 +607,8 @@ export function Hero({
                       onClick={(e) => {
                         e.stopPropagation();
                         setActivePopup(null);
+                        isInteractingRef.current = false;
+                        voiceAgent.stopTTS();
                       }}
                       className="text-xs font-bold opacity-60 hover:opacity-100 p-0.5 rounded transition-opacity shrink-0"
                       title="Dismiss"

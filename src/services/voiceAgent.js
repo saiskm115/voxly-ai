@@ -22,6 +22,7 @@ class VoiceAgentAdapter {
     ];
     this.responseIndex = 0;
     this.availableVoices = [];
+    this.playbackToken = 0;
 
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       const loadVoices = () => {
@@ -328,6 +329,9 @@ class VoiceAgentAdapter {
   }
 
   playTTS(text, onEnd, onStart, options = {}) {
+    this.stopTTS(false);
+    const currentToken = ++this.playbackToken;
+
     this.ensureAudioContext();
     this.isSpeaking = true;
     this.notify('stateChange', { state: 'TALKING', responseText: text });
@@ -344,8 +348,9 @@ class VoiceAgentAdapter {
       } catch (e) {}
 
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = options.rate || options.speed || 1.0;
-      utterance.pitch = options.pitch !== undefined ? (1.0 + options.pitch) : 1.0;
+      // Fast, energetic childish robot voice defaults (user-requested)
+      utterance.rate = options.rate || options.speed || 1.15;
+      utterance.pitch = options.pitch !== undefined ? (1.0 + options.pitch) : 1.3;
       utterance.volume = 1.0; // Maximum volume for robust audibility
 
       // Pick a friendly, high-quality, high-gain voice
@@ -398,23 +403,29 @@ class VoiceAgentAdapter {
           } catch (e) {}
           osc = null;
         }
-        this.isSpeaking = false;
-        this.currentUtterance = null;
-        this.notify('stateChange', { state: 'IDLE' });
+        if (this.playbackToken === currentToken) {
+          this.isSpeaking = false;
+          this.currentUtterance = null;
+          this.notify('stateChange', { state: 'IDLE' });
+        }
       };
 
       utterance.onstart = () => {
-        if (onStart) onStart();
+        if (this.playbackToken === currentToken && onStart) onStart();
       };
 
       utterance.onend = () => {
-        cleanup();
-        if (onEnd) onEnd();
+        if (this.playbackToken === currentToken) {
+          cleanup();
+          if (onEnd) onEnd();
+        }
       };
 
       utterance.onerror = () => {
-        cleanup();
-        if (onEnd) onEnd();
+        if (this.playbackToken === currentToken) {
+          cleanup();
+          if (onEnd) onEnd();
+        }
       };
 
       this.currentUtterance = utterance;
@@ -422,23 +433,27 @@ class VoiceAgentAdapter {
       try {
         window.speechSynthesis.speak(utterance);
       } catch (e) {
-        cleanup();
-        if (onEnd) onEnd();
+        if (this.playbackToken === currentToken) {
+          cleanup();
+          if (onEnd) onEnd();
+        }
       }
 
       // Safety timeout: Chrome can sometimes hang onend for long utterances
       const estimatedDurationMs = Math.max(2000, (text.split(' ').length / 2.5) * 1000 + 1500);
       setTimeout(() => {
-        if (this.isSpeaking && this.currentUtterance === utterance) {
+        if (this.isSpeaking && this.currentUtterance === utterance && this.playbackToken === currentToken) {
           cleanup();
           if (onEnd) onEnd();
         }
       }, estimatedDurationMs);
     } else {
       setTimeout(() => {
-        this.isSpeaking = false;
-        this.notify('stateChange', { state: 'IDLE' });
-        if (onEnd) onEnd();
+        if (this.playbackToken === currentToken) {
+          this.isSpeaking = false;
+          this.notify('stateChange', { state: 'IDLE' });
+          if (onEnd) onEnd();
+        }
       }, 2500);
     }
   }
@@ -448,6 +463,9 @@ class VoiceAgentAdapter {
    * Feeds the Web Audio AnalyserNode for 3D character lip-sync and plays at full volume.
    */
   playAudioClip(audioUrl, onEnd, onStart, options = {}) {
+    this.stopTTS(false);
+    const currentToken = ++this.playbackToken;
+
     this.ensureAudioContext();
     this.isSpeaking = true;
     this.notify('stateChange', { state: 'TALKING', audioUrl });
@@ -458,28 +476,37 @@ class VoiceAgentAdapter {
 
     const fallbackText = options.fallbackText || options.speech;
 
+    let osc = null;
+    let gain = null;
+    let mediaSource = null;
+
     try {
-      if (this.currentAudioElement) {
-        const prev = this.currentAudioElement;
-        this.currentAudioElement = null;
-        try {
-          prev.pause();
-          prev.currentTime = 0;
-          prev.src = '';
-        } catch (e) {}
-      }
-
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        try {
-          window.speechSynthesis.cancel();
-        } catch (e) {}
-      }
-
       const audio = new Audio();
+      audio.crossOrigin = 'anonymous';
       audio.src = audioUrl;
       audio.volume = 1.0;
       audio.preload = 'auto';
       this.currentAudioElement = audio;
+
+      // Route audio through Web Audio API for analyser lip-sync
+      if (this.audioContext && this.analyser) {
+        try {
+          mediaSource = this.audioContext.createMediaElementSource(audio);
+          mediaSource.connect(this.analyser);
+          mediaSource.connect(this.audioContext.destination);
+        } catch (e) {
+          // Fallback: create a synthetic oscillator for lip-sync simulation
+          try {
+            osc = this.audioContext.createOscillator();
+            gain = this.audioContext.createGain();
+            gain.gain.value = 0.0001;
+            osc.frequency.setValueAtTime(240, this.audioContext.currentTime);
+            osc.connect(gain);
+            gain.connect(this.analyser);
+            osc.start();
+          } catch (e2) {}
+        }
+      }
 
       let hasCleanedUp = false;
       const cleanup = () => {
@@ -492,21 +519,32 @@ class VoiceAgentAdapter {
           } catch (e) {}
           osc = null;
         }
-        this.isSpeaking = false;
-        this.currentAudioElement = null;
-        this.notify('stateChange', { state: 'IDLE' });
-        if (onEnd) onEnd();
+        if (mediaSource) {
+          try {
+            mediaSource.disconnect();
+          } catch (e) {}
+          mediaSource = null;
+        }
+        if (this.playbackToken === currentToken) {
+          this.isSpeaking = false;
+          this.currentAudioElement = null;
+          this.notify('stateChange', { state: 'IDLE' });
+        }
       };
 
       audio.onplay = () => {
-        if (onStart) onStart();
+        if (this.playbackToken === currentToken && onStart) onStart();
       };
 
       audio.onended = () => {
-        cleanup();
+        if (this.playbackToken === currentToken) {
+          cleanup();
+          if (onEnd) onEnd();
+        }
       };
 
       audio.onerror = (e) => {
+        if (this.playbackToken !== currentToken) return;
         console.warn('Audio element error, falling back to speech synthesis:', e);
         cleanup();
         if (fallbackText) {
@@ -517,6 +555,7 @@ class VoiceAgentAdapter {
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
+          if (this.playbackToken !== currentToken || err.name === 'AbortError') return;
           console.warn('Audio play() promise failed, falling back to speech synthesis:', err);
           cleanup();
           if (fallbackText) {
@@ -525,6 +564,7 @@ class VoiceAgentAdapter {
         });
       }
     } catch (e) {
+      if (this.playbackToken !== currentToken) return;
       console.warn('playAudioClip exception, falling back to speech synthesis:', e);
       if (fallbackText) {
         this.playTTS(fallbackText, onEnd, onStart, options);
@@ -536,14 +576,19 @@ class VoiceAgentAdapter {
     }
   }
 
-  stopTTS() {
+  stopTTS(notifyIdle = true) {
+    this.playbackToken++;
     if (this.currentAudioElement) {
-      try {
-        this.currentAudioElement.pause();
-        this.currentAudioElement.currentTime = 0;
-        this.currentAudioElement.src = '';
-      } catch (e) {}
+      const el = this.currentAudioElement;
       this.currentAudioElement = null;
+      try {
+        el.onended = null;
+        el.onerror = null;
+        el.onplay = null;
+        el.pause();
+        el.currentTime = 0;
+        el.src = '';
+      } catch (e) {}
     }
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       try {
@@ -552,7 +597,9 @@ class VoiceAgentAdapter {
     }
     this.isSpeaking = false;
     this.currentUtterance = null;
-    this.notify('stateChange', { state: 'IDLE' });
+    if (notifyIdle) {
+      this.notify('stateChange', { state: 'IDLE' });
+    }
   }
 
   stopConversation() {

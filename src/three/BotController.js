@@ -72,6 +72,24 @@ export const EXPRESSIONS = {
     SquintEyes: 0,
     SadEyes: 0,
   },
+  CURIOUS: {
+    WideEyes: 0.42,
+    HappyEyes: 0.48,
+    MouthSmile: 0.55,
+    MouthSurprised: 0.12,
+    SquintEyes: 0,
+    SadEyes: 0,
+    MouthSad: 0,
+  },
+  CONFIDENT: {
+    HappyEyes: 0.72,
+    MouthSmile: 0.82,
+    WideEyes: 0.08,
+    SquintEyes: 0.08,
+    SadEyes: 0,
+    MouthSad: 0,
+    MouthSurprised: 0,
+  },
   SPEAKING: {
     MouthOpen: 0.65,
     MouthSmile: 0.4,
@@ -94,21 +112,21 @@ export const ALL_MORPH_NAMES = [
   'MouthSurprised',
 ];
 
-// Left arm resting down & raised high wave targets (palm facing directly front towards user)
+// Left arm resting down & raised high wave targets (matching right hand resting pose symmetrically, palm showing to user, clear of head/body)
 const TARGET_LEFT_UPPER_DOWN = new Quaternion(-0.735285, -0.45258, -0.45258, 0.22293);
-const TARGET_LEFT_FORE_DOWN = new Quaternion(-0.222388, -0.239328, 0.054709, 0.943542);
-const TARGET_LEFT_HAND_DOWN = new Quaternion(0.03179, -0.03796, 0.05855, 0.99705);
-const TARGET_LEFT_UPPER_UP = new Quaternion(-0.45984, -0.50683, -0.50683, 0.5242);
-const TARGET_LEFT_FORE_UP = new Quaternion(0.39513, 0.41876, 0.17929, 0.79773);
-const TARGET_LEFT_HAND_UP = new Quaternion(0.04489, 0.12586, 0.10560, 0.98539);
+const TARGET_LEFT_FORE_DOWN = new Quaternion(-0.19226, 0.52302, -0.12444, 0.82098);
+const TARGET_LEFT_HAND_DOWN = new Quaternion(-0.24555, 0.80967, -0.11110, 0.52135);
+const TARGET_LEFT_UPPER_UP = new Quaternion(-0.10690, -0.16083, -0.50364, 0.84206);
+const TARGET_LEFT_FORE_UP = new Quaternion(0.08716, 0.00000, 0.00000, 0.99619);
+const TARGET_LEFT_HAND_UP = new Quaternion(0.24612, 0.77715, 0.49227, 0.30517);
 
-// Right arm resting down & raised high wave targets (palm facing directly front towards user)
+// Right arm resting down & raised high wave targets (right hand resting position confirmed correct, waving palm showing round glow circles to user, clear of head/body)
 const TARGET_RIGHT_UPPER_DOWN = new Quaternion(-0.735285, 0.45258, 0.45258, 0.22293);
 const TARGET_RIGHT_FORE_DOWN = new Quaternion(-0.222388, 0.239328, -0.054709, 0.943542);
-const TARGET_RIGHT_HAND_DOWN = new Quaternion(0.03179, 0.03796, -0.05855, 0.99705);
-const TARGET_RIGHT_UPPER_UP = new Quaternion(-0.45984, 0.50683, 0.50683, 0.5242);
-const TARGET_RIGHT_FORE_UP = new Quaternion(0.39513, -0.41876, -0.17929, 0.79773);
-const TARGET_RIGHT_HAND_UP = new Quaternion(0.1139, 0.7904, -0.0139, 0.6017);
+const TARGET_RIGHT_HAND_DOWN = new Quaternion(-0.00017, -0.2029, 0.04603, 0.97812);
+const TARGET_RIGHT_UPPER_UP = new Quaternion(-0.10690, 0.16083, 0.50364, 0.84206);
+const TARGET_RIGHT_FORE_UP = new Quaternion(0.08716, 0.00000, 0.00000, 0.99619);
+const TARGET_RIGHT_HAND_UP = new Quaternion(-0.13628, 0.45083, -0.55815, 0.68311);
 
 export function createVoxlyController(gltf, { onExpressionChange } = {}) {
   const nodes = new Map(), bones = new Map(), materials = new Map();
@@ -148,6 +166,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
 
   const rotation = new Quaternion();
   const euler = new Euler();
+  const waveXAxis = new Vector3(1, 0, 0);
   const waveZAxis = new Vector3(0, 0, 1);
   const waveYAxis = new Vector3(0, 1, 0);
 
@@ -180,17 +199,19 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
     if (rBar) audioBars.push({ node: rBar, index: i });
   }
 
-  // Procedural wave duration tracking
+  // Procedural wave duration tracking (matches greeting speech duration ~3.2s)
   let waveTimer = 0;
-  const WAVE_DURATION = 2.4;
+  const WAVE_DURATION = 3.2;
 
   // Multiple clicks special movements: two hands wave & 360 roll
   let twoHandsWaveTimer = 0;
+  let twoHandsWaveDuration = 2.8;
   const TWO_HANDS_DURATION = 2.8;
   let rollTimer = 0;
   let currentRollDuration = 1.6;
   const ROLL_DURATION = 1.6;
   let rollProgress = 0;
+  let activeWaveSide = 'RIGHT';
 
   // New procedural interaction gestures: Think & Dance
   let thinkTimer = 0;
@@ -201,8 +222,13 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
   // Autonomous random idle expressions tracking (cycles between vivid expressions)
   let nextRandomExprTime = 3.0;
   let userExpressionLockUntil = 0;
-  const RANDOM_IDLE_EXPRS = ['HAPPY', 'THINKING', 'SURPRISED', 'EXCITED', 'HAPPY', 'THINKING', 'SURPRISED'];
+  const RANDOM_IDLE_EXPRS = ['HAPPY', 'THINKING', 'CURIOUS', 'SURPRISED', 'EXCITED', 'CONFIDENT', 'HAPPY', 'THINKING'];
   let randomExprIndex = 0;
+
+  // Autonomous idle gesture loop: cycles body gestures when idle (wave, think, dance, celebrate)
+  let nextIdleGestureTime = 6.0;
+  let idleGestureIndex = 0;
+  const IDLE_GESTURES = ['RIGHT_HAND_WAVE', 'THINKING', 'DANCE', 'DOUBLE_WAVE', 'CELEBRATE', 'LEFT_HAND_WAVE'];
 
   const defaultGlowColor = new Color('#6344E7');
   const angryGlowColor = new Color('#FF3366');
@@ -253,11 +279,12 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
     }
   }
 
-  function startGesture(name = 'RIGHT_HAND_WAVE') {
+  function startGesture(name = 'RIGHT_HAND_WAVE', userInitiated = true) {
     gesture = name;
     const upper = String(name).toUpperCase();
     if (upper === 'DOUBLE_WAVE' || upper === 'ROLL_DOUBLE_WAVE' || upper === 'TWO_HANDS_HI' || upper === 'CELEBRATE' || upper.includes('DOUBLE_ROLL')) {
-      twoHandsWaveTimer = upper.includes('DOUBLE_ROLL') ? TWO_HANDS_DURATION * 1.4 : TWO_HANDS_DURATION;
+      twoHandsWaveDuration = upper.includes('DOUBLE_ROLL') ? TWO_HANDS_DURATION * 1.4 : TWO_HANDS_DURATION;
+      twoHandsWaveTimer = twoHandsWaveDuration;
       waveTimer = 0;
       thinkTimer = 0;
       danceTimer = 0;
@@ -265,7 +292,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
         currentRollDuration = upper.includes('DOUBLE_ROLL') ? ROLL_DURATION * 2 : ROLL_DURATION;
         rollTimer = currentRollDuration;
       }
-      setExpression('EXCITED', true);
+      setExpression('EXCITED', userInitiated);
       play(clips.has('EXCITED') ? 'EXCITED' : 'IDLE', true);
       return;
     }
@@ -276,7 +303,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       twoHandsWaveTimer = 0;
       rollTimer = 0;
       danceTimer = 0;
-      setExpression('THINKING', true);
+      setExpression('THINKING', userInitiated);
       play(clips.has('THINKING') ? 'THINKING' : 'IDLE', true);
       return;
     }
@@ -287,17 +314,18 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       twoHandsWaveTimer = 0;
       rollTimer = 0;
       thinkTimer = 0;
-      setExpression('HAPPY', true);
+      setExpression('HAPPY', userInitiated);
       play(clips.has('HAPPY') ? 'HAPPY' : 'IDLE', true);
       return;
     }
 
+    activeWaveSide = upper === 'LEFT_HAND_WAVE' ? 'LEFT' : 'RIGHT';
     waveTimer = WAVE_DURATION;
     twoHandsWaveTimer = 0;
     rollTimer = 0;
     thinkTimer = 0;
     danceTimer = 0;
-    setExpression('HAPPY', true);
+    setExpression('HAPPY', userInitiated);
     const clipName = clips.has('RIGHT_HAND_WAVE') ? 'RIGHT_HAND_WAVE' : (clips.has(name) ? name : 'WAVE');
     play(clipName, true);
   }
@@ -396,7 +424,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       overrides.delete(name);
     },
     playGesture(name = 'RIGHT_HAND_WAVE') {
-      startGesture(String(name).toUpperCase());
+      startGesture(String(name).toUpperCase(), true);
     },
     update(delta) {
       const dt = MathUtils.clamp(Number.isFinite(delta) ? delta : 0, 0, 0.1);
@@ -434,51 +462,53 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       // TWO HANDS HI MOVEMENT (BOTH ARMS WAVE EXCITEDLY):
       if (twoHandsWaveTimer > 0) {
         twoHandsWaveTimer -= dt;
-        const progress = 1 - (twoHandsWaveTimer / TWO_HANDS_DURATION);
-        let armWeight = 1;
-        if (progress < 0.2) {
-          armWeight = progress / 0.2;
-        } else if (progress > 0.8) {
-          armWeight = (1 - progress) / 0.2;
-        }
+        // The timer can be extended for a double roll. Always use the matching
+        // duration and clamp the envelope: negative slerp weights were the source
+        // of the occasional inside-out hands at the end of those gestures.
+        const progress = MathUtils.clamp(1 - (twoHandsWaveTimer / twoHandsWaveDuration), 0, 1);
+        const armWeight = MathUtils.clamp(Math.min(progress / 0.2, (1 - progress) / 0.2, 1), 0, 1);
 
-        const waveOsc = Math.sin(time * 16) * 0.45 * armWeight;
-        const handOsc = Math.sin(time * 16) * 0.38 * armWeight;
+        const waveOsc = Math.sin(time * 12) * 0.28 * armWeight;
+        const handOsc = Math.sin(time * 12) * 0.18 * armWeight;
 
-        // Left arm raises up and waves
+        // Left arm raises up and waves with palm showing round glowing circles to user, clear of head & body
         if (leftUpper) {
           leftUpper.quaternion.copy(TARGET_LEFT_UPPER_DOWN).slerp(TARGET_LEFT_UPPER_UP, armWeight);
           const rUpper = animated.get('LeftUpperArm');
           if (rUpper) rUpper.q.copy(leftUpper.quaternion);
         }
         if (leftFore) {
+          const waveOscL = (-0.08 - Math.sin(time * 12) * 0.08) * armWeight;
           leftFore.quaternion.copy(TARGET_LEFT_FORE_DOWN).slerp(TARGET_LEFT_FORE_UP, armWeight);
-          leftFore.quaternion.multiply(new Quaternion().setFromAxisAngle(waveYAxis, -waveOsc * 0.4));
+          leftFore.quaternion.multiply(new Quaternion().setFromAxisAngle(waveZAxis, waveOscL));
           const rFore = animated.get('LeftForearm');
           if (rFore) rFore.q.copy(leftFore.quaternion);
         }
         if (leftHand) {
+          const handOscL = (-0.06 - Math.sin(time * 12) * 0.06) * armWeight;
           leftHand.quaternion.copy(TARGET_LEFT_HAND_DOWN).slerp(TARGET_LEFT_HAND_UP, armWeight);
-          leftHand.quaternion.multiply(new Quaternion().setFromAxisAngle(waveZAxis, handOsc));
+          leftHand.quaternion.multiply(new Quaternion().setFromAxisAngle(waveZAxis, handOscL));
           const rHand = animated.get('LeftHand');
           if (rHand) rHand.q.copy(leftHand.quaternion);
         }
 
-        // Right arm raises up and waves
+        // Right arm raises up and waves with palm showing round glowing circles to user, clear of head & body
         if (rightUpper) {
           rightUpper.quaternion.copy(TARGET_RIGHT_UPPER_DOWN).slerp(TARGET_RIGHT_UPPER_UP, armWeight);
           const rUpper = animated.get('RightUpperArm');
           if (rUpper) rUpper.q.copy(rightUpper.quaternion);
         }
         if (rightFore) {
+          const waveOscR = (0.08 + Math.sin(time * 12) * 0.08) * armWeight;
           rightFore.quaternion.copy(TARGET_RIGHT_FORE_DOWN).slerp(TARGET_RIGHT_FORE_UP, armWeight);
-          rightFore.quaternion.multiply(new Quaternion().setFromAxisAngle(waveYAxis, waveOsc * 0.4));
+          rightFore.quaternion.multiply(new Quaternion().setFromAxisAngle(waveZAxis, waveOscR));
           const rFore = animated.get('RightForearm');
           if (rFore) rFore.q.copy(rightFore.quaternion);
         }
         if (rightHand) {
+          const handOscR = (0.06 + Math.sin(time * 12) * 0.06) * armWeight;
           rightHand.quaternion.copy(TARGET_RIGHT_HAND_DOWN).slerp(TARGET_RIGHT_HAND_UP, armWeight);
-          rightHand.quaternion.multiply(new Quaternion().setFromAxisAngle(waveZAxis, -handOsc));
+          rightHand.quaternion.multiply(new Quaternion().setFromAxisAngle(waveZAxis, handOscR));
           const rHand = animated.get('RightHand');
           if (rHand) rHand.q.copy(rightHand.quaternion);
         }
@@ -488,52 +518,45 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
           play(isSpeaking ? 'TALKING' : (clips.has(state) ? state : 'IDLE'));
         }
       } else if (waveTimer > 0) {
-        // PROCEDURAL SINGLE RIGHT HAND WAVE:
+        // PROCEDURAL SINGLE-HAND WAVE. The raised hand is selected explicitly so
+        // LEFT_HAND_WAVE no longer gets silently rendered as a right-hand wave.
         waveTimer -= dt;
         const progress = 1 - (waveTimer / WAVE_DURATION); // 0 to 1
-        let waveArmWeight = 1;
-        if (progress < 0.22) {
-          waveArmWeight = progress / 0.22; // Smooth raise
-        } else if (progress > 0.78) {
-          waveArmWeight = (1 - progress) / 0.22; // Smooth lower
-        }
+        const waveArmWeight = MathUtils.clamp(Math.min(progress / 0.22, (1 - progress) / 0.22, 1), 0, 1);
 
-        // Strictly keep left arm down at rest
-        if (leftUpper) {
-          leftUpper.quaternion.copy(TARGET_LEFT_UPPER_DOWN);
-          const rUpper = animated.get('LeftUpperArm');
-          if (rUpper) rUpper.q.copy(TARGET_LEFT_UPPER_DOWN);
-        }
-        if (leftFore) {
-          leftFore.quaternion.copy(TARGET_LEFT_FORE_DOWN);
-          const rFore = animated.get('LeftForearm');
-          if (rFore) rFore.q.copy(TARGET_LEFT_FORE_DOWN);
-        }
-        if (leftHand) {
-          leftHand.quaternion.copy(TARGET_LEFT_HAND_DOWN);
-          const rHand = animated.get('LeftHand');
-          if (rHand) rHand.q.copy(TARGET_LEFT_HAND_DOWN);
-        }
+        const isLeftWave = activeWaveSide === 'LEFT';
+        const raised = isLeftWave
+          ? { upper: leftUpper, fore: leftFore, hand: leftHand, upperDown: TARGET_LEFT_UPPER_DOWN, upperUp: TARGET_LEFT_UPPER_UP, foreDown: TARGET_LEFT_FORE_DOWN, foreUp: TARGET_LEFT_FORE_UP, handDown: TARGET_LEFT_HAND_DOWN, handUp: TARGET_LEFT_HAND_UP, names: ['LeftUpperArm', 'LeftForearm', 'LeftHand'], direction: -1 }
+          : { upper: rightUpper, fore: rightFore, hand: rightHand, upperDown: TARGET_RIGHT_UPPER_DOWN, upperUp: TARGET_RIGHT_UPPER_UP, foreDown: TARGET_RIGHT_FORE_DOWN, foreUp: TARGET_RIGHT_FORE_UP, handDown: TARGET_RIGHT_HAND_DOWN, handUp: TARGET_RIGHT_HAND_UP, names: ['RightUpperArm', 'RightForearm', 'RightHand'], direction: 1 };
+        const resting = isLeftWave
+          ? { upper: rightUpper, fore: rightFore, hand: rightHand, upperDown: TARGET_RIGHT_UPPER_DOWN, foreDown: TARGET_RIGHT_FORE_DOWN, handDown: TARGET_RIGHT_HAND_DOWN, names: ['RightUpperArm', 'RightForearm', 'RightHand'] }
+          : { upper: leftUpper, fore: leftFore, hand: leftHand, upperDown: TARGET_LEFT_UPPER_DOWN, foreDown: TARGET_LEFT_FORE_DOWN, handDown: TARGET_LEFT_HAND_DOWN, names: ['LeftUpperArm', 'LeftForearm', 'LeftHand'] };
 
-        // Wave right arm high up in the air
-        if (rightUpper) {
-          rightUpper.quaternion.copy(TARGET_RIGHT_UPPER_DOWN).slerp(TARGET_RIGHT_UPPER_UP, waveArmWeight);
-          const rUpper = animated.get('RightUpperArm');
-          if (rUpper) rUpper.q.copy(rightUpper.quaternion);
+        // Lock the non-waving arm to its known-good rest pose, while the other
+        // arm follows a short, palm-forward wave with a clamped local rotation.
+        [[resting.upper, resting.upperDown, resting.names[0]], [resting.fore, resting.foreDown, resting.names[1]], [resting.hand, resting.handDown, resting.names[2]]].forEach(([bone, target, boneName]) => {
+          if (!bone) return;
+          bone.quaternion.copy(target);
+          const saved = animated.get(boneName);
+          if (saved) saved.q.copy(bone.quaternion);
+        });
+        if (raised.upper) {
+          raised.upper.quaternion.copy(raised.upperDown).slerp(raised.upperUp, waveArmWeight);
+          const saved = animated.get(raised.names[0]);
+          if (saved) saved.q.copy(raised.upper.quaternion);
         }
-        if (rightFore) {
-          const waveOsc = Math.sin(time * 15) * 0.35 * waveArmWeight;
-          rightFore.quaternion.copy(TARGET_RIGHT_FORE_DOWN).slerp(TARGET_RIGHT_FORE_UP, waveArmWeight);
-          rightFore.quaternion.multiply(new Quaternion().setFromAxisAngle(waveYAxis, waveOsc * 0.4));
-          const rFore = animated.get('RightForearm');
-          if (rFore) rFore.q.copy(rightFore.quaternion);
+        const wristWave = raised.direction * (0.07 + Math.sin(time * 10.5) * 0.10) * waveArmWeight;
+        if (raised.fore) {
+          raised.fore.quaternion.copy(raised.foreDown).slerp(raised.foreUp, waveArmWeight);
+          raised.fore.quaternion.multiply(new Quaternion().setFromAxisAngle(waveZAxis, wristWave * 0.72));
+          const saved = animated.get(raised.names[1]);
+          if (saved) saved.q.copy(raised.fore.quaternion);
         }
-        if (rightHand) {
-          const handOsc = Math.sin(time * 15) * 0.45 * waveArmWeight;
-          rightHand.quaternion.copy(TARGET_RIGHT_HAND_DOWN).slerp(TARGET_RIGHT_HAND_UP, waveArmWeight);
-          rightHand.quaternion.multiply(new Quaternion().setFromAxisAngle(waveZAxis, handOsc));
-          const rHand = animated.get('RightHand');
-          if (rHand) rHand.q.copy(rightHand.quaternion);
+        if (raised.hand) {
+          raised.hand.quaternion.copy(raised.handDown).slerp(raised.handUp, waveArmWeight);
+          raised.hand.quaternion.multiply(new Quaternion().setFromAxisAngle(waveZAxis, wristWave));
+          const saved = animated.get(raised.names[2]);
+          if (saved) saved.q.copy(raised.hand.quaternion);
         }
 
         if (waveTimer <= 0) {
@@ -626,6 +649,16 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
           const rFore = animated.get('RightForearm');
           if (rFore) rFore.q.copy(rightFore.quaternion);
         }
+        if (leftHand) {
+          leftHand.quaternion.copy(TARGET_LEFT_HAND_DOWN).slerp(TARGET_LEFT_HAND_UP, armWeight * 0.4);
+          const rHand = animated.get('LeftHand');
+          if (rHand) rHand.q.copy(leftHand.quaternion);
+        }
+        if (rightHand) {
+          rightHand.quaternion.copy(TARGET_RIGHT_HAND_DOWN).slerp(TARGET_RIGHT_HAND_UP, armWeight * 0.4);
+          const rHand = animated.get('RightHand');
+          if (rHand) rHand.q.copy(rightHand.quaternion);
+        }
 
         if (danceTimer <= 0) {
           gesture = false;
@@ -666,12 +699,21 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
         }
       }
 
-      // AUTONOMOUS RANDOM EXPRESSIONS WHEN IDLE (Every 4 to 6.5s):
-      if (time > nextRandomExprTime && time > userExpressionLockUntil && waveTimer <= 0 && (state === 'IDLE' || state === 'HAPPY')) {
+      // AUTONOMOUS RANDOM EXPRESSIONS WHEN IDLE (Every 3.5 to 5.5s):
+      const isAnyGestureActive = waveTimer > 0 || twoHandsWaveTimer > 0 || rollTimer > 0 || thinkTimer > 0 || danceTimer > 0;
+      if (time > nextRandomExprTime && time > userExpressionLockUntil && !isAnyGestureActive && (state === 'IDLE' || state === 'HAPPY')) {
         randomExprIndex = (randomExprIndex + 1) % RANDOM_IDLE_EXPRS.length;
         const nextExpr = RANDOM_IDLE_EXPRS[randomExprIndex];
         setExpression(nextExpr, false);
-        nextRandomExprTime = time + 4.0 + Math.random() * 2.5; // Every 4.0 - 6.5s
+        nextRandomExprTime = time + 3.5 + Math.random() * 2.0; // Every 3.5 - 5.5s
+      }
+
+      // AUTONOMOUS IDLE GESTURE LOOP (Every 5 to 8s when idle, no user interaction):
+      if (time > nextIdleGestureTime && time > userExpressionLockUntil && !isAnyGestureActive && !isSpeaking && (state === 'IDLE' || state === 'HAPPY')) {
+        idleGestureIndex = (idleGestureIndex + 1) % IDLE_GESTURES.length;
+        const nextGesture = IDLE_GESTURES[idleGestureIndex];
+        startGesture(nextGesture, false);
+        nextIdleGestureTime = time + 5.0 + Math.random() * 3.0; // Every 5.0 - 8.0s
       }
 
       // Audio analysis if available
@@ -741,15 +783,16 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       const tiltAngle = expression === 'THINKING' ? MathUtils.degToRad(8) : 0;
       const pitchOffset = expression === 'ANGRY' ? MathUtils.degToRad(5) : 0;
 
-      yaw = MathUtils.damp(yaw, pointerX * MathUtils.degToRad(16), 14, dt);
-      pitch = MathUtils.damp(pitch, -pointerY * MathUtils.degToRad(10), 14, dt);
+      // Reduced by 20% for smoother, less aggressive mouse following
+      yaw = MathUtils.damp(yaw, pointerX * MathUtils.degToRad(12.8), 14, dt);
+      pitch = MathUtils.damp(pitch, -pointerY * MathUtils.degToRad(8), 14, dt);
 
       if (head && rest.has('Head')) {
         rotation.copy(rest.get('Head').q).invert().multiply(head.quaternion);
         euler.setFromQuaternion(rotation);
-        euler.x = MathUtils.clamp(euler.x + pitch + pitchOffset, -MathUtils.degToRad(14), MathUtils.degToRad(14));
-        euler.y = MathUtils.clamp(euler.y + yaw, -MathUtils.degToRad(18), MathUtils.degToRad(18));
-        euler.z = MathUtils.clamp(euler.z + tiltAngle - pointerX * MathUtils.degToRad(4), -MathUtils.degToRad(10), MathUtils.degToRad(10));
+        euler.x = MathUtils.clamp(euler.x + pitch + pitchOffset, -MathUtils.degToRad(11.2), MathUtils.degToRad(11.2));
+        euler.y = MathUtils.clamp(euler.y + yaw, -MathUtils.degToRad(14.4), MathUtils.degToRad(14.4));
+        euler.z = MathUtils.clamp(euler.z + tiltAngle - pointerX * MathUtils.degToRad(3.2), -MathUtils.degToRad(8), MathUtils.degToRad(8));
         rotation.setFromEuler(euler);
         head.quaternion.copy(rest.get('Head').q).multiply(rotation);
       }

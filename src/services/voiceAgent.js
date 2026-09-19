@@ -12,6 +12,7 @@ class VoiceAgentAdapter {
     this.isListening = false;
     this.isSpeaking = false;
     this.currentUtterance = null;
+    this.currentAudioElement = null;
     this.listeners = new Set();
     this.mockResponses = [
       "Hello! I am Voxly, your autonomous voice employee. I can qualify incoming leads, book appointments directly into your calendar, and answer complex customer questions 24/7.",
@@ -381,7 +382,90 @@ class VoiceAgentAdapter {
     }
   }
 
+  /**
+   * Play high-quality pre-rendered neural voice audio clips.
+   * Routes into Web Audio AnalyserNode for lip-sync and AudioContext.destination for crystal-clear playback.
+   */
+  playAudioClip(audioUrl, onEnd, onStart, options = {}) {
+    this.ensureAudioContext();
+    this.isSpeaking = true;
+    this.notify('stateChange', { state: 'TALKING', audioUrl });
+
+    // Play subtle robotic sound effect
+    this.playRobotSound(options.soundType || 'chime');
+
+    try {
+      if (this.currentAudioElement) {
+        try {
+          this.currentAudioElement.pause();
+        } catch (e) {}
+        this.currentAudioElement = null;
+      }
+
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.cancel();
+        } catch (e) {}
+      }
+
+      const audio = new Audio(audioUrl);
+      audio.crossOrigin = 'anonymous';
+      audio.volume = 1.0;
+      this.currentAudioElement = audio;
+
+      let hasCleanedUp = false;
+      const cleanup = () => {
+        if (hasCleanedUp) return;
+        hasCleanedUp = true;
+        this.isSpeaking = false;
+        this.currentAudioElement = null;
+        this.notify('stateChange', { state: 'IDLE' });
+        if (onEnd) onEnd();
+      };
+
+      audio.onplay = () => {
+        if (onStart) onStart();
+      };
+
+      audio.onended = () => {
+        cleanup();
+      };
+
+      audio.onerror = () => {
+        cleanup();
+        if (options.fallbackText) {
+          this.playTTS(options.fallbackText, onEnd, onStart, options);
+        }
+      };
+
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          cleanup();
+          if (options.fallbackText) {
+            this.playTTS(options.fallbackText, onEnd, onStart, options);
+          }
+        });
+      }
+    } catch (e) {
+      if (options.fallbackText) {
+        this.playTTS(options.fallbackText, onEnd, onStart, options);
+      } else {
+        this.isSpeaking = false;
+        this.notify('stateChange', { state: 'IDLE' });
+        if (onEnd) onEnd();
+      }
+    }
+  }
+
   stopTTS() {
+    if (this.currentAudioElement) {
+      try {
+        this.currentAudioElement.pause();
+        this.currentAudioElement.currentTime = 0;
+      } catch (e) {}
+      this.currentAudioElement = null;
+    }
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       try {
         window.speechSynthesis.cancel();

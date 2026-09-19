@@ -10,6 +10,7 @@ const SEQUENCE_STEPS = [
     title: "Voxly",
     message: "Hello! Hiii! 👋 I'm Voxly! Nice to meet you!",
     speech: "Hello! Hiii! I am Voxly! Nice to meet you!",
+    audioSrc: "/audio/voxly/hero_step1.mp3",
     expression: "HAPPY",
     gesture: "RIGHT_HAND_WAVE",
     mood: "friendly",
@@ -18,6 +19,7 @@ const SEQUENCE_STEPS = [
     title: "Voxly",
     message: "Hiii! Excited to scale your voice workflows! ✨ Ready for 500+ calls.",
     speech: "Hiii! Excited to scale your voice workflows! Ready for 500 plus calls.",
+    audioSrc: "/audio/voxly/hero_step2.mp3",
     expression: "EXCITED",
     gesture: "DOUBLE_WAVE",
     mood: "excited",
@@ -26,6 +28,7 @@ const SEQUENCE_STEPS = [
     title: "Voxly (Acrobatic)",
     message: "Whoaaa! Watch this barrel roll! 🎉 360° celebratory spin & wave!",
     speech: "Whoaaa! Watch this barrel roll! Double hi to you!",
+    audioSrc: "/audio/voxly/hero_step3.mp3",
     expression: "EXCITED",
     gesture: "ROLL_DOUBLE_WAVE",
     mood: "celebration",
@@ -34,6 +37,7 @@ const SEQUENCE_STEPS = [
     title: "Voxly",
     message: "Don't tickle me! Haha! Double hi to you! 👋😄👋",
     speech: "Don't tickle me! Haha! Double hi to you!",
+    audioSrc: "/audio/voxly/hero_step4.mp3",
     expression: "EXCITED",
     gesture: "DOUBLE_WAVE",
     mood: "playful",
@@ -42,6 +46,7 @@ const SEQUENCE_STEPS = [
     title: "Voxly",
     message: "Double barrel roll & high five! 🚀✨ Let's conquer customer calls!",
     speech: "Double barrel roll and high five! Let's conquer customer calls!",
+    audioSrc: "/audio/voxly/hero_step5.mp3",
     expression: "EXCITED",
     gesture: "ROLL_DOUBLE_WAVE",
     mood: "celebration",
@@ -66,7 +71,6 @@ export function Hero({
 
   const clickCountRef = useRef(0);
   const lastClickTimeRef = useRef(0);
-  const autoLoopTimerRef = useRef(null);
   const popupAutoDismissTimerRef = useRef(null);
   const loopIndexRef = useRef(0);
   const isHoveredRef = useRef(false);
@@ -74,17 +78,12 @@ export function Hero({
   // Clean up all timers on unmount
   useEffect(() => {
     return () => {
-      if (autoLoopTimerRef.current) clearTimeout(autoLoopTimerRef.current);
       if (popupAutoDismissTimerRef.current) clearTimeout(popupAutoDismissTimerRef.current);
     };
   }, []);
 
-  // Centralized step execution for both automatic loop & manual clicks
-  const executeStep = (stepData) => {
-    setActivePopup(stepData);
-    setBotExpression(stepData.expression);
-
-    // Auto-dismiss dialogue box after 4.8 seconds
+  // Helper to start the 3-second auto-dismiss timer
+  const resetDismissTimer = (durationMs = 3000) => {
     if (popupAutoDismissTimerRef.current) {
       clearTimeout(popupAutoDismissTimerRef.current);
     }
@@ -92,7 +91,16 @@ export function Hero({
       if (!isHoveredRef.current) {
         setActivePopup(null);
       }
-    }, 4800);
+    }, durationMs);
+  };
+
+  // Centralized step execution for user-initiated interactions
+  const executeStep = (stepData) => {
+    setActivePopup(stepData);
+    setBotExpression(stepData.expression);
+
+    // Auto-dismiss dialogue box after exactly 3 seconds as required
+    resetDismissTimer(3000);
 
     // Trigger 3D robot expression & physical animation (wave / 360 roll / double wave)
     if (botControllerRef?.current) {
@@ -102,30 +110,13 @@ export function Hero({
       }
     }
 
-    // Play synthesized voice & greeting chime with gesture sound
-    voiceAgent.playTTS(stepData.speech, null, null, {
-      soundType: stepData.mood === 'angry' ? 'tickle' : stepData.gesture?.includes('ROLL') ? 'roll' : stepData.gesture?.includes('WAVE') ? 'wave' : 'happy'
-    });
-  };
-
-  // Schedule next automated step when user doesn't do anything
-  const scheduleNextAutoStep = (delayMs = 7200) => {
-    if (autoLoopTimerRef.current) {
-      clearTimeout(autoLoopTimerRef.current);
+    // Play high-clarity pre-rendered neural voice clip with lip-sync and chime sound
+    const soundType = stepData.mood === 'angry' ? 'tickle' : stepData.gesture?.includes('ROLL') ? 'roll' : stepData.gesture?.includes('WAVE') ? 'wave' : 'happy';
+    if (stepData.audioSrc) {
+      voiceAgent.playAudioClip(stepData.audioSrc, null, null, { soundType });
+    } else {
+      voiceAgent.playTTS(stepData.speech, null, null, { soundType });
     }
-
-    autoLoopTimerRef.current = setTimeout(() => {
-      // Only run if user is currently viewing the Hero section and no modal is open
-      if (!isHeroInView || isModalOpen) return;
-
-      const stepIndex = loopIndexRef.current % SEQUENCE_STEPS.length;
-      loopIndexRef.current = (loopIndexRef.current + 1) % SEQUENCE_STEPS.length;
-
-      executeStep(SEQUENCE_STEPS[stepIndex]);
-
-      // Schedule next automated step (4.8s visible + 2.4s pause = 7.2s cycle)
-      scheduleNextAutoStep(7200);
-    }, delayMs);
   };
 
   // Section observer: Detect when user is in Hero section vs other sections
@@ -143,33 +134,17 @@ export function Hero({
     return () => observer.disconnect();
   }, []);
 
-  // AUTOMATIC LOOP CONTROLLER:
-  // 1) If user didn't do anything, runs the clicking expressions automatically in a loop
-  // 2) When user goes to another section, pauses loop and resets to 0
-  // 3) When user returns to the modal section, restarts again from Step 1!
+  // When user scrolls away or modal opens, dismiss dialogue cleanly
   useEffect(() => {
-    if (isHeroInView && !isModalOpen) {
-      // User is viewing the Hero/modal section: restart loop from Step 1!
-      loopIndexRef.current = 0;
-      clickCountRef.current = 0;
-      // Start initial step after 1.8s so 3D model finishes initial mount
-      scheduleNextAutoStep(1800);
-    } else {
-      // User scrolled to another section or opened modal: pause loop, close popup, reset index
-      if (autoLoopTimerRef.current) clearTimeout(autoLoopTimerRef.current);
+    if (!isHeroInView || isModalOpen) {
       if (popupAutoDismissTimerRef.current) clearTimeout(popupAutoDismissTimerRef.current);
       setActivePopup(null);
-      loopIndexRef.current = 0;
       clickCountRef.current = 0;
+      loopIndexRef.current = 0;
       if (botControllerRef?.current) {
         botControllerRef.current.setExpression('HAPPY', false);
       }
     }
-
-    return () => {
-      if (autoLoopTimerRef.current) clearTimeout(autoLoopTimerRef.current);
-      if (popupAutoDismissTimerRef.current) clearTimeout(popupAutoDismissTimerRef.current);
-    };
   }, [isHeroInView, isModalOpen]);
 
   const handleMouseEnterPopup = () => {
@@ -181,28 +156,27 @@ export function Hero({
 
   const handleMouseLeavePopup = () => {
     isHoveredRef.current = false;
-    // Dismiss dialogue box after 3.2s when mouse leaves
-    if (popupAutoDismissTimerRef.current) {
-      clearTimeout(popupAutoDismissTimerRef.current);
-    }
-    popupAutoDismissTimerRef.current = setTimeout(() => {
-      setActivePopup(null);
-    }, 3200);
+    // Auto-dismiss after 3 seconds when mouse leaves
+    resetDismissTimer(3000);
   };
 
   // Handle manual interaction buttons inside speech bubble
   const triggerBotAction = (actionType) => {
     if (!botControllerRef?.current) return;
+    resetDismissTimer(3000);
+
     if (actionType === 'WAVE') {
       botControllerRef.current.setExpression('HAPPY', true);
       botControllerRef.current.playGesture('WAVE');
-      voiceAgent.playTTS("Hiii! Waving back at you!", null, null, { soundType: 'wave' });
+      voiceAgent.playAudioClip('/audio/voxly/hero_wave.mp3', null, null, { soundType: 'wave' });
     } else if (actionType === 'ROLL') {
       botControllerRef.current.setExpression('CONFIDENT', true);
       botControllerRef.current.playGesture('ROLL_DOUBLE_WAVE');
-      voiceAgent.playTTS("Whoaaa! Full 360 spin and wave!", null, null, { soundType: 'roll' });
+      voiceAgent.playAudioClip('/audio/voxly/hero_roll.mp3', null, null, { soundType: 'roll' });
     } else if (actionType === 'REPLAY') {
-      if (activePopup?.speech) {
+      if (activePopup?.audioSrc) {
+        voiceAgent.playAudioClip(activePopup.audioSrc, null, null, { soundType: 'chime' });
+      } else if (activePopup?.speech) {
         voiceAgent.playTTS(activePopup.speech, null, null, { soundType: 'chime' });
       }
     }
@@ -247,7 +221,7 @@ export function Hero({
 
   // MANUAL CLICKS:
   // Debounced (420ms) so 1 physical click = 1 action increment
-  // Manual clicks also work seamlessly at any time, advancing the sequence
+  // Manual clicks initiate interaction mode and display dialogue for 3 seconds
   const handleBotClick = () => {
     const now = Date.now();
     if (now - lastClickTimeRef.current < 420) {
@@ -255,18 +229,12 @@ export function Hero({
     }
     lastClickTimeRef.current = now;
 
-    // Pause auto-loop while user is actively clicking
-    if (autoLoopTimerRef.current) {
-      clearTimeout(autoLoopTimerRef.current);
-    }
-
     clickCountRef.current += 1;
     const count = clickCountRef.current;
 
     let stepData = null;
     if (count <= SEQUENCE_STEPS.length) {
       stepData = SEQUENCE_STEPS[count - 1];
-      // Keep loop index synchronized with user's clicks
       loopIndexRef.current = count % SEQUENCE_STEPS.length;
     } else {
       // 6th click+: Pouty / angry expression
@@ -274,19 +242,17 @@ export function Hero({
         title: "Voxly (Pouty)",
         message: "Hey! Don't poke me, I have calls to make! 😤 Click 'Live Mic Chat' instead!",
         speech: "Hey! Don't poke me, I have calls to make! Click live mic chat instead!",
+        audioSrc: "/audio/voxly/hero_pouty.mp3",
         expression: "ANGRY",
         gesture: null,
         mood: "angry",
       };
-      // Reset counter after angry poke so next clicks or idle loop restart fresh
+      // Reset counter after angry poke so next clicks restart fresh
       clickCountRef.current = 0;
       loopIndexRef.current = 0;
     }
 
     executeStep(stepData);
-
-    // Resume the automated loop after 7.5 seconds of user inactivity
-    scheduleNextAutoStep(7500);
   };
 
   return (
@@ -376,35 +342,39 @@ export function Hero({
                 }}
               />
 
-              {/* Dynamic Interactive Dialogue Box on Click - Positioned to the Right of 3D Robot, Reduced by 35% */}
+              {/* Dynamic Interactive Dialogue Box on Interaction:
+                  Increased by 30% in size (w-[255px] sm:w-[270px], p-3.5),
+                  positioned at top-right side touching slightly the robot contour,
+                  leaving robot animations, expressions, and 360 roll clearly visible.
+                  Auto-hides after exactly 3 seconds unless hovered. */}
               {activePopup && (
                 <div
                   onClick={(e) => e.stopPropagation()}
                   onMouseEnter={handleMouseEnterPopup}
                   onMouseLeave={handleMouseLeavePopup}
-                  className={`absolute top-3 right-0 sm:top-5 sm:right-1 md:right-2 lg:top-8 lg:-right-8 xl:-right-14 w-[195px] sm:w-[205px] p-2.5 rounded-xl shadow-xl border z-30 transition-all ${
+                  className={`absolute top-3 right-1 sm:top-4 sm:right-3 md:right-4 lg:top-4 lg:right-2 xl:right-4 w-[255px] sm:w-[270px] p-3.5 rounded-2xl shadow-xl border z-30 transition-all ${
                     activePopup.mood === 'angry'
                       ? 'bg-[#111019] text-white border-red-500/40 shadow-xl'
                       : 'bg-white text-[#0F0E17] border-[#E4E2EB] shadow-craft-md'
                   }`}
                 >
-                  {/* Speech pointer pointing left towards the 3D robot model */}
+                  {/* Speech pointer directed towards the robot's upper contour */}
                   <div
-                    className={`absolute top-4 -left-1.5 w-2.5 h-2.5 rotate-45 border-l border-b hidden sm:block ${
+                    className={`absolute top-5 -left-1.5 w-3 h-3 rotate-45 border-l border-b hidden sm:block ${
                       activePopup.mood === 'angry'
                         ? 'bg-[#111019] border-red-500/40'
                         : 'bg-white border-[#E4E2EB]'
                     }`}
                   />
 
-                  <div className="flex items-center justify-between gap-1.5 mb-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="relative flex h-1.5 w-1.5">
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#10B981]"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
                       </span>
                       <span
-                        className={`text-[9.5px] font-bold uppercase tracking-wider ${
+                        className={`text-[11px] font-bold uppercase tracking-wider ${
                           activePopup.mood === 'angry' ? 'text-red-400' : 'text-[#6344E7]'
                         }`}
                       >
@@ -416,26 +386,26 @@ export function Hero({
                         e.stopPropagation();
                         setActivePopup(null);
                       }}
-                      className="text-xs font-bold opacity-60 hover:opacity-100 p-0.5"
+                      className="text-xs font-bold opacity-60 hover:opacity-100 p-0.5 rounded transition-opacity"
                       title="Dismiss"
                       aria-label="Dismiss dialogue"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-3.5 h-3.5" />
                     </button>
                   </div>
 
-                  <p className="text-[10px] font-medium text-[#524E5E] leading-snug mb-2">
+                  <p className="text-xs font-medium text-[#524E5E] leading-relaxed mb-3">
                     {activePopup.message}
                   </p>
 
-                  {/* Quick Interactive Action Buttons (Compact 35% reduced footprint) */}
-                  <div className="flex flex-wrap items-center gap-1 mb-2">
+                  {/* Quick Interactive Action Buttons (Sized +30% proportionally) */}
+                  <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         triggerBotAction('WAVE');
                       }}
-                      className="px-1.5 py-0.5 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[8.5px] font-bold rounded transition-colors shadow-2xs"
+                      className="px-2.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs"
                       title="Make Voxly wave"
                     >
                       Wave
@@ -445,7 +415,7 @@ export function Hero({
                         e.stopPropagation();
                         triggerBotAction('ROLL');
                       }}
-                      className="px-1.5 py-0.5 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[8.5px] font-bold rounded transition-colors shadow-2xs"
+                      className="px-2.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs"
                       title="Make Voxly roll 360"
                     >
                       Roll & Wave
@@ -455,24 +425,24 @@ export function Hero({
                         e.stopPropagation();
                         triggerBotAction('REPLAY');
                       }}
-                      className="px-1.5 py-0.5 bg-[#FAF9FD] hover:bg-[#F0EEF6] text-[#524E5E] hover:text-[#0F0E17] border border-[#E4E2EB] text-[8.5px] font-bold rounded transition-colors flex items-center gap-1"
+                      className="px-2.5 py-1 bg-[#FAF9FD] hover:bg-[#F0EEF6] text-[#524E5E] hover:text-[#0F0E17] border border-[#E4E2EB] text-[9.5px] font-bold rounded-lg transition-colors flex items-center gap-1"
                       title="Replay speech"
                     >
-                      <Volume2 className="w-2 h-2" /> Replay
+                      <Volume2 className="w-2.5 h-2.5" /> Replay
                     </button>
                   </div>
 
-                  <div className="pt-1.5 border-t border-[#E4E2EB] flex items-center justify-between gap-1.5">
+                  <div className="pt-2 border-t border-[#E4E2EB] flex items-center justify-between gap-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         onTalkToMe();
                       }}
-                      className="py-0.5 px-2 bg-[#6344E7] hover:bg-[#5234D4] text-white text-[8.5px] font-bold rounded-md transition-colors flex items-center gap-1 shadow-2xs"
+                      className="py-1 px-2.5 bg-[#6344E7] hover:bg-[#5234D4] text-white text-[9.5px] font-bold rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs"
                     >
-                      <Mic className="w-2.5 h-2.5" /> Live Mic Chat
+                      <Mic className="w-3 h-3" /> Live Mic Chat
                     </button>
-                    <span className="text-[8.5px] text-[#524E5E] flex items-center gap-1 font-medium">
+                    <span className="text-[9.5px] text-[#524E5E] flex items-center gap-1 font-medium">
                       <Volume2 className="w-2.5 h-2.5 text-[#10B981]" /> Active
                     </span>
                   </div>

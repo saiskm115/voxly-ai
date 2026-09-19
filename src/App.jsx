@@ -177,13 +177,13 @@ export function App() {
       <WatchDemoModal
         isOpen={isDemoModalOpen}
         onClose={() => setIsDemoModalOpen(false)}
-        onSelectBotState={(st) => setBotState(st)}
+        onSelectBotState={(st) => botControllerRef.current?.setState(st)}
       />
 
       <TalkToMeModal
         isOpen={isTalkModalOpen}
         onClose={() => setIsTalkModalOpen(false)}
-        onSelectBotState={(st) => setBotState(st)}
+        onSelectBotState={(st) => botControllerRef.current?.setState(st)}
       />
 
       <LegalModals

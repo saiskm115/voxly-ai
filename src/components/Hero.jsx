@@ -7,7 +7,7 @@ import { Play, Check, Sparkles, Mic, Volume2, X } from 'lucide-react';
 
 const SEQUENCE_STEPS = [
   {
-    title: "Voxly",
+    title: "Voxly • Autonomous Agent",
     message: "Hello! Hiii! 👋 I'm Voxly! Nice to meet you!",
     speech: "Hello! Hiii! I am Voxly! Nice to meet you!",
     audioSrc: "/audio/voxly/hero_step1.mp3",
@@ -16,7 +16,7 @@ const SEQUENCE_STEPS = [
     mood: "friendly",
   },
   {
-    title: "Voxly",
+    title: "Voxly • Voice Fleets",
     message: "Hiii! Excited to scale your voice workflows! ✨ Ready for 500+ calls.",
     speech: "Hiii! Excited to scale your voice workflows! Ready for 500 plus calls.",
     audioSrc: "/audio/voxly/hero_step2.mp3",
@@ -25,7 +25,7 @@ const SEQUENCE_STEPS = [
     mood: "excited",
   },
   {
-    title: "Voxly (Acrobatic)",
+    title: "Voxly • Acrobatic Agility",
     message: "Whoaaa! Watch this barrel roll! 🎉 360° celebratory spin & wave!",
     speech: "Whoaaa! Watch this barrel roll! Double hi to you!",
     audioSrc: "/audio/voxly/hero_step3.mp3",
@@ -34,22 +34,49 @@ const SEQUENCE_STEPS = [
     mood: "celebration",
   },
   {
-    title: "Voxly",
-    message: "Don't tickle me! Haha! Double hi to you! 👋😄👋",
+    title: "Voxly • RAG Intelligence",
+    message: "Analyzing your knowledge base... 💡 I can resolve 85% of tier-one questions instantly!",
+    speech: "Analyzing your knowledge base... I can resolve 85 percent of tier-one questions instantly!",
+    audioSrc: "/audio/voxly/hero_think.mp3",
+    expression: "THINKING",
+    gesture: "THINKING",
+    mood: "smart",
+  },
+  {
+    title: "Voxly • Pipeline Qualified",
+    message: "Woohoo! 🎉 Another qualified lead booked straight into your calendar!",
+    speech: "Woohoo! Another qualified lead booked straight into your calendar!",
+    audioSrc: "/audio/voxly/hero_celebrate.mp3",
+    expression: "EXCITED",
+    gesture: "CELEBRATE",
+    mood: "celebration",
+  },
+  {
+    title: "Voxly • High-Speed Groove",
+    message: "Look at these moves! 💃 Grooving through phone queues with zero hold times!",
+    speech: "Look at these moves! Grooving through phone queues with zero hold times!",
+    audioSrc: "/audio/voxly/hero_dance.mp3",
+    expression: "HAPPY",
+    gesture: "DANCE",
+    mood: "playful",
+  },
+  {
+    title: "Voxly • Double High-Five",
+    message: "Double high-five! 🚀✨ Ready to handle 500 simultaneous calls!",
+    speech: "Double high-five! Ready to handle 500 simultaneous calls!",
+    audioSrc: "/audio/voxly/hero_double_wave.mp3",
+    expression: "EXCITED",
+    gesture: "DOUBLE_WAVE",
+    mood: "celebration",
+  },
+  {
+    title: "Voxly • Playful Mode",
+    message: "Don't tickle me! Haha! 👋😄👋 Double high-five to you!",
     speech: "Don't tickle me! Haha! Double hi to you!",
     audioSrc: "/audio/voxly/hero_step4.mp3",
     expression: "EXCITED",
     gesture: "DOUBLE_WAVE",
     mood: "playful",
-  },
-  {
-    title: "Voxly",
-    message: "Double barrel roll & high five! 🚀✨ Let's conquer customer calls!",
-    speech: "Double barrel roll and high five! Let's conquer customer calls!",
-    audioSrc: "/audio/voxly/hero_step5.mp3",
-    expression: "EXCITED",
-    gesture: "ROLL_DOUBLE_WAVE",
-    mood: "celebration",
   },
 ];
 
@@ -82,8 +109,8 @@ export function Hero({
     };
   }, []);
 
-  // Helper to start the 3-second auto-dismiss timer
-  const resetDismissTimer = (durationMs = 3000) => {
+  // Helper to start the 3.5-second auto-dismiss timer
+  const resetDismissTimer = (durationMs = 3500) => {
     if (popupAutoDismissTimerRef.current) {
       clearTimeout(popupAutoDismissTimerRef.current);
     }
@@ -99,10 +126,10 @@ export function Hero({
     setActivePopup(stepData);
     setBotExpression(stepData.expression);
 
-    // Auto-dismiss dialogue box after exactly 3 seconds as required
-    resetDismissTimer(3000);
+    // Auto-dismiss dialogue box after 3.5 seconds
+    resetDismissTimer(3500);
 
-    // Trigger 3D robot expression & physical animation (wave / 360 roll / double wave)
+    // Trigger 3D robot expression & physical animation
     if (botControllerRef?.current) {
       botControllerRef.current.setExpression(stepData.expression, true);
       if (stepData.gesture) {
@@ -156,23 +183,90 @@ export function Hero({
 
   const handleMouseLeavePopup = () => {
     isHoveredRef.current = false;
-    // Auto-dismiss after 3 seconds when mouse leaves
-    resetDismissTimer(3000);
+    // Auto-dismiss after 3.5 seconds when mouse leaves
+    resetDismissTimer(3500);
   };
 
   // Handle manual interaction buttons inside speech bubble
   const triggerBotAction = (actionType) => {
     if (!botControllerRef?.current) return;
-    resetDismissTimer(3000);
+    resetDismissTimer(3500);
 
     if (actionType === 'WAVE') {
       botControllerRef.current.setExpression('HAPPY', true);
       botControllerRef.current.playGesture('WAVE');
+      const step = {
+        title: "Voxly • Wave",
+        message: "Hiii! 👋 Waving back at you! Always ready for the next customer call.",
+        speech: "Hiii! Waving back at you!",
+        audioSrc: '/audio/voxly/hero_wave.mp3',
+        expression: 'HAPPY',
+        gesture: 'WAVE',
+        mood: 'friendly'
+      };
+      setActivePopup(step);
+      setBotExpression('HAPPY');
       voiceAgent.playAudioClip('/audio/voxly/hero_wave.mp3', null, null, { soundType: 'wave' });
     } else if (actionType === 'ROLL') {
-      botControllerRef.current.setExpression('CONFIDENT', true);
+      botControllerRef.current.setExpression('EXCITED', true);
       botControllerRef.current.playGesture('ROLL_DOUBLE_WAVE');
+      const step = {
+        title: "Voxly • 360 Spin",
+        message: "Whoaaa! 🚀 Full 360 celebratory barrel roll spin! Agility at scale.",
+        speech: "Whoaaa! Full 360 spin and wave!",
+        audioSrc: '/audio/voxly/hero_roll.mp3',
+        expression: 'EXCITED',
+        gesture: 'ROLL_DOUBLE_WAVE',
+        mood: 'celebration'
+      };
+      setActivePopup(step);
+      setBotExpression('EXCITED');
       voiceAgent.playAudioClip('/audio/voxly/hero_roll.mp3', null, null, { soundType: 'roll' });
+    } else if (actionType === 'THINK') {
+      botControllerRef.current.setExpression('THINKING', true);
+      botControllerRef.current.playGesture('THINKING');
+      const step = {
+        title: "Voxly • Intelligence",
+        message: "Analyzing your knowledge base... 💡 I can resolve 85% of tier-one questions instantly!",
+        speech: "Analyzing your knowledge base... I can resolve 85 percent of tier-one questions instantly!",
+        audioSrc: '/audio/voxly/hero_think.mp3',
+        expression: 'THINKING',
+        gesture: 'THINKING',
+        mood: 'smart'
+      };
+      setActivePopup(step);
+      setBotExpression('THINKING');
+      voiceAgent.playAudioClip('/audio/voxly/hero_think.mp3', null, null, { soundType: 'chime' });
+    } else if (actionType === 'CELEBRATE') {
+      botControllerRef.current.setExpression('EXCITED', true);
+      botControllerRef.current.playGesture('CELEBRATE');
+      const step = {
+        title: "Voxly • Revenue Lead",
+        message: "Woohoo! 🎉 Another qualified lead booked straight into your calendar!",
+        speech: "Woohoo! Another qualified lead booked straight into your calendar!",
+        audioSrc: '/audio/voxly/hero_celebrate.mp3',
+        expression: 'EXCITED',
+        gesture: 'CELEBRATE',
+        mood: 'celebration'
+      };
+      setActivePopup(step);
+      setBotExpression('EXCITED');
+      voiceAgent.playAudioClip('/audio/voxly/hero_celebrate.mp3', null, null, { soundType: 'happy' });
+    } else if (actionType === 'DANCE') {
+      botControllerRef.current.setExpression('HAPPY', true);
+      botControllerRef.current.playGesture('DANCE');
+      const step = {
+        title: "Voxly • Performance",
+        message: "Look at these moves! 💃 Grooving through phone queues with zero hold times!",
+        speech: "Look at these moves! Grooving through phone queues with zero hold times!",
+        audioSrc: '/audio/voxly/hero_dance.mp3',
+        expression: 'HAPPY',
+        gesture: 'DANCE',
+        mood: 'playful'
+      };
+      setActivePopup(step);
+      setBotExpression('HAPPY');
+      voiceAgent.playAudioClip('/audio/voxly/hero_dance.mp3', null, null, { soundType: 'happy' });
     } else if (actionType === 'REPLAY') {
       if (activePopup?.audioSrc) {
         voiceAgent.playAudioClip(activePopup.audioSrc, null, null, { soundType: 'chime' });
@@ -221,7 +315,7 @@ export function Hero({
 
   // MANUAL CLICKS:
   // Debounced (420ms) so 1 physical click = 1 action increment
-  // Manual clicks initiate interaction mode and display dialogue for 3 seconds
+  // Manual clicks initiate interaction mode and display dialogue
   const handleBotClick = () => {
     const now = Date.now();
     if (now - lastClickTimeRef.current < 420) {
@@ -237,9 +331,9 @@ export function Hero({
       stepData = SEQUENCE_STEPS[count - 1];
       loopIndexRef.current = count % SEQUENCE_STEPS.length;
     } else {
-      // 6th click+: Pouty / angry expression
+      // 9th click+: Pouty / angry expression
       stepData = {
-        title: "Voxly (Pouty)",
+        title: "Voxly • High Demand",
         message: "Hey! Don't poke me, I have calls to make! 😤 Click 'Live Mic Chat' instead!",
         speech: "Hey! Don't poke me, I have calls to make! Click live mic chat instead!",
         audioSrc: "/audio/voxly/hero_pouty.mp3",
@@ -326,7 +420,7 @@ export function Hero({
             <div
               ref={sceneContainerRef}
               onClick={handleBotClick}
-              className="relative w-full h-[400px] sm:h-[460px] lg:h-[500px] flex items-center justify-center cursor-pointer"
+              className="relative w-full h-[380px] sm:h-[440px] lg:h-[500px] flex items-center justify-center cursor-pointer select-none"
             >
               <VoxlyScene
                 state={botState}
@@ -343,24 +437,24 @@ export function Hero({
               />
 
               {/* Dynamic Interactive Dialogue Box on Interaction:
-                  Increased by 30% in size (w-[255px] sm:w-[270px], p-3.5),
-                  positioned at top-right side touching slightly the robot contour,
-                  leaving robot animations, expressions, and 360 roll clearly visible.
-                  Auto-hides after exactly 3 seconds unless hovered. */}
+                  Positioned at top-right corner near the robot without touching it.
+                  Fully responsive on mobile, tablet, and desktop viewports.
+                  Features quick interaction buttons (Wave, Spin, Think, Celebrate, Dance, Replay)
+                  with synchronized neural TTS voice clips and 3.5s auto-hide. */}
               {activePopup && (
                 <div
                   onClick={(e) => e.stopPropagation()}
                   onMouseEnter={handleMouseEnterPopup}
                   onMouseLeave={handleMouseLeavePopup}
-                  className={`absolute top-3 right-1 sm:top-4 sm:right-3 md:right-4 lg:top-4 lg:right-2 xl:right-4 w-[255px] sm:w-[270px] p-3.5 rounded-2xl shadow-xl border z-30 transition-all ${
+                  className={`absolute top-1 right-1 sm:top-2 sm:right-2 md:top-2 md:right-3 lg:top-2 lg:right-0 xl:top-2 xl:right-1 w-[calc(100%-20px)] max-w-[245px] sm:max-w-[260px] p-3 sm:p-3.5 rounded-2xl shadow-xl border z-30 transition-all ${
                     activePopup.mood === 'angry'
                       ? 'bg-[#111019] text-white border-red-500/40 shadow-xl'
                       : 'bg-white text-[#0F0E17] border-[#E4E2EB] shadow-craft-md'
                   }`}
                 >
-                  {/* Speech pointer directed towards the robot's upper contour */}
+                  {/* Subtle directional pointer pointing towards the 3D robot */}
                   <div
-                    className={`absolute top-5 -left-1.5 w-3 h-3 rotate-45 border-l border-b hidden sm:block ${
+                    className={`absolute top-6 -left-1.5 w-3 h-3 rotate-45 border-l border-b hidden sm:block ${
                       activePopup.mood === 'angry'
                         ? 'bg-[#111019] border-red-500/40'
                         : 'bg-white border-[#E4E2EB]'
@@ -368,13 +462,13 @@ export function Hero({
                   />
 
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <div className="flex items-center gap-2">
-                      <span className="relative flex h-2 w-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="relative flex h-2 w-2 shrink-0">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
                       </span>
                       <span
-                        className={`text-[11px] font-bold uppercase tracking-wider ${
+                        className={`text-[10.5px] sm:text-[11px] font-bold uppercase tracking-wider truncate ${
                           activePopup.mood === 'angry' ? 'text-red-400' : 'text-[#6344E7]'
                         }`}
                       >
@@ -386,7 +480,7 @@ export function Hero({
                         e.stopPropagation();
                         setActivePopup(null);
                       }}
-                      className="text-xs font-bold opacity-60 hover:opacity-100 p-0.5 rounded transition-opacity"
+                      className="text-xs font-bold opacity-60 hover:opacity-100 p-0.5 rounded transition-opacity shrink-0"
                       title="Dismiss"
                       aria-label="Dismiss dialogue"
                     >
@@ -394,41 +488,71 @@ export function Hero({
                     </button>
                   </div>
 
-                  <p className="text-xs font-medium text-[#524E5E] leading-relaxed mb-3">
+                  <p className="text-[11px] sm:text-xs font-medium text-[#524E5E] leading-relaxed mb-2.5 sm:mb-3">
                     {activePopup.message}
                   </p>
 
-                  {/* Quick Interactive Action Buttons (Sized +30% proportionally) */}
-                  <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
+                  {/* Quick Interactive Action Buttons (Clean 2-row x 3-column responsive grid) */}
+                  <div className="grid grid-cols-3 gap-1.5 mb-2.5">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         triggerBotAction('WAVE');
                       }}
-                      className="px-2.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs"
+                      className="px-1.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs text-center truncate"
                       title="Make Voxly wave"
                     >
-                      Wave
+                      👋 Wave
                     </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         triggerBotAction('ROLL');
                       }}
-                      className="px-2.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs"
-                      title="Make Voxly roll 360"
+                      className="px-1.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs text-center truncate"
+                      title="Make Voxly spin 360"
                     >
-                      Roll & Wave
+                      🚀 Spin 360°
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        triggerBotAction('THINK');
+                      }}
+                      className="px-1.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs text-center truncate"
+                      title="Ask Voxly to think"
+                    >
+                      💡 Think
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        triggerBotAction('CELEBRATE');
+                      }}
+                      className="px-1.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs text-center truncate"
+                      title="Celebrate lead booked"
+                    >
+                      🎉 Celebrate
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        triggerBotAction('DANCE');
+                      }}
+                      className="px-1.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs text-center truncate"
+                      title="Make Voxly dance"
+                    >
+                      💃 Dance
                     </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         triggerBotAction('REPLAY');
                       }}
-                      className="px-2.5 py-1 bg-[#FAF9FD] hover:bg-[#F0EEF6] text-[#524E5E] hover:text-[#0F0E17] border border-[#E4E2EB] text-[9.5px] font-bold rounded-lg transition-colors flex items-center gap-1"
+                      className="px-1.5 py-1 bg-[#FAF9FD] hover:bg-[#F0EEF6] text-[#524E5E] hover:text-[#0F0E17] border border-[#E4E2EB] text-[9.5px] font-bold rounded-lg transition-colors flex items-center justify-center gap-1 truncate"
                       title="Replay speech"
                     >
-                      <Volume2 className="w-2.5 h-2.5" /> Replay
+                      <Volume2 className="w-2.5 h-2.5 shrink-0" /> Replay
                     </button>
                   </div>
 

@@ -16,7 +16,12 @@ CLIPS = [
     ("hero_step5.mp3", "Double barrel roll and high five! Let's conquer customer calls!"),
     ("hero_pouty.mp3", "Hey! Don't poke me, I have calls to make! Click live mic chat instead!"),
     ("hero_wave.mp3", "Hiii! Waving back at you!"),
-    ("hero_roll.mp3", "Whoaaa! Full 360 spin and wave!")
+    ("hero_roll.mp3", "Whoaaa! Full 360 spin and wave!"),
+    ("hero_think.mp3", "Analyzing your knowledge base... I can resolve 85 percent of tier-one questions instantly!"),
+    ("hero_celebrate.mp3", "Woohoo! Another qualified lead booked straight into your calendar!"),
+    ("hero_dance.mp3", "Look at these moves! Grooving through phone queues with zero hold times!"),
+    ("hero_double_wave.mp3", "Double high-five! Ready to handle 500 simultaneous calls!"),
+    ("hero_surprise.mp3", "Did you know? Sub-400 millisecond response time means natural, human conversation!")
 ]
 
 async def generate_all():

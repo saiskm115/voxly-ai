@@ -182,6 +182,12 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
   const ROLL_DURATION = 1.6;
   let rollProgress = 0;
 
+  // New procedural interaction gestures: Think & Dance
+  let thinkTimer = 0;
+  const THINK_DURATION = 2.6;
+  let danceTimer = 0;
+  const DANCE_DURATION = 2.8;
+
   // Autonomous random idle expressions tracking (cycles between vivid expressions)
   let nextRandomExprTime = 3.0;
   let userExpressionLockUntil = 0;
@@ -240,9 +246,11 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
   function startGesture(name = 'RIGHT_HAND_WAVE') {
     gesture = name;
     const upper = String(name).toUpperCase();
-    if (upper === 'DOUBLE_WAVE' || upper === 'ROLL_DOUBLE_WAVE' || upper === 'TWO_HANDS_HI') {
+    if (upper === 'DOUBLE_WAVE' || upper === 'ROLL_DOUBLE_WAVE' || upper === 'TWO_HANDS_HI' || upper === 'CELEBRATE') {
       twoHandsWaveTimer = TWO_HANDS_DURATION;
       waveTimer = 0;
+      thinkTimer = 0;
+      danceTimer = 0;
       if (upper.includes('ROLL')) {
         rollTimer = ROLL_DURATION;
       }
@@ -252,9 +260,33 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       return;
     }
 
+    if (upper === 'THINK' || upper === 'THINKING') {
+      thinkTimer = THINK_DURATION;
+      waveTimer = 0;
+      twoHandsWaveTimer = 0;
+      rollTimer = 0;
+      danceTimer = 0;
+      expression = 'THINKING';
+      setExpression('THINKING', true);
+      return;
+    }
+
+    if (upper === 'DANCE') {
+      danceTimer = DANCE_DURATION;
+      waveTimer = 0;
+      twoHandsWaveTimer = 0;
+      rollTimer = 0;
+      thinkTimer = 0;
+      expression = 'HAPPY';
+      setExpression('HAPPY', true);
+      return;
+    }
+
     waveTimer = WAVE_DURATION;
     twoHandsWaveTimer = 0;
     rollTimer = 0;
+    thinkTimer = 0;
+    danceTimer = 0;
     expression = 'HAPPY';
     const clipName = clips.has('RIGHT_HAND_WAVE') ? 'RIGHT_HAND_WAVE' : (clips.has(name) ? name : 'WAVE');
     play(clipName, true);
@@ -466,6 +498,95 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
         }
 
         if (waveTimer <= 0) {
+          gesture = false;
+        }
+      } else if (thinkTimer > 0) {
+        // PROCEDURAL THOUGHTFUL CHIN TOUCH GESTURE:
+        thinkTimer -= dt;
+        const progress = 1 - (thinkTimer / THINK_DURATION);
+        let armWeight = 1;
+        if (progress < 0.22) {
+          armWeight = progress / 0.22;
+        } else if (progress > 0.78) {
+          armWeight = (1 - progress) / 0.22;
+        }
+
+        // Left arm strictly at rest
+        if (leftUpper) {
+          leftUpper.quaternion.copy(TARGET_LEFT_UPPER_DOWN);
+          const rUpper = animated.get('LeftUpperArm');
+          if (rUpper) rUpper.q.copy(TARGET_LEFT_UPPER_DOWN);
+        }
+        if (leftFore) {
+          leftFore.quaternion.copy(TARGET_LEFT_FORE_DOWN);
+          const rFore = animated.get('LeftForearm');
+          if (rFore) rFore.q.copy(TARGET_LEFT_FORE_DOWN);
+        }
+        if (leftHand) {
+          leftHand.quaternion.copy(TARGET_LEFT_HAND_DOWN);
+          const rHand = animated.get('LeftHand');
+          if (rHand) rHand.q.copy(TARGET_LEFT_HAND_DOWN);
+        }
+
+        // Right arm raises thoughtfully toward chin / cheek
+        if (rightUpper) {
+          rightUpper.quaternion.copy(TARGET_RIGHT_UPPER_DOWN).slerp(TARGET_RIGHT_UPPER_UP, armWeight * 0.75);
+          const rUpper = animated.get('RightUpperArm');
+          if (rUpper) rUpper.q.copy(rightUpper.quaternion);
+        }
+        if (rightFore) {
+          rightFore.quaternion.copy(TARGET_RIGHT_FORE_DOWN).slerp(TARGET_RIGHT_FORE_UP, armWeight * 0.95);
+          const rFore = animated.get('RightForearm');
+          if (rFore) rFore.q.copy(rightFore.quaternion);
+        }
+        if (rightHand) {
+          rightHand.quaternion.copy(TARGET_RIGHT_HAND_DOWN).slerp(TARGET_RIGHT_HAND_UP, armWeight * 0.85);
+          const rHand = animated.get('RightHand');
+          if (rHand) rHand.q.copy(rightHand.quaternion);
+        }
+
+        if (thinkTimer <= 0) {
+          gesture = false;
+        }
+      } else if (danceTimer > 0) {
+        // PROCEDURAL RHYTHMIC GROOVE DANCE:
+        danceTimer -= dt;
+        const progress = 1 - (danceTimer / DANCE_DURATION);
+        let armWeight = 1;
+        if (progress < 0.2) {
+          armWeight = progress / 0.2;
+        } else if (progress > 0.8) {
+          armWeight = (1 - progress) / 0.2;
+        }
+
+        const danceOscL = Math.sin(time * 11) * 0.45 * armWeight;
+        const danceOscR = Math.sin(time * 11 + Math.PI) * 0.45 * armWeight;
+
+        if (leftUpper) {
+          leftUpper.quaternion.copy(TARGET_LEFT_UPPER_DOWN).slerp(TARGET_LEFT_UPPER_UP, armWeight * 0.65);
+          leftUpper.quaternion.multiply(new Quaternion().setFromAxisAngle(waveYAxis, danceOscL * 0.3));
+          const rUpper = animated.get('LeftUpperArm');
+          if (rUpper) rUpper.q.copy(leftUpper.quaternion);
+        }
+        if (leftFore) {
+          leftFore.quaternion.copy(TARGET_LEFT_FORE_DOWN).slerp(TARGET_LEFT_FORE_UP, armWeight * 0.7);
+          const rFore = animated.get('LeftForearm');
+          if (rFore) rFore.q.copy(leftFore.quaternion);
+        }
+
+        if (rightUpper) {
+          rightUpper.quaternion.copy(TARGET_RIGHT_UPPER_DOWN).slerp(TARGET_RIGHT_UPPER_UP, armWeight * 0.65);
+          rightUpper.quaternion.multiply(new Quaternion().setFromAxisAngle(waveYAxis, danceOscR * 0.3));
+          const rUpper = animated.get('RightUpperArm');
+          if (rUpper) rUpper.q.copy(rightUpper.quaternion);
+        }
+        if (rightFore) {
+          rightFore.quaternion.copy(TARGET_RIGHT_FORE_DOWN).slerp(TARGET_RIGHT_FORE_UP, armWeight * 0.7);
+          const rFore = animated.get('RightForearm');
+          if (rFore) rFore.q.copy(rightFore.quaternion);
+        }
+
+        if (danceTimer <= 0) {
           gesture = false;
         }
       } else {

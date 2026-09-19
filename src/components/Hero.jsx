@@ -91,7 +91,8 @@ export function Hero({
 }) {
   const heroRef = useRef(null);
   const sceneContainerRef = useRef(null);
-  const [heroPointer, setHeroPointer] = useState({ x: 0, y: 0 });
+  const heroPointerRef = useRef({ x: 0, y: 0 });
+  const botRectRef = useRef(null);
   const [botExpression, setBotExpression] = useState('HAPPY');
   const [activePopup, setActivePopup] = useState(null);
   const [isHeroInView, setIsHeroInView] = useState(true);
@@ -276,41 +277,61 @@ export function Hero({
     }
   };
 
-  // ACCURATE MOUSE TRACKING RELATIVE TO ROBOT POSITION:
-  // When cursor is on/near the robot, pointerX is 0 (robot looks straight forward at user).
-  // When cursor is to the left, robot turns left (up to -60 deg).
-  // When cursor is to the right, robot turns right (up to +60 deg).
+  // HIGH-PERFORMANCE ZERO-RERENDER MOUSE TRACKING:
+  // Updates heroPointerRef directly at 60/120fps without triggering React component re-renders.
+  // Caches container bounding rect on scroll/resize to eliminate layout thrashing.
   useEffect(() => {
+    const updateBotRect = () => {
+      if (sceneContainerRef.current) {
+        botRectRef.current = sceneContainerRef.current.getBoundingClientRect();
+      }
+    };
+
+    updateBotRect();
+    window.addEventListener('resize', updateBotRect, { passive: true });
+    window.addEventListener('scroll', updateBotRect, { passive: true });
+
     const handleMouseMove = (e) => {
-      if (!sceneContainerRef.current) return;
-      const botRect = sceneContainerRef.current.getBoundingClientRect();
-      const botCenterX = botRect.left + botRect.width * 0.5;
-      const botCenterY = botRect.top + botRect.height * 0.45;
+      if (!botRectRef.current && sceneContainerRef.current) {
+        botRectRef.current = sceneContainerRef.current.getBoundingClientRect();
+      }
+      const rect = botRectRef.current;
+      if (!rect) return;
+
+      const isDesktop = window.innerWidth >= 960;
+      // On desktop, the 3D robot is shifted left (-0.22 in Three.js ≈ -55px on screen)
+      const botOffsetX = isDesktop ? -55 : 0;
+      const botCenterX = rect.left + rect.width * 0.5 + botOffsetX;
+      const botCenterY = rect.top + rect.height * 0.45;
 
       const diffX = e.clientX - botCenterX;
       const diffY = e.clientY - botCenterY;
 
-      // Normalization scale: ~450px left/right corresponds to full -1 / +1 turn
-      const maxDistX = Math.max(window.innerWidth * 0.42, 450);
-      const maxDistY = Math.max(window.innerHeight * 0.38, 350);
+      // Natural, responsive distance normalization across viewport
+      const maxDistX = Math.max(window.innerWidth * 0.45, 380);
+      const maxDistY = Math.max(window.innerHeight * 0.40, 280);
 
-      // Deadband & center-focus: when cursor is near the robot, smoothly lock to 0
-      // so it looks directly forward at the user and NEVER turns away to the right!
-      const distFromCenter = Math.abs(diffX);
-      let rawNormX = Math.max(-1, Math.min(1, diffX / maxDistX));
-      if (distFromCenter < 140) {
-        // Smooth quadratic blend to 0 near center
-        const t = distFromCenter / 140;
-        rawNormX = rawNormX * (t * t);
-      }
+      const normX = Math.max(-1, Math.min(1, diffX / maxDistX));
+      const normY = -Math.max(-1, Math.min(1, diffY / maxDistY));
 
-      const normalizedY = -Math.max(-1, Math.min(1, diffY / maxDistY));
+      heroPointerRef.current.x = normX;
+      heroPointerRef.current.y = normY;
+    };
 
-      setHeroPointer({ x: rawNormX, y: normalizedY });
+    const handleMouseLeave = () => {
+      heroPointerRef.current.x = 0;
+      heroPointerRef.current.y = 0;
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      window.removeEventListener('resize', updateBotRect);
+      window.removeEventListener('scroll', updateBotRect);
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
   }, []);
 
   // MANUAL CLICKS:
@@ -429,7 +450,7 @@ export function Hero({
                 onExpressionChange={(expr) => {
                   setBotExpression(expr);
                 }}
-                externalPointer={heroPointer}
+                pointerRef={heroPointerRef}
                 isInView={isHeroInView}
                 onControllerReady={(ctrl) => {
                   botControllerRef.current = ctrl;

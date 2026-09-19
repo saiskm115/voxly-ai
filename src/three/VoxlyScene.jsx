@@ -26,6 +26,7 @@ export function VoxlyScene({
   onExpressionChange,
   audioAnalyser = null,
   audioAmplitude = 0,
+  pointerRef = null,
   externalPointer = null,
   className = '',
   isInView = true,
@@ -44,7 +45,7 @@ export function VoxlyScene({
   }, []);
 
   const handlePointerMove = (e) => {
-    if (externalPointer) return;
+    if (pointerRef || externalPointer) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
@@ -52,7 +53,7 @@ export function VoxlyScene({
   };
 
   const handlePointerLeave = () => {
-    if (externalPointer) return;
+    if (pointerRef || externalPointer) return;
     setInternalPointer({ x: 0, y: 0 });
   };
 
@@ -106,6 +107,7 @@ export function VoxlyScene({
             onBotClick={onBotClick}
             onControllerReady={onControllerReady}
             onExpressionChange={onExpressionChange}
+            pointerRef={pointerRef}
             pointer={activePointer}
             audioAnalyser={audioAnalyser}
             audioAmplitude={audioAmplitude}

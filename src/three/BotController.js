@@ -688,8 +688,8 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       const tiltAngle = expression === 'THINKING' ? MathUtils.degToRad(8) : 0;
       const pitchOffset = expression === 'ANGRY' ? MathUtils.degToRad(5) : 0;
 
-      yaw = MathUtils.damp(yaw, pointerX * MathUtils.degToRad(12), 8, dt);
-      pitch = MathUtils.damp(pitch, -pointerY * MathUtils.degToRad(8), 8, dt);
+      yaw = MathUtils.damp(yaw, pointerX * MathUtils.degToRad(16), 14, dt);
+      pitch = MathUtils.damp(pitch, -pointerY * MathUtils.degToRad(10), 14, dt);
 
       if (head && rest.has('Head')) {
         rotation.copy(rest.get('Head').q).invert().multiply(head.quaternion);

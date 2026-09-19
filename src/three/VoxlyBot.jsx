@@ -13,7 +13,8 @@ export function VoxlyBot({
   onBotClick,
   onControllerReady,
   onExpressionChange,
-  pointer = { x: 0, y: 0 },
+  pointerRef = null,
+  pointer = null,
   audioAnalyser = null,
   audioAmplitude = 0,
 }) {
@@ -33,37 +34,33 @@ export function VoxlyBot({
 
   // Persistent controller instance
   const controller = useMemo(() => {
-    return createVoxlyController(clonedScene, {
-      onExpressionChange: (expr) => {
-        if (onExpressionChange) onExpressionChange(expr);
-      },
-    });
+    return createVoxlyController(clonedScene, { onExpressionChange });
   }, [clonedScene, onExpressionChange]);
 
-  // Inform parent when controller is ready
+  // Sync state & controller ready callback
   useEffect(() => {
     if (controller && onControllerReady) {
       onControllerReady(controller);
     }
   }, [controller, onControllerReady]);
 
-  // Sync state changes
+  // Sync external state changes
   useEffect(() => {
     if (controller && state) {
       controller.setState(state);
     }
   }, [controller, state]);
 
-  // Sync expression changes without circular triggers
+  // Sync external expression changes
   useEffect(() => {
-    if (controller && expression && controller.expression !== expression) {
+    if (controller && expression) {
       controller.setExpression(expression);
     }
   }, [controller, expression]);
 
-  // Sync audio analyser
+  // Sync audio analyser for real-time lip-sync mouth movement
   useEffect(() => {
-    if (controller) {
+    if (controller && audioAnalyser) {
       controller.attachAnalyser(audioAnalyser);
     }
   }, [controller, audioAnalyser]);
@@ -75,9 +72,18 @@ export function VoxlyBot({
     }
   }, [controller, audioAmplitude]);
 
-  // Frame update: body follows mouse cursor up to 120 degrees with floating and jiggle
-  useFrame(({ clock }, delta) => {
+  // Frame update: body follows mouse cursor at 60/120fps with zero-rerender ref tracking
+  useFrame(({ clock, pointer: r3fPointer }, delta) => {
     const time = clock.getElapsedTime();
+
+    // Zero-rerender cursor tracking:
+    // Priority: pointerRef (window-level smooth tracking) -> pointer prop -> R3F Canvas pointer
+    const pX = pointerRef?.current?.x !== undefined 
+      ? pointerRef.current.x 
+      : (pointer?.x !== undefined ? pointer.x : r3fPointer.x);
+    const pY = pointerRef?.current?.y !== undefined 
+      ? pointerRef.current.y 
+      : (pointer?.y !== undefined ? pointer.y : r3fPointer.y);
 
     // Responsive horizontal offset & vertical clearance:
     // Desktop: Shift robot slightly to left (-0.22) so top-right dialogue box has clean gap without touching.
@@ -88,12 +94,12 @@ export function VoxlyBot({
     const basePosY = size.width < 640 ? -1.02 : -0.95;
     const baseScale = size.width < 480 ? 0.38 : size.width < 640 ? 0.40 : 0.42;
 
-    // 120 DEGREES TOTAL BODY ROTATION RANGE (-60 deg to +60 deg)
-    const targetBodyYaw = MathUtils.clamp(pointer.x, -1, 1) * MathUtils.degToRad(60);
-    const targetBodyPitch = MathUtils.clamp(-pointer.y, -1, 1) * MathUtils.degToRad(14);
+    // Snappy, silky-smooth dampening (factor 14 instead of sluggish 8) for immediate responsiveness without lag
+    const targetBodyYaw = MathUtils.clamp(pX, -1, 1) * MathUtils.degToRad(50);
+    const targetBodyPitch = MathUtils.clamp(-pY, -1, 1) * MathUtils.degToRad(14);
 
-    bodyYawRef.current = MathUtils.damp(bodyYawRef.current, targetBodyYaw, 8, delta);
-    bodyPitchRef.current = MathUtils.damp(bodyPitchRef.current, targetBodyPitch, 8, delta);
+    bodyYawRef.current = MathUtils.damp(bodyYawRef.current, targetBodyYaw, 14, delta);
+    bodyPitchRef.current = MathUtils.damp(bodyPitchRef.current, targetBodyPitch, 14, delta);
 
     const rollProg = controller?.rollProgress || 0;
     // True smooth 360-degree acrobatic spin roll (0 to 2*PI continuous ease)
@@ -104,18 +110,18 @@ export function VoxlyBot({
 
     if (groupRef.current) {
       // Smoothly interpolate X offset and apply responsive scale
-      groupRef.current.position.x = MathUtils.damp(groupRef.current.position.x, targetX, 6, delta);
+      groupRef.current.position.x = MathUtils.damp(groupRef.current.position.x, targetX, 10, delta);
       // Floating hover motion with celebratory roll hop
       groupRef.current.position.y = basePosY + Math.sin(time * 2.4) * 0.06 + rollHop;
       groupRef.current.scale.setScalar(baseScale);
-      // 120-degree body rotation following cursor + lively jiggle + 360 roll
+      // Body rotation following cursor + lively jiggle + 360 roll
       groupRef.current.rotation.y = bodyYawRef.current + Math.sin(time * 1.5) * 0.02 + rollAngle;
       groupRef.current.rotation.x = bodyPitchRef.current;
-      groupRef.current.rotation.z = Math.sin(time * 3.0) * 0.012 - MathUtils.clamp(pointer.x, -1, 1) * MathUtils.degToRad(3) + rollTilt;
+      groupRef.current.rotation.z = Math.sin(time * 3.0) * 0.012 - MathUtils.clamp(pX, -1, 1) * MathUtils.degToRad(3) + rollTilt;
     }
 
     if (controller) {
-      controller.setPointer(pointer.x, pointer.y);
+      controller.setPointer(pX, pY);
       controller.update(delta);
     }
   });

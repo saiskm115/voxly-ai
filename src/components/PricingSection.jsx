@@ -96,16 +96,11 @@ export function PricingSection({ onSelectPlan }) {
                       {tier.badge}
                     </div>
 
-                    {/* Radio / Selection State Indicator */}
-                    {isSelected ? (
+                    {/* Selection State Indicator */}
+                    {isSelected && (
                       <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#6344E7] text-white text-[10px] font-bold shadow-xs">
                         <Check className="w-3 h-3 stroke-[3]" />
                         <span>Selected</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#F0EEF6] text-[#524E5E] text-[10px] font-medium group-hover:bg-[#E4E2EB] transition-colors">
-                        <div className="w-2.5 h-2.5 rounded-full border border-[#8C879A]" />
-                        <span>Click to Select</span>
                       </div>
                     )}
                   </div>

@@ -28,6 +28,8 @@ export function AppShell({ onBackToLanding }) {
     setIsCommandPaletteOpen
   } = useWorkspace();
 
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
   const [activeTab, setActiveTab] = useState(() => {
     if (typeof window !== 'undefined' && window.location.hash.startsWith('#dashboard/')) {
       const tab = window.location.hash.replace('#dashboard/', '').split('?')[0];
@@ -53,11 +55,13 @@ export function AppShell({ onBackToLanding }) {
   const handleSelectTab = (tabId) => {
     setActiveTab(tabId);
     window.location.hash = `#dashboard/${tabId}`;
+    setIsMobileSidebarOpen(false);
   };
 
   const handleNavigate = (tabId, options = {}) => {
     setActiveTab(tabId);
     window.location.hash = `#dashboard/${tabId}`;
+    setIsMobileSidebarOpen(false);
     if (options.openCreate) {
       setIsCreateAgentOpen(true);
     }
@@ -68,7 +72,7 @@ export function AppShell({ onBackToLanding }) {
 
   return (
     <div className="flex h-screen bg-[#FAF9FD] text-[#0F0E17] overflow-hidden select-none font-sans antialiased">
-      {/* Primary Vertical Navigation */}
+      {/* Primary Vertical Navigation (Responsive Desktop & Mobile Drawer) */}
       <Sidebar
         activeTab={activeTab}
         onSelectTab={handleSelectTab}
@@ -79,6 +83,8 @@ export function AppShell({ onBackToLanding }) {
         }}
         onOpenAddFunds={() => handleSelectTab('billing')}
         onBackToLanding={onBackToLanding}
+        isMobileOpen={isMobileSidebarOpen}
+        onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
 
       {/* Main Content Area */}
@@ -93,10 +99,12 @@ export function AppShell({ onBackToLanding }) {
           }}
           user={{ name: 'Alex Rivera' }}
           onBackToLanding={onBackToLanding}
+          isMobileSidebarOpen={isMobileSidebarOpen}
+          onToggleMobileSidebar={() => setIsMobileSidebarOpen((prev) => !prev)}
         />
 
         {/* Dynamic Viewport */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#FAF9FD]">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-6 lg:p-8 bg-[#FAF9FD]">
           <div className="max-w-7xl mx-auto pb-12">
             {activeTab === 'overview' && (
               <OverviewModule

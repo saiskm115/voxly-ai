@@ -178,20 +178,70 @@ class VoiceAgentAdapter {
     }, 450);
   }
 
-  playTTS(text, onEnd, onStart, options = {}) {
+  /**
+   * Play rich, audible futuristic robotic acoustic sound effects via Web Audio API.
+   * High-fidelity harmonic synthesis with volume calibrated to industry standards (~0.35 gain).
+   */
+  playRobotSound(type = 'chime') {
     this.ensureAudioContext();
-    this.isSpeaking = true;
-    this.notify('stateChange', { state: 'TALKING', responseText: text });
+    if (!this.audioContext || this.audioContext.state !== 'running') return;
 
-    // Subtle acoustic connect chime
-    if (this.audioContext && this.audioContext.state === 'running') {
-      try {
-        const ctx = this.audioContext;
-        const now = ctx.currentTime;
+    try {
+      const ctx = this.audioContext;
+      const now = ctx.currentTime;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.35, now);
+
+      if (type === 'wave' || type === 'happy') {
+        // Upbeat melodic two-step chirp
         const osc1 = ctx.createOscillator();
         const osc2 = ctx.createOscillator();
-        const chimeGain = ctx.createGain();
+        osc1.type = 'sine';
+        osc2.type = 'triangle';
+        osc1.frequency.setValueAtTime(523.25, now); // C5
+        osc1.frequency.exponentialRampToValueAtTime(783.99, now + 0.12); // G5
+        osc2.frequency.setValueAtTime(659.25, now + 0.04); // E5
+        osc2.frequency.exponentialRampToValueAtTime(1046.5, now + 0.22); // C6
 
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+        if (this.analyser) gain.connect(this.analyser);
+
+        osc1.start(now);
+        osc2.start(now + 0.04);
+        osc1.stop(now + 0.33);
+        osc2.stop(now + 0.33);
+      } else if (type === 'roll' || type === 'spin') {
+        // High-energy ascending arpeggiated sweep
+        const osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.25);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        if (this.analyser) gain.connect(this.analyser);
+        osc.start(now);
+        osc.stop(now + 0.29);
+      } else if (type === 'tickle') {
+        // Playful double warble
+        const osc = ctx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.linearRampToValueAtTime(600, now + 0.08);
+        osc.frequency.linearRampToValueAtTime(900, now + 0.16);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        if (this.analyser) gain.connect(this.analyser);
+        osc.start(now);
+        osc.stop(now + 0.23);
+      } else {
+        // Standard high-clarity harmonic greeting chime (587Hz -> 880Hz / 440Hz -> 659Hz)
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
         osc1.type = 'sine';
         osc2.type = 'triangle';
         osc1.frequency.setValueAtTime(587.33, now);
@@ -199,23 +249,29 @@ class VoiceAgentAdapter {
         osc2.frequency.setValueAtTime(440.0, now);
         osc2.frequency.exponentialRampToValueAtTime(659.25, now + 0.1);
 
-        chimeGain.gain.setValueAtTime(0.06, now);
-        chimeGain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
 
-        osc1.connect(chimeGain);
-        osc2.connect(chimeGain);
-        chimeGain.connect(ctx.destination);
-
-        if (this.analyser) {
-          chimeGain.connect(this.analyser);
-        }
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+        if (this.analyser) gain.connect(this.analyser);
 
         osc1.start(now);
         osc2.start(now);
-        osc1.stop(now + 0.26);
-        osc2.stop(now + 0.26);
-      } catch (e) {}
-    }
+        osc1.stop(now + 0.36);
+        osc2.stop(now + 0.36);
+      }
+    } catch (e) {}
+  }
+
+  playTTS(text, onEnd, onStart, options = {}) {
+    this.ensureAudioContext();
+    this.isSpeaking = true;
+    this.notify('stateChange', { state: 'TALKING', responseText: text });
+
+    // High-clarity acoustic connect chime (calibrated to audible 0.35 gain)
+    this.playRobotSound(options.soundType || 'chime');
 
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       try {
@@ -226,11 +282,11 @@ class VoiceAgentAdapter {
       } catch (e) {}
 
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = options.rate || options.speed || 1.02;
-      utterance.pitch = options.pitch !== undefined ? (1.0 + options.pitch) : 1.05;
-      utterance.volume = options.volume || 1.0;
+      utterance.rate = options.rate || options.speed || 1.0;
+      utterance.pitch = options.pitch !== undefined ? (1.0 + options.pitch) : 1.0;
+      utterance.volume = 1.0; // Maximum volume for robust audibility
 
-      // Pick a friendly, high-quality voice
+      // Pick a friendly, high-quality, high-gain voice
       const voices = this.availableVoices.length > 0 ? this.availableVoices : window.speechSynthesis.getVoices();
       if (voices && voices.length > 0) {
         let preferredVoice = null;
@@ -239,7 +295,16 @@ class VoiceAgentAdapter {
         }
         if (!preferredVoice) {
           preferredVoice = voices.find(
-            (v) => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Jenny') || v.name.includes('Zira'))
+            (v) => v.lang.startsWith('en') && (
+              v.name.includes('Google') ||
+              v.name.includes('Natural') ||
+              v.name.includes('Jenny') ||
+              v.name.includes('Aria') ||
+              v.name.includes('Guy') ||
+              v.name.includes('Samantha') ||
+              v.name.includes('Daniel') ||
+              v.name.includes('Zira')
+            )
           ) || voices.find((v) => v.lang.startsWith('en'));
         }
         if (preferredVoice) utterance.voice = preferredVoice;

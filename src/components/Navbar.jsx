@@ -227,7 +227,7 @@ export function Navbar({ onGetStarted, onWatchDemo, onSignIn, onOpenDashboard })
         {/* Mobile menu toggle */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 rounded-xl text-[#0F0E17] hover:bg-[#FAF9FD] border border-[#E4E2EB] transition-colors"
+          className="md:hidden min-w-[44px] min-h-[44px] p-2.5 rounded-xl text-[#0F0E17] hover:bg-[#FAF9FD] border border-[#E4E2EB] flex items-center justify-center transition-colors active:scale-95"
           aria-label="Toggle navigation"
         >
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

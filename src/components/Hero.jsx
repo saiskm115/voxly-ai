@@ -102,8 +102,10 @@ export function Hero({
       }
     }
 
-    // Play synthesized voice & greeting chime
-    voiceAgent.playTTS(stepData.speech);
+    // Play synthesized voice & greeting chime with gesture sound
+    voiceAgent.playTTS(stepData.speech, null, null, {
+      soundType: stepData.mood === 'angry' ? 'tickle' : stepData.gesture?.includes('ROLL') ? 'roll' : stepData.gesture?.includes('WAVE') ? 'wave' : 'happy'
+    });
   };
 
   // Schedule next automated step when user doesn't do anything
@@ -188,20 +190,20 @@ export function Hero({
     }, 3200);
   };
 
-  // Interactive quick action triggers from dialogue modal buttons
+  // Handle manual interaction buttons inside speech bubble
   const triggerBotAction = (actionType) => {
     if (!botControllerRef?.current) return;
     if (actionType === 'WAVE') {
       botControllerRef.current.setExpression('HAPPY', true);
-      botControllerRef.current.playGesture('RIGHT_HAND_WAVE');
-      voiceAgent.playTTS("Hello again! Always happy to wave!");
+      botControllerRef.current.playGesture('WAVE');
+      voiceAgent.playTTS("Hiii! Waving back at you!", null, null, { soundType: 'wave' });
     } else if (actionType === 'ROLL') {
-      botControllerRef.current.setExpression('EXCITED', true);
+      botControllerRef.current.setExpression('CONFIDENT', true);
       botControllerRef.current.playGesture('ROLL_DOUBLE_WAVE');
-      voiceAgent.playTTS("Whoaaa! Full 360 spin and wave!");
+      voiceAgent.playTTS("Whoaaa! Full 360 spin and wave!", null, null, { soundType: 'roll' });
     } else if (actionType === 'REPLAY') {
       if (activePopup?.speech) {
-        voiceAgent.playTTS(activePopup.speech);
+        voiceAgent.playTTS(activePopup.speech, null, null, { soundType: 'chime' });
       }
     }
   };
@@ -374,35 +376,35 @@ export function Hero({
                 }}
               />
 
-              {/* Dynamic Interactive Dialogue Box on Click */}
+              {/* Dynamic Interactive Dialogue Box on Click - Positioned to the Right of 3D Robot, Reduced by 35% */}
               {activePopup && (
                 <div
                   onClick={(e) => e.stopPropagation()}
                   onMouseEnter={handleMouseEnterPopup}
                   onMouseLeave={handleMouseLeavePopup}
-                  className={`absolute top-2 right-2 sm:right-4 lg:-right-4 max-w-[280px] sm:max-w-[310px] p-4 rounded-2xl shadow-xl border z-30 transition-all ${
+                  className={`absolute top-3 right-0 sm:top-5 sm:right-1 md:right-2 lg:top-8 lg:-right-8 xl:-right-14 w-[195px] sm:w-[205px] p-2.5 rounded-xl shadow-xl border z-30 transition-all ${
                     activePopup.mood === 'angry'
                       ? 'bg-[#111019] text-white border-red-500/40 shadow-xl'
                       : 'bg-white text-[#0F0E17] border-[#E4E2EB] shadow-craft-md'
                   }`}
                 >
-                  {/* Speech pointer */}
+                  {/* Speech pointer pointing left towards the 3D robot model */}
                   <div
-                    className={`absolute top-6 -left-1.5 w-3 h-3 rotate-45 border-l border-b hidden sm:block ${
+                    className={`absolute top-4 -left-1.5 w-2.5 h-2.5 rotate-45 border-l border-b hidden sm:block ${
                       activePopup.mood === 'angry'
                         ? 'bg-[#111019] border-red-500/40'
                         : 'bg-white border-[#E4E2EB]'
                     }`}
                   />
 
-                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <div className="flex items-center justify-between gap-1.5 mb-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="relative flex h-2 w-2">
+                      <span className="relative flex h-1.5 w-1.5">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#10B981]"></span>
                       </span>
                       <span
-                        className={`text-[11px] font-bold uppercase tracking-wider ${
+                        className={`text-[9.5px] font-bold uppercase tracking-wider ${
                           activePopup.mood === 'angry' ? 'text-red-400' : 'text-[#6344E7]'
                         }`}
                       >
@@ -416,23 +418,24 @@ export function Hero({
                       }}
                       className="text-xs font-bold opacity-60 hover:opacity-100 p-0.5"
                       title="Dismiss"
+                      aria-label="Dismiss dialogue"
                     >
-                      <X className="w-3.5 h-3.5" />
+                      <X className="w-3 h-3" />
                     </button>
                   </div>
 
-                  <p className="text-xs font-medium text-[#524E5E] leading-relaxed mb-3">
+                  <p className="text-[10px] font-medium text-[#524E5E] leading-snug mb-2">
                     {activePopup.message}
                   </p>
 
-                  {/* Quick Interactive Action Buttons */}
-                  <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
+                  {/* Quick Interactive Action Buttons (Compact 35% reduced footprint) */}
+                  <div className="flex flex-wrap items-center gap-1 mb-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         triggerBotAction('WAVE');
                       }}
-                      className="px-2 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[10px] font-bold rounded-md transition-colors shadow-xs"
+                      className="px-1.5 py-0.5 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[8.5px] font-bold rounded transition-colors shadow-2xs"
                       title="Make Voxly wave"
                     >
                       Wave
@@ -442,7 +445,7 @@ export function Hero({
                         e.stopPropagation();
                         triggerBotAction('ROLL');
                       }}
-                      className="px-2 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[10px] font-bold rounded-md transition-colors shadow-xs"
+                      className="px-1.5 py-0.5 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[8.5px] font-bold rounded transition-colors shadow-2xs"
                       title="Make Voxly roll 360"
                     >
                       Roll & Wave
@@ -452,25 +455,25 @@ export function Hero({
                         e.stopPropagation();
                         triggerBotAction('REPLAY');
                       }}
-                      className="px-2 py-1 bg-[#FAF9FD] hover:bg-[#F0EEF6] text-[#524E5E] hover:text-[#0F0E17] border border-[#E4E2EB] text-[10px] font-bold rounded-md transition-colors flex items-center gap-1"
+                      className="px-1.5 py-0.5 bg-[#FAF9FD] hover:bg-[#F0EEF6] text-[#524E5E] hover:text-[#0F0E17] border border-[#E4E2EB] text-[8.5px] font-bold rounded transition-colors flex items-center gap-1"
                       title="Replay speech"
                     >
-                      <Volume2 className="w-2.5 h-2.5" /> Replay
+                      <Volume2 className="w-2 h-2" /> Replay
                     </button>
                   </div>
 
-                  <div className="pt-2 border-t border-[#E4E2EB] flex items-center justify-between gap-2">
+                  <div className="pt-1.5 border-t border-[#E4E2EB] flex items-center justify-between gap-1.5">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         onTalkToMe();
                       }}
-                      className="py-1 px-2.5 bg-[#6344E7] hover:bg-[#5234D4] text-white text-[10px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-xs"
+                      className="py-0.5 px-2 bg-[#6344E7] hover:bg-[#5234D4] text-white text-[8.5px] font-bold rounded-md transition-colors flex items-center gap-1 shadow-2xs"
                     >
-                      <Mic className="w-3 h-3" /> Live Mic Chat
+                      <Mic className="w-2.5 h-2.5" /> Live Mic Chat
                     </button>
-                    <span className="text-[10px] text-[#524E5E] flex items-center gap-1 font-medium">
-                      <Volume2 className="w-3 h-3 text-[#10B981]" /> Voice active
+                    <span className="text-[8.5px] text-[#524E5E] flex items-center gap-1 font-medium">
+                      <Volume2 className="w-2.5 h-2.5 text-[#10B981]" /> Active
                     </span>
                   </div>
                 </div>

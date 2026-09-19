@@ -76,7 +76,7 @@ export function PricingSection({ onSelectPlan }) {
               <div
                 key={tier.name}
                 onClick={() => handleSelect(tier.name)}
-                className={`rounded-2xl p-7 flex flex-col justify-between transition-all duration-200 relative text-left cursor-pointer group select-none ${
+                className={`rounded-2xl p-5 sm:p-7 flex flex-col justify-between transition-all duration-200 relative text-left cursor-pointer group select-none ${
                   isSelected
                     ? 'bg-white border-2 border-[#6344E7] shadow-craft-md -translate-y-1.5 ring-4 ring-[#6344E7]/10'
                     : 'bg-white border border-[#E4E2EB] shadow-craft-xs hover:border-[#6344E7]/50 hover:-translate-y-0.5'

@@ -60,7 +60,7 @@ export function Modal({
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="p-1.5 rounded-xl text-[#524E5E] hover:text-[#0F0E17] hover:bg-[#FAF9FD] border border-transparent hover:border-[#E4E2EB] transition-colors"
+            className="min-w-[40px] min-h-[40px] flex items-center justify-center p-2 rounded-xl text-[#524E5E] hover:text-[#0F0E17] hover:bg-[#FAF9FD] border border-transparent hover:border-[#E4E2EB] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>

@@ -29,7 +29,9 @@ export function Sidebar({
   onOpenCreateAgent,
   onOpenBuyNumber,
   onOpenAddFunds,
-  onBackToLanding
+  onBackToLanding,
+  isMobileOpen = false,
+  onCloseMobile
 }) {
   const {
     wallet,
@@ -46,6 +48,11 @@ export function Sidebar({
   const [newWorkspaceName, setNewWorkspaceName] = useState('');
   const [newWorkspaceTier, setNewWorkspaceTier] = useState('Professional Fleet');
   const dropdownRef = useRef(null);
+
+  const handleSelectTab = (tabId) => {
+    onSelectTab(tabId);
+    if (onCloseMobile) onCloseMobile();
+  };
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -69,6 +76,7 @@ export function Sidebar({
     setNewWorkspaceName('');
     setIsCreateModalOpen(false);
     setIsDropdownOpen(false);
+    if (onCloseMobile) onCloseMobile();
   };
 
   const navigationGroups = [
@@ -111,18 +119,36 @@ export function Sidebar({
   ];
 
   return (
-    <aside className="w-64 bg-white border-r border-[#E4E2EB] flex flex-col shrink-0 select-none h-screen sticky top-0 shadow-2xs relative">
-      {/* Workspace Branding & Interactive Selector */}
-      <div className="p-4 border-b border-[#E4E2EB] relative" ref={dropdownRef}>
-        <button
-          type="button"
-          onClick={() => setIsDropdownOpen((prev) => !prev)}
-          className={`w-full flex items-center justify-between gap-2 p-2 rounded-xl border transition-all text-left group ${
-            isDropdownOpen
-              ? 'bg-white border-[#6344E7] shadow-xs ring-2 ring-[#6344E7]/10'
-              : 'bg-[#FAF9FD] border-[#E4E2EB] hover:border-[#D1CFDB]'
-          }`}
-        >
+    <>
+      {/* Mobile Backdrop Overlay */}
+      {isMobileOpen && (
+        <div
+          onClick={onCloseMobile}
+          className="md:hidden fixed inset-0 bg-[#0F0E17]/60 backdrop-blur-xs z-40 transition-opacity animate-in fade-in duration-150"
+          aria-hidden="true"
+        />
+      )}
+
+      <aside
+        className={`
+          fixed md:sticky top-0 bottom-0 left-0 z-50 md:z-20
+          w-64 bg-white border-r border-[#E4E2EB] flex flex-col shrink-0 select-none h-screen shadow-2xs
+          transition-transform duration-200 ease-in-out
+          ${isMobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        `}
+      >
+        {/* Workspace Branding & Interactive Selector */}
+        <div className="p-4 border-b border-[#E4E2EB] relative" ref={dropdownRef}>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsDropdownOpen((prev) => !prev)}
+              className={`flex-1 flex items-center justify-between gap-2 p-2 rounded-xl border transition-all text-left group ${
+                isDropdownOpen
+                  ? 'bg-white border-[#6344E7] shadow-xs ring-2 ring-[#6344E7]/10'
+                  : 'bg-[#FAF9FD] border-[#E4E2EB] hover:border-[#D1CFDB]'
+              }`}
+            >
           <div className="flex items-center gap-2.5 min-w-0">
             <div className="w-7 h-7 rounded-lg bg-[#0F0E17] flex items-center justify-center text-white font-bold text-xs shadow-xs shrink-0">
               {currentWorkspace?.avatar || 'V'}
@@ -142,6 +168,17 @@ export function Sidebar({
             }`}
           />
         </button>
+          {onCloseMobile && (
+            <button
+              type="button"
+              onClick={onCloseMobile}
+              className="md:hidden p-2 rounded-xl text-[#524E5E] hover:text-[#0F0E17] hover:bg-[#FAF9FD] border border-[#E4E2EB]"
+              aria-label="Close navigation drawer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
 
         {/* Dropdown Menu */}
         {isDropdownOpen && (
@@ -212,7 +249,7 @@ export function Sidebar({
               type="button"
               onClick={() => {
                 setIsDropdownOpen(false);
-                onSelectTab('settings');
+                handleSelectTab('settings');
               }}
               className="w-full flex items-center gap-2 px-2 py-1.5 rounded-xl text-[#524E5E] hover:text-[#0F0E17] hover:bg-[#FAF9FD] transition-all font-medium text-xs"
             >
@@ -224,7 +261,7 @@ export function Sidebar({
               type="button"
               onClick={() => {
                 setIsDropdownOpen(false);
-                onSelectTab('billing');
+                handleSelectTab('billing');
               }}
               className="w-full flex items-center gap-2 px-2 py-1.5 rounded-xl text-[#524E5E] hover:text-[#0F0E17] hover:bg-[#FAF9FD] transition-all font-medium text-xs"
             >
@@ -236,7 +273,7 @@ export function Sidebar({
               type="button"
               onClick={() => {
                 setIsDropdownOpen(false);
-                onSelectTab('integrations');
+                handleSelectTab('integrations');
               }}
               className="w-full flex items-center gap-2 px-2 py-1.5 rounded-xl text-[#524E5E] hover:text-[#0F0E17] hover:bg-[#FAF9FD] transition-all font-medium text-xs"
             >
@@ -289,7 +326,7 @@ export function Sidebar({
                 return (
                   <button
                     key={item.id}
-                    onClick={() => onSelectTab(item.id)}
+                    onClick={() => handleSelectTab(item.id)}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all group ${
                       isActive
                         ? 'bg-[#0F0E17] text-white shadow-xs font-bold'
@@ -432,5 +469,6 @@ export function Sidebar({
         </div>
       )}
     </aside>
+    </>
   );
 }

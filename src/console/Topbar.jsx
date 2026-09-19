@@ -3,7 +3,8 @@ import {
   Search,
   Plus,
   Phone,
-  Radio
+  Radio,
+  Menu
 } from 'lucide-react';
 import { TactileButton } from './ui/TactileButton';
 import { useWorkspace } from './context/WorkspaceContext';
@@ -13,7 +14,9 @@ export function Topbar({
   onOpenCommandPalette,
   onOpenCreateAgent,
   onOpenBuyNumber,
-  user
+  user,
+  onToggleMobileSidebar,
+  isMobileSidebarOpen
 }) {
   const { campaigns } = useWorkspace();
   const runningCampaign = campaigns.find((c) => c.status === 'running');
@@ -33,9 +36,20 @@ export function Topbar({
   };
 
   return (
-    <header className="h-14 bg-white/95 backdrop-blur-md border-b border-[#E4E2EB] px-5 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30 shadow-2xs">
-      {/* Breadcrumb / Title */}
+    <header className="h-14 bg-white/95 backdrop-blur-md border-b border-[#E4E2EB] px-3 sm:px-6 flex items-center justify-between gap-3 sticky top-0 z-30 shadow-2xs">
+      {/* Left Area: Mobile Hamburger + Breadcrumb / Title */}
       <div className="flex items-center gap-2 min-w-0">
+        {/* Mobile Sidebar Hamburger Toggle */}
+        <button
+          type="button"
+          onClick={onToggleMobileSidebar}
+          className="md:hidden min-w-[44px] min-h-[44px] -ml-1 p-2.5 rounded-xl text-[#0F0E17] hover:bg-[#FAF9FD] border border-transparent hover:border-[#E4E2EB] flex items-center justify-center transition-colors active:scale-95"
+          aria-label="Open navigation menu"
+          title="Toggle navigation"
+        >
+          <Menu className="w-5 h-5 text-[#0F0E17]" />
+        </button>
+
         <span className="text-xs text-[#524E5E] font-medium hidden sm:inline">Console</span>
         <span className="text-xs text-[#8C879A] hidden sm:inline">/</span>
         <h1 className="text-xs sm:text-sm font-bold text-[#0F0E17] truncate">

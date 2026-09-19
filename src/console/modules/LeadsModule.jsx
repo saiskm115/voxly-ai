@@ -83,7 +83,7 @@ export function LeadsModule() {
 
       {/* KANBAN PIPELINE VIEW */}
       {viewMode === 'kanban' && (
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 overflow-x-auto pb-4">
+        <div className="flex md:grid md:grid-cols-5 gap-4 overflow-x-auto pb-4 max-w-full">
           {stages.map((stage) => {
             const stageLeads = filteredLeads.filter((l) => l.stage === stage);
             return (

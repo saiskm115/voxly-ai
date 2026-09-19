@@ -72,6 +72,18 @@ export function WorkspaceProvider({ children }) {
     return newWs;
   };
 
+  const [selectedPlan, setSelectedPlan] = useState('Professional');
+
+  const updateWorkspaceTier = (tierName) => {
+    const formattedTier = tierName.includes('Fleet') ? tierName : `${tierName} Fleet`;
+    setSelectedPlan(tierName.replace(' Fleet', ''));
+    setWorkspaces((prev) =>
+      prev.map((w) =>
+        w.id === currentWorkspaceId ? { ...w, tier: formattedTier } : w
+      )
+    );
+  };
+
   // Active workspace navigation and selection states
   const [selectedAgentId, setSelectedAgentId] = useState('agent-maya');
   const [selectedCallId, setSelectedCallId] = useState(null);
@@ -502,6 +514,9 @@ export function WorkspaceProvider({ children }) {
     currentWorkspace,
     switchWorkspace,
     createWorkspace,
+    selectedPlan,
+    setSelectedPlan,
+    updateWorkspaceTier,
 
     // Selections
     selectedAgentId,

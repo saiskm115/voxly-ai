@@ -32,7 +32,6 @@ export function App() {
     return 'landing';
   });
 
-  const [botState, setBotState] = useState('IDLE');
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isTalkModalOpen, setIsTalkModalOpen] = useState(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
@@ -100,8 +99,6 @@ export function App() {
       <main className="flex-1">
         {/* 01: Hero — AI Voice Agent & 3D Interactive Mascot */}
         <Hero
-          botState={botState}
-          setBotState={setBotState}
           onTalkToMe={() => setIsTalkModalOpen(true)}
           onWatchDemo={() => setIsDemoModalOpen(true)}
           onGetStarted={handleGetStarted}

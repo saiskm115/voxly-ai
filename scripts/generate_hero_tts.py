@@ -9,14 +9,14 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 VOICE = "en-US-AnaNeural"
 
 CLIPS = [
-    ("hero_step1.mp3", "Hello! Hiii! I am Voxly! Nice to meet you!"),
+    ("hero_step1.mp3", "Hello! Hiii! I'm Voxly! Nice to meet you!"),
     ("hero_step2.mp3", "Hiii! Excited to scale your voice workflows! Ready for 500 plus calls."),
-    ("hero_step3.mp3", "Whoaaa! Watch this barrel roll! Double hi to you!"),
-    ("hero_step4.mp3", "Don't tickle me! Haha! Double hi to you!"),
+    ("hero_step3.mp3", "Whoaaa! Watch this barrel roll! 360 degree celebratory spin and wave!"),
+    ("hero_step4.mp3", "Don't tickle me! Haha! Double high five to you!"),
     ("hero_step5.mp3", "Double barrel roll and high five! Let's conquer customer calls!"),
     ("hero_pouty.mp3", "Hey! Don't poke me, I have calls to make! Click live mic chat instead!"),
-    ("hero_wave.mp3", "Hiii! Waving back at you!"),
-    ("hero_roll.mp3", "Whoaaa! Full 360 spin and wave!"),
+    ("hero_wave.mp3", "Hiii! Waving back at you! Always ready for the next customer call."),
+    ("hero_roll.mp3", "Whoaaa! Full 360 celebratory barrel roll spin! Agility at scale."),
     ("hero_think.mp3", "Analyzing your knowledge base... I can resolve 85 percent of tier-one questions instantly!"),
     ("hero_celebrate.mp3", "Woohoo! Another qualified lead booked straight into your calendar!"),
     ("hero_dance.mp3", "Look at these moves! Grooving through phone queues with zero hold times!"),

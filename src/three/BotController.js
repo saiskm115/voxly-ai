@@ -275,8 +275,8 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       twoHandsWaveTimer = 0;
       rollTimer = 0;
       danceTimer = 0;
-      expression = 'THINKING';
       setExpression('THINKING', true);
+      play(clips.has('THINKING') ? 'THINKING' : 'IDLE', true);
       return;
     }
 
@@ -286,8 +286,8 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       twoHandsWaveTimer = 0;
       rollTimer = 0;
       thinkTimer = 0;
-      expression = 'HAPPY';
       setExpression('HAPPY', true);
+      play(clips.has('HAPPY') ? 'HAPPY' : 'IDLE', true);
       return;
     }
 
@@ -296,7 +296,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
     rollTimer = 0;
     thinkTimer = 0;
     danceTimer = 0;
-    expression = 'HAPPY';
+    setExpression('HAPPY', true);
     const clipName = clips.has('RIGHT_HAND_WAVE') ? 'RIGHT_HAND_WAVE' : (clips.has(name) ? name : 'WAVE');
     play(clipName, true);
   }
@@ -330,19 +330,30 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       }
       if (upper === 'TALKING' || upper === 'SPEAKING') {
         state = 'TALKING';
-        expression = 'SPEAKING';
         isSpeaking = true;
         talkingPreview = true;
-        gesture = false;
-        play('TALKING');
+        const isGestureActive = gesture || waveTimer > 0 || twoHandsWaveTimer > 0 || rollTimer > 0 || thinkTimer > 0 || danceTimer > 0;
+        if (!isGestureActive) {
+          play('TALKING');
+        }
         return;
       }
       if (upper === 'IDLE') {
         isSpeaking = false;
+        state = 'IDLE';
+        const isGestureActive = gesture || waveTimer > 0 || twoHandsWaveTimer > 0 || rollTimer > 0 || thinkTimer > 0 || danceTimer > 0;
+        if (!isGestureActive) {
+          gesture = false;
+          play('IDLE');
+        }
+        return;
       }
       state = clips.has(upper) ? upper : 'IDLE';
-      gesture = false;
-      play(state);
+      const isGestureActive = gesture || waveTimer > 0 || twoHandsWaveTimer > 0 || rollTimer > 0 || thinkTimer > 0 || danceTimer > 0;
+      if (!isGestureActive) {
+        gesture = false;
+        play(state);
+      }
     },
     setExpression(name, userInitiated = true) {
       setExpression(name, userInitiated);
@@ -470,6 +481,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
 
         if (twoHandsWaveTimer <= 0) {
           gesture = false;
+          play(isSpeaking ? 'TALKING' : (clips.has(state) ? state : 'IDLE'));
         }
       } else if (waveTimer > 0) {
         // PROCEDURAL SINGLE RIGHT HAND WAVE:
@@ -522,6 +534,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
 
         if (waveTimer <= 0) {
           gesture = false;
+          play(isSpeaking ? 'TALKING' : (clips.has(state) ? state : 'IDLE'));
         }
       } else if (thinkTimer > 0) {
         // PROCEDURAL THOUGHTFUL CHIN TOUCH GESTURE:
@@ -570,6 +583,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
 
         if (thinkTimer <= 0) {
           gesture = false;
+          play(isSpeaking ? 'TALKING' : (clips.has(state) ? state : 'IDLE'));
         }
       } else if (danceTimer > 0) {
         // PROCEDURAL RHYTHMIC GROOVE DANCE:
@@ -611,6 +625,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
 
         if (danceTimer <= 0) {
           gesture = false;
+          play(isSpeaking ? 'TALKING' : (clips.has(state) ? state : 'IDLE'));
         }
       } else {
         // BOTH ARMS STRICTLY LOCKED DOWN AT REST
@@ -684,7 +699,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       }
 
       // EXPRESSIONS: Smooth morph target blending
-      const targetExpr = EXPRESSIONS[gesture ? 'HAPPY' : expression] || EXPRESSIONS.HAPPY;
+      const targetExpr = EXPRESSIONS[expression] || EXPRESSIONS.HAPPY;
 
       for (const name of ALL_MORPH_NAMES) {
         const targetVal = targetExpr[name] !== undefined ? targetExpr[name] : 0;

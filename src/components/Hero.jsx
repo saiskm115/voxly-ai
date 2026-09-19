@@ -27,7 +27,7 @@ const SEQUENCE_STEPS = [
   {
     title: "Voxly • Acrobatic Agility",
     message: "Whoaaa! Watch this barrel roll! 🎉 360° celebratory spin & wave!",
-    speech: "Whoaaa! Watch this barrel roll! Double hi to you!",
+    speech: "Whoaaa! Watch this barrel roll! 360 degree celebratory spin and wave!",
     audioSrc: "/audio/voxly/hero_step3.mp3",
     expression: "EXCITED",
     gesture: "ROLL_DOUBLE_WAVE",
@@ -72,7 +72,7 @@ const SEQUENCE_STEPS = [
   {
     title: "Voxly • Playful Mode",
     message: "Don't tickle me! Haha! 👋😄👋 Double high-five to you!",
-    speech: "Don't tickle me! Haha! Double hi to you!",
+    speech: "Don't tickle me! Haha! Double high five to you!",
     audioSrc: "/audio/voxly/hero_step4.mp3",
     expression: "EXCITED",
     gesture: "DOUBLE_WAVE",
@@ -81,8 +81,8 @@ const SEQUENCE_STEPS = [
 ];
 
 export function Hero({
-  botState,
-  setBotState,
+  botState: initialBotState = 'IDLE',
+  setBotState: externalSetBotState = null,
   onTalkToMe,
   onWatchDemo,
   onGetStarted,
@@ -93,6 +93,9 @@ export function Hero({
   const sceneContainerRef = useRef(null);
   const heroPointerRef = useRef({ x: 0, y: 0 });
   const botRectRef = useRef(null);
+  const [localBotState, setLocalBotState] = useState(initialBotState);
+  const setBotState = externalSetBotState || setLocalBotState;
+  const botState = externalSetBotState ? initialBotState : localBotState;
   const [botExpression, setBotExpression] = useState('HAPPY');
   const [activePopup, setActivePopup] = useState(null);
   const [isHeroInView, setIsHeroInView] = useState(true);
@@ -152,14 +155,16 @@ export function Hero({
     return () => unsubscribe();
   }, [setBotState, botControllerRef]);
 
-  // Helper to start the 3.5-second auto-dismiss timer
-  const resetDismissTimer = (durationMs = 3500) => {
+  // Helper to manage dialogue auto-dismiss timer
+  const resetDismissTimer = (durationMs = 3000) => {
     if (popupAutoDismissTimerRef.current) {
       clearTimeout(popupAutoDismissTimerRef.current);
     }
     popupAutoDismissTimerRef.current = setTimeout(() => {
-      if (!isHoveredRef.current) {
+      if (!isHoveredRef.current && !voiceAgent.isSpeaking) {
         setActivePopup(null);
+      } else if (voiceAgent.isSpeaking) {
+        resetDismissTimer(1000);
       }
     }, durationMs);
   };
@@ -169,8 +174,10 @@ export function Hero({
     setActivePopup(stepData);
     setBotExpression(stepData.expression);
 
-    // Auto-dismiss dialogue box after 3.5 seconds
-    resetDismissTimer(3500);
+    // Cancel dismiss timer while audio is speaking
+    if (popupAutoDismissTimerRef.current) {
+      clearTimeout(popupAutoDismissTimerRef.current);
+    }
 
     // Trigger 3D robot speaking state, expression & physical animation
     if (botControllerRef?.current) {
@@ -203,6 +210,8 @@ export function Hero({
         botControllerRef.current.setState('IDLE');
       }
       if (setBotState) setBotState('IDLE');
+      // Speech finished: dismiss dialogue box after 3 seconds
+      resetDismissTimer(3000);
     };
 
     const onAudioStart = () => {
@@ -261,14 +270,16 @@ export function Hero({
 
   const handleMouseLeavePopup = () => {
     isHoveredRef.current = false;
-    // Auto-dismiss after 3.5 seconds when mouse leaves
-    resetDismissTimer(3500);
+    // Auto-dismiss after 3 seconds when mouse leaves
+    resetDismissTimer(3000);
   };
 
   // Handle manual interaction buttons inside speech bubble
   const triggerBotAction = (actionType) => {
     if (!botControllerRef?.current) return;
-    resetDismissTimer(3500);
+    if (popupAutoDismissTimerRef.current) {
+      clearTimeout(popupAutoDismissTimerRef.current);
+    }
 
     const onActionEnd = () => {
       if (botControllerRef?.current) {
@@ -276,6 +287,7 @@ export function Hero({
         botControllerRef.current.setState('IDLE');
       }
       if (setBotState) setBotState('IDLE');
+      resetDismissTimer(3000);
     };
 
     const startSpeaking = () => {
@@ -293,7 +305,7 @@ export function Hero({
       const step = {
         title: "Voxly • Wave",
         message: "Hiii! 👋 Waving back at you! Always ready for the next customer call.",
-        speech: "Hiii! Waving back at you!",
+        speech: "Hiii! Waving back at you! Always ready for the next customer call.",
         audioSrc: '/audio/voxly/hero_wave.mp3',
         expression: 'HAPPY',
         gesture: 'WAVE',
@@ -312,7 +324,7 @@ export function Hero({
       const step = {
         title: "Voxly • 360 Spin",
         message: "Whoaaa! 🚀 Full 360 celebratory barrel roll spin! Agility at scale.",
-        speech: "Whoaaa! Full 360 spin and wave!",
+        speech: "Whoaaa! Full 360 celebratory barrel roll spin! Agility at scale.",
         audioSrc: '/audio/voxly/hero_roll.mp3',
         expression: 'EXCITED',
         gesture: 'ROLL_DOUBLE_WAVE',
@@ -452,11 +464,16 @@ export function Hero({
   }, []);
 
   // MANUAL CLICKS:
-  // Debounced (420ms) so 1 physical click = 1 action increment
+  // Debounced (500ms) so 1 physical click = 1 action increment
   // Manual clicks initiate interaction mode and display dialogue
   const handleBotClick = () => {
+    // If voiceAgent is currently speaking, do not interrupt the speech
+    if (voiceAgent.isSpeaking) {
+      return;
+    }
+
     const now = Date.now();
-    if (now - lastClickTimeRef.current < 420) {
+    if (now - lastClickTimeRef.current < 500) {
       return; // Ignore duplicate synthetic/bubbling events
     }
     lastClickTimeRef.current = now;
@@ -557,7 +574,6 @@ export function Hero({
             {/* 3D WebGL Canvas Container */}
             <div
               ref={sceneContainerRef}
-              onClick={handleBotClick}
               className="relative w-full h-[380px] sm:h-[440px] lg:h-[500px] flex items-center justify-center cursor-pointer select-none"
             >
               <VoxlyScene

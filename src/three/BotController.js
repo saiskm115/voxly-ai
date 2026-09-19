@@ -188,6 +188,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
   let twoHandsWaveTimer = 0;
   const TWO_HANDS_DURATION = 2.8;
   let rollTimer = 0;
+  let currentRollDuration = 1.6;
   const ROLL_DURATION = 1.6;
   let rollProgress = 0;
 
@@ -255,15 +256,15 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
   function startGesture(name = 'RIGHT_HAND_WAVE') {
     gesture = name;
     const upper = String(name).toUpperCase();
-    if (upper === 'DOUBLE_WAVE' || upper === 'ROLL_DOUBLE_WAVE' || upper === 'TWO_HANDS_HI' || upper === 'CELEBRATE') {
-      twoHandsWaveTimer = TWO_HANDS_DURATION;
+    if (upper === 'DOUBLE_WAVE' || upper === 'ROLL_DOUBLE_WAVE' || upper === 'TWO_HANDS_HI' || upper === 'CELEBRATE' || upper.includes('DOUBLE_ROLL')) {
+      twoHandsWaveTimer = upper.includes('DOUBLE_ROLL') ? TWO_HANDS_DURATION * 1.4 : TWO_HANDS_DURATION;
       waveTimer = 0;
       thinkTimer = 0;
       danceTimer = 0;
       if (upper.includes('ROLL')) {
-        rollTimer = ROLL_DURATION;
+        currentRollDuration = upper.includes('DOUBLE_ROLL') ? ROLL_DURATION * 2 : ROLL_DURATION;
+        rollTimer = currentRollDuration;
       }
-      expression = 'EXCITED';
       setExpression('EXCITED', true);
       play(clips.has('EXCITED') ? 'EXCITED' : 'IDLE', true);
       return;
@@ -317,6 +318,9 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
     },
     get rollProgress() {
       return rollProgress;
+    },
+    get currentRollDuration() {
+      return currentRollDuration;
     },
     setState(name) {
       const upper = String(name).toUpperCase();
@@ -422,7 +426,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       // ROLL PROGRESS UPDATE:
       if (rollTimer > 0) {
         rollTimer -= dt;
-        rollProgress = Math.max(0, Math.min(1, 1 - (rollTimer / ROLL_DURATION)));
+        rollProgress = Math.max(0, Math.min(1, 1 - (rollTimer / currentRollDuration)));
       } else {
         rollProgress = 0;
       }

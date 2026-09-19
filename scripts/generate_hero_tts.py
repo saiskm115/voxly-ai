@@ -28,8 +28,8 @@ async def generate_all():
     print(f"Generating {len(CLIPS)} neural TTS clips into {OUTPUT_DIR}...")
     for filename, text in CLIPS:
         target_path = os.path.join(OUTPUT_DIR, filename)
-        # Slight +3Hz pitch and natural rate for extra clarity and robotic enthusiasm
-        communicate = edge_tts.Communicate(text, VOICE, pitch="+4Hz", rate="+3%")
+        # Childish, high-energy, fast and cheerful voice (+20% rate for fast cadence, +5Hz pitch for cute child tone)
+        communicate = edge_tts.Communicate(text, VOICE, pitch="+5Hz", rate="+20%")
         await communicate.save(target_path)
         size = os.path.getsize(target_path)
         print(f"[OK] Generated {filename} ({size} bytes): \"{text}\"")

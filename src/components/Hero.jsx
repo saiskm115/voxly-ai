@@ -2,21 +2,21 @@ import React, { useState, useRef, useEffect } from 'react';
 import { VoxlyScene } from '../three/VoxlyScene';
 import { HERO_CONTENT } from '../data/siteContent';
 import { voiceAgent } from '../services/voiceAgent';
-import { Play, Check, Sparkles, Mic, Volume2, X } from 'lucide-react';
+import { Check, Mic, X } from 'lucide-react';
 
 
 const SEQUENCE_STEPS = [
   {
-    title: "Voxly • Autonomous Agent",
+    title: "Voxly",
     message: "Hello! Hiii! 👋 I'm Voxly! Nice to meet you!",
-    speech: "Hello! Hiii! I am Voxly! Nice to meet you!",
+    speech: "Hello! Hiii! I'm Voxly! Nice to meet you!",
     audioSrc: "/audio/voxly/hero_step1.mp3",
     expression: "HAPPY",
     gesture: "RIGHT_HAND_WAVE",
     mood: "friendly",
   },
   {
-    title: "Voxly • Voice Fleets",
+    title: "Voxly",
     message: "Hiii! Excited to scale your voice workflows! ✨ Ready for 500+ calls.",
     speech: "Hiii! Excited to scale your voice workflows! Ready for 500 plus calls.",
     audioSrc: "/audio/voxly/hero_step2.mp3",
@@ -25,12 +25,30 @@ const SEQUENCE_STEPS = [
     mood: "excited",
   },
   {
-    title: "Voxly • Acrobatic Agility",
+    title: "Voxly (Acrobatic)",
     message: "Whoaaa! Watch this barrel roll! 🎉 360° celebratory spin & wave!",
     speech: "Whoaaa! Watch this barrel roll! 360 degree celebratory spin and wave!",
     audioSrc: "/audio/voxly/hero_step3.mp3",
     expression: "EXCITED",
     gesture: "ROLL_DOUBLE_WAVE",
+    mood: "celebration",
+  },
+  {
+    title: "Voxly",
+    message: "Don't tickle me! Haha! Double hi to you! 👋😄👋",
+    speech: "Don't tickle me! Haha! Double high five to you!",
+    audioSrc: "/audio/voxly/hero_step4.mp3",
+    expression: "EXCITED",
+    gesture: "DOUBLE_WAVE",
+    mood: "playful",
+  },
+  {
+    title: "Voxly",
+    message: "Double barrel roll & high five! 🚀✨ Let's conquer customer calls!",
+    speech: "Double barrel roll and high five! Let's conquer customer calls!",
+    audioSrc: "/audio/voxly/hero_step5.mp3",
+    expression: "EXCITED",
+    gesture: "DOUBLE_ROLL_DOUBLE_WAVE",
     mood: "celebration",
   },
   {
@@ -70,13 +88,13 @@ const SEQUENCE_STEPS = [
     mood: "celebration",
   },
   {
-    title: "Voxly • Playful Mode",
-    message: "Don't tickle me! Haha! 👋😄👋 Double high-five to you!",
-    speech: "Don't tickle me! Haha! Double high five to you!",
-    audioSrc: "/audio/voxly/hero_step4.mp3",
-    expression: "EXCITED",
-    gesture: "DOUBLE_WAVE",
-    mood: "playful",
+    title: "Voxly • Sub-400ms Speed",
+    message: "Did you know? ⚡ Sub-400ms latency creates natural, fluid human conversations!",
+    speech: "Did you know? Sub-400 millisecond response time means natural, human conversation!",
+    audioSrc: "/audio/voxly/hero_surprise.mp3",
+    expression: "SURPRISED",
+    gesture: "RIGHT_HAND_WAVE",
+    mood: "fast",
   },
 ];
 
@@ -96,7 +114,6 @@ export function Hero({
   const [localBotState, setLocalBotState] = useState(initialBotState);
   const setBotState = externalSetBotState || setLocalBotState;
   const botState = externalSetBotState ? initialBotState : localBotState;
-  const [botExpression, setBotExpression] = useState('HAPPY');
   const [activePopup, setActivePopup] = useState(null);
   const [isHeroInView, setIsHeroInView] = useState(true);
 
@@ -110,12 +127,13 @@ export function Hero({
   useEffect(() => {
     const audioUrls = [
       ...SEQUENCE_STEPS.map((s) => s.audioSrc).filter(Boolean),
+      '/audio/voxly/hero_pouty.mp3',
       '/audio/voxly/hero_wave.mp3',
       '/audio/voxly/hero_roll.mp3',
       '/audio/voxly/hero_think.mp3',
       '/audio/voxly/hero_celebrate.mp3',
       '/audio/voxly/hero_dance.mp3',
-      '/audio/voxly/hero_pouty.mp3',
+      '/audio/voxly/hero_surprise.mp3',
     ];
     audioUrls.forEach((url) => {
       try {
@@ -172,7 +190,6 @@ export function Hero({
   // Centralized step execution for user-initiated interactions
   const executeStep = (stepData) => {
     setActivePopup(stepData);
-    setBotExpression(stepData.expression);
 
     // Cancel dismiss timer while audio is speaking
     if (popupAutoDismissTimerRef.current) {
@@ -274,138 +291,6 @@ export function Hero({
     resetDismissTimer(3000);
   };
 
-  // Handle manual interaction buttons inside speech bubble
-  const triggerBotAction = (actionType) => {
-    if (!botControllerRef?.current) return;
-    if (popupAutoDismissTimerRef.current) {
-      clearTimeout(popupAutoDismissTimerRef.current);
-    }
-
-    const onActionEnd = () => {
-      if (botControllerRef?.current) {
-        botControllerRef.current.setSpeaking(false);
-        botControllerRef.current.setState('IDLE');
-      }
-      if (setBotState) setBotState('IDLE');
-      resetDismissTimer(3000);
-    };
-
-    const startSpeaking = () => {
-      if (botControllerRef?.current) {
-        botControllerRef.current.setSpeaking(true);
-        botControllerRef.current.setState('TALKING');
-      }
-      if (setBotState) setBotState('TALKING');
-    };
-
-    if (actionType === 'WAVE') {
-      startSpeaking();
-      botControllerRef.current.setExpression('HAPPY', true);
-      botControllerRef.current.playGesture('WAVE');
-      const step = {
-        title: "Voxly • Wave",
-        message: "Hiii! 👋 Waving back at you! Always ready for the next customer call.",
-        speech: "Hiii! Waving back at you! Always ready for the next customer call.",
-        audioSrc: '/audio/voxly/hero_wave.mp3',
-        expression: 'HAPPY',
-        gesture: 'WAVE',
-        mood: 'friendly'
-      };
-      setActivePopup(step);
-      setBotExpression('HAPPY');
-      voiceAgent.playAudioClip('/audio/voxly/hero_wave.mp3', onActionEnd, startSpeaking, {
-        soundType: 'wave',
-        fallbackText: step.speech,
-      });
-    } else if (actionType === 'ROLL') {
-      startSpeaking();
-      botControllerRef.current.setExpression('EXCITED', true);
-      botControllerRef.current.playGesture('ROLL_DOUBLE_WAVE');
-      const step = {
-        title: "Voxly • 360 Spin",
-        message: "Whoaaa! 🚀 Full 360 celebratory barrel roll spin! Agility at scale.",
-        speech: "Whoaaa! Full 360 celebratory barrel roll spin! Agility at scale.",
-        audioSrc: '/audio/voxly/hero_roll.mp3',
-        expression: 'EXCITED',
-        gesture: 'ROLL_DOUBLE_WAVE',
-        mood: 'celebration'
-      };
-      setActivePopup(step);
-      setBotExpression('EXCITED');
-      voiceAgent.playAudioClip('/audio/voxly/hero_roll.mp3', onActionEnd, startSpeaking, {
-        soundType: 'roll',
-        fallbackText: step.speech,
-      });
-    } else if (actionType === 'THINK') {
-      startSpeaking();
-      botControllerRef.current.setExpression('THINKING', true);
-      botControllerRef.current.playGesture('THINKING');
-      const step = {
-        title: "Voxly • Intelligence",
-        message: "Analyzing your knowledge base... 💡 I can resolve 85% of tier-one questions instantly!",
-        speech: "Analyzing your knowledge base... I can resolve 85 percent of tier-one questions instantly!",
-        audioSrc: '/audio/voxly/hero_think.mp3',
-        expression: 'THINKING',
-        gesture: 'THINKING',
-        mood: 'smart'
-      };
-      setActivePopup(step);
-      setBotExpression('THINKING');
-      voiceAgent.playAudioClip('/audio/voxly/hero_think.mp3', onActionEnd, startSpeaking, {
-        soundType: 'think',
-        fallbackText: step.speech,
-      });
-    } else if (actionType === 'CELEBRATE') {
-      startSpeaking();
-      botControllerRef.current.setExpression('EXCITED', true);
-      botControllerRef.current.playGesture('CELEBRATE');
-      const step = {
-        title: "Voxly • Revenue Lead",
-        message: "Woohoo! 🎉 Another qualified lead booked straight into your calendar!",
-        speech: "Woohoo! Another qualified lead booked straight into your calendar!",
-        audioSrc: '/audio/voxly/hero_celebrate.mp3',
-        expression: 'EXCITED',
-        gesture: 'CELEBRATE',
-        mood: 'celebration'
-      };
-      setActivePopup(step);
-      setBotExpression('EXCITED');
-      voiceAgent.playAudioClip('/audio/voxly/hero_celebrate.mp3', onActionEnd, startSpeaking, {
-        soundType: 'celebrate',
-        fallbackText: step.speech,
-      });
-    } else if (actionType === 'DANCE') {
-      startSpeaking();
-      botControllerRef.current.setExpression('HAPPY', true);
-      botControllerRef.current.playGesture('DANCE');
-      const step = {
-        title: "Voxly • Performance",
-        message: "Look at these moves! 💃 Grooving through phone queues with zero hold times!",
-        speech: "Look at these moves! Grooving through phone queues with zero hold times!",
-        audioSrc: '/audio/voxly/hero_dance.mp3',
-        expression: 'HAPPY',
-        gesture: 'DANCE',
-        mood: 'playful'
-      };
-      setActivePopup(step);
-      setBotExpression('HAPPY');
-      voiceAgent.playAudioClip('/audio/voxly/hero_dance.mp3', onActionEnd, startSpeaking, {
-        soundType: 'dance',
-        fallbackText: step.speech,
-      });
-    } else if (actionType === 'REPLAY') {
-      startSpeaking();
-      if (activePopup?.audioSrc) {
-        voiceAgent.playAudioClip(activePopup.audioSrc, onActionEnd, startSpeaking, {
-          soundType: 'chime',
-          fallbackText: activePopup.speech || activePopup.message,
-        });
-      } else if (activePopup?.speech) {
-        voiceAgent.playTTS(activePopup.speech, onActionEnd, startSpeaking, { soundType: 'chime' });
-      }
-    }
-  };
-
   // HIGH-PERFORMANCE ZERO-RERENDER MOUSE TRACKING:
   // Updates heroPointerRef directly at 60/120fps without triggering React component re-renders.
   // Caches container bounding rect on scroll/resize to eliminate layout thrashing.
@@ -486,9 +371,9 @@ export function Hero({
       stepData = SEQUENCE_STEPS[count - 1];
       loopIndexRef.current = count % SEQUENCE_STEPS.length;
     } else {
-      // 9th click+: Pouty / angry expression
+      // 11th click+: Pouty / angry expression
       stepData = {
-        title: "Voxly • High Demand",
+        title: "Voxly (Pouty)",
         message: "Hey! Don't poke me, I have calls to make! 😤 Click 'Live Mic Chat' instead!",
         speech: "Hey! Don't poke me, I have calls to make! Click live mic chat instead!",
         audioSrc: "/audio/voxly/hero_pouty.mp3",
@@ -578,11 +463,7 @@ export function Hero({
             >
               <VoxlyScene
                 state={botState}
-                expression={botExpression}
                 onBotClick={handleBotClick}
-                onExpressionChange={(expr) => {
-                  setBotExpression(expr);
-                }}
                 pointerRef={heroPointerRef}
                 audioAnalyser={voiceAgent.getAnalyser()}
                 isInView={isHeroInView}
@@ -593,15 +474,13 @@ export function Hero({
 
               {/* Dynamic Interactive Dialogue Box on Interaction:
                   Positioned at top-right corner near the robot without touching it.
-                  Fully responsive on mobile, tablet, and desktop viewports.
-                  Features quick interaction buttons (Wave, Spin, Think, Celebrate, Dance, Replay)
-                  with synchronized neural TTS voice clips and 3.5s auto-hide. */}
+                  Displays messages only without interaction buttons, ensuring zero visual clutter. */}
               {activePopup && (
                 <div
                   onClick={(e) => e.stopPropagation()}
                   onMouseEnter={handleMouseEnterPopup}
                   onMouseLeave={handleMouseLeavePopup}
-                  className={`absolute top-1 right-1 sm:top-2 sm:right-2 md:top-2 md:right-3 lg:top-2 lg:right-0 xl:top-2 xl:right-1 w-[calc(100%-20px)] max-w-[245px] sm:max-w-[260px] p-3 sm:p-3.5 rounded-2xl shadow-xl border z-30 transition-all ${
+                  className={`absolute top-1 right-1 sm:top-2 sm:right-2 md:top-2 md:right-3 lg:top-2 lg:right-0 xl:top-2 xl:right-1 w-[calc(100%-20px)] max-w-[245px] sm:max-w-[265px] p-3.5 rounded-2xl shadow-xl border z-30 transition-all ${
                     activePopup.mood === 'angry'
                       ? 'bg-[#111019] text-white border-red-500/40 shadow-xl'
                       : 'bg-white text-[#0F0E17] border-[#E4E2EB] shadow-craft-md'
@@ -616,7 +495,7 @@ export function Hero({
                     }`}
                   />
 
-                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <div className="flex items-center justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="relative flex h-2 w-2 shrink-0">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
@@ -643,88 +522,13 @@ export function Hero({
                     </button>
                   </div>
 
-                  <p className="text-[11px] sm:text-xs font-medium text-[#524E5E] leading-relaxed mb-2.5 sm:mb-3">
+                  <p
+                    className={`text-xs sm:text-[13px] font-medium leading-relaxed ${
+                      activePopup.mood === 'angry' ? 'text-[#D1CFDC]' : 'text-[#524E5E]'
+                    }`}
+                  >
                     {activePopup.message}
                   </p>
-
-                  {/* Quick Interactive Action Buttons (Clean 2-row x 3-column responsive grid) */}
-                  <div className="grid grid-cols-3 gap-1.5 mb-2.5">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        triggerBotAction('WAVE');
-                      }}
-                      className="px-1.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs text-center truncate"
-                      title="Make Voxly wave"
-                    >
-                      👋 Wave
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        triggerBotAction('ROLL');
-                      }}
-                      className="px-1.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs text-center truncate"
-                      title="Make Voxly spin 360"
-                    >
-                      🚀 Spin 360°
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        triggerBotAction('THINK');
-                      }}
-                      className="px-1.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs text-center truncate"
-                      title="Ask Voxly to think"
-                    >
-                      💡 Think
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        triggerBotAction('CELEBRATE');
-                      }}
-                      className="px-1.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs text-center truncate"
-                      title="Celebrate lead booked"
-                    >
-                      🎉 Celebrate
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        triggerBotAction('DANCE');
-                      }}
-                      className="px-1.5 py-1 bg-[#F0EEF6] hover:bg-[#E4E2EB] text-[#0F0E17] text-[9.5px] font-bold rounded-lg transition-colors shadow-2xs text-center truncate"
-                      title="Make Voxly dance"
-                    >
-                      💃 Dance
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        triggerBotAction('REPLAY');
-                      }}
-                      className="px-1.5 py-1 bg-[#FAF9FD] hover:bg-[#F0EEF6] text-[#524E5E] hover:text-[#0F0E17] border border-[#E4E2EB] text-[9.5px] font-bold rounded-lg transition-colors flex items-center justify-center gap-1 truncate"
-                      title="Replay speech"
-                    >
-                      <Volume2 className="w-2.5 h-2.5 shrink-0" /> Replay
-                    </button>
-                  </div>
-
-                  <div className="pt-2 border-t border-[#E4E2EB] flex items-center justify-between gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onTalkToMe();
-                      }}
-                      className="py-1 px-2.5 bg-[#6344E7] hover:bg-[#5234D4] text-white text-[9.5px] font-bold rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs"
-                    >
-                      <Mic className="w-3 h-3" /> Live Mic Chat
-                    </button>
-                    <span className="text-[9.5px] text-[#524E5E] flex items-center gap-1 font-medium">
-                      <Volume2 className="w-2.5 h-2.5 text-[#10B981]" /> Active
-                    </span>
-                  </div>
                 </div>
               )}
 

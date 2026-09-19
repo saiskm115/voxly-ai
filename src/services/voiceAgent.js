@@ -452,8 +452,9 @@ class VoiceAgentAdapter {
     this.isSpeaking = true;
     this.notify('stateChange', { state: 'TALKING', audioUrl });
 
-    // Play audible robotic sound effect
-    this.playRobotSound(options.soundType || 'chime');
+    if (options.playSoundEffect) {
+      this.playRobotSound(options.soundType || 'chime');
+    }
 
     const fallbackText = options.fallbackText || options.speech;
 
@@ -471,21 +472,6 @@ class VoiceAgentAdapter {
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
         try {
           window.speechSynthesis.cancel();
-        } catch (e) {}
-      }
-
-      // Feed subtle oscillator into analyser so robot mouth moves during clip playback
-      let osc = null;
-      let gain = null;
-      if (this.audioContext && this.analyser) {
-        try {
-          osc = this.audioContext.createOscillator();
-          gain = this.audioContext.createGain();
-          gain.gain.value = 0.0001;
-          osc.frequency.setValueAtTime(220, this.audioContext.currentTime);
-          osc.connect(gain);
-          gain.connect(this.analyser);
-          osc.start();
         } catch (e) {}
       }
 

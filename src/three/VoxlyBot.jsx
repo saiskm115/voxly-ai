@@ -32,10 +32,21 @@ export function VoxlyBot({
     };
   }, [gltf.scene, gltf.animations]);
 
-  // Persistent controller instance
+  // Persistent controller instance: use ref so controller is never torn down or re-instantiated
+  const onExpressionChangeRef = useRef(onExpressionChange);
+  useEffect(() => {
+    onExpressionChangeRef.current = onExpressionChange;
+  }, [onExpressionChange]);
+
   const controller = useMemo(() => {
-    return createVoxlyController(clonedScene, { onExpressionChange });
-  }, [clonedScene, onExpressionChange]);
+    return createVoxlyController(clonedScene, {
+      onExpressionChange: (expr) => {
+        if (onExpressionChangeRef.current) {
+          onExpressionChangeRef.current(expr);
+        }
+      },
+    });
+  }, [clonedScene]);
 
   // Sync state & controller ready callback
   useEffect(() => {
@@ -102,11 +113,13 @@ export function VoxlyBot({
     bodyPitchRef.current = MathUtils.damp(bodyPitchRef.current, targetBodyPitch, 14, delta);
 
     const rollProg = controller?.rollProgress || 0;
-    // True smooth 360-degree acrobatic spin roll (0 to 2*PI continuous ease)
+    const isDoubleRoll = (controller?.currentRollDuration || 1.6) > 2;
+    const totalSpins = isDoubleRoll ? 2 : 1;
+    // True smooth acrobatic spin roll (continuous ease)
     const rollEase = rollProg > 0 ? (1 - Math.cos(rollProg * Math.PI)) * 0.5 : 0;
-    const rollAngle = rollEase * Math.PI * 2;
-    const rollHop = Math.sin(rollProg * Math.PI) * 0.32;
-    const rollTilt = Math.sin(rollProg * Math.PI * 2) * 0.22;
+    const rollAngle = rollEase * Math.PI * 2 * totalSpins;
+    const rollHop = Math.sin(rollProg * Math.PI) * (isDoubleRoll ? 0.40 : 0.32);
+    const rollTilt = Math.sin(rollProg * Math.PI * 2 * totalSpins) * 0.22;
 
     if (groupRef.current) {
       // Smoothly interpolate X offset and apply responsive scale

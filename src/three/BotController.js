@@ -169,7 +169,16 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
   let analyser = null;
   let samples = null;
   let talkingPreview = true;
+  let isSpeaking = false;
   const overrides = new Map();
+
+  const audioBars = [];
+  for (let i = 0; i <= 4; i++) {
+    const lBar = nodes.get(`LeftAudioBar${i}`);
+    const rBar = nodes.get(`RightAudioBar${i}`);
+    if (lBar) audioBars.push({ node: lBar, index: i });
+    if (rBar) audioBars.push({ node: rBar, index: i });
+  }
 
   // Procedural wave duration tracking
   let waveTimer = 0;
@@ -322,9 +331,14 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       if (upper === 'TALKING' || upper === 'SPEAKING') {
         state = 'TALKING';
         expression = 'SPEAKING';
+        isSpeaking = true;
+        talkingPreview = true;
         gesture = false;
         play('TALKING');
         return;
+      }
+      if (upper === 'IDLE') {
+        isSpeaking = false;
       }
       state = clips.has(upper) ? upper : 'IDLE';
       gesture = false;
@@ -339,6 +353,15 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
     },
     setAudioAmplitude(value) {
       amplitude = clamp(value);
+    },
+    setSpeaking(val) {
+      isSpeaking = Boolean(val);
+      if (isSpeaking) {
+        talkingPreview = true;
+      }
+    },
+    get isSpeaking() {
+      return isSpeaking;
     },
     setTalkingPreview(enabled) {
       talkingPreview = Boolean(enabled);
@@ -643,11 +666,22 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
         amplitude = clamp((Math.sqrt(sum / samples.length) - 0.012) * 8);
       }
 
-      const speaking = state === 'SPEAKING' || state === 'TALKING';
-      const audioLevel = talkingPreview && !analyser 
-        ? (0.15 + 0.7 * Math.pow(Math.sin(time * 9.5), 2)) 
-        : amplitude;
-      mouth = MathUtils.damp(mouth, speaking ? audioLevel : 0, 18, dt);
+      const speaking = isSpeaking || state === 'SPEAKING' || state === 'TALKING';
+      const liveSpeechCadence = 0.22 + 0.65 * Math.pow(Math.sin(time * 11), 2) * (0.65 + 0.35 * Math.sin(time * 5.5));
+      const audioLevel = speaking 
+        ? (amplitude > 0.02 ? amplitude : liveSpeechCadence) 
+        : 0;
+      mouth = MathUtils.damp(mouth, audioLevel, 20, dt);
+
+      // HEADPHONE EQUALIZER AUDIO BARS ANIMATION:
+      if (audioBars.length > 0) {
+        for (const { node, index } of audioBars) {
+          const barOsc = speaking 
+            ? Math.max(0.12, mouth * (0.35 + 0.65 * Math.sin(time * 18 + index * 1.3)))
+            : 0.08;
+          node.scale.y = MathUtils.damp(node.scale.y, 0.25 + barOsc * 1.6, 22, dt);
+        }
+      }
 
       // EXPRESSIONS: Smooth morph target blending
       const targetExpr = EXPRESSIONS[gesture ? 'HAPPY' : expression] || EXPRESSIONS.HAPPY;
@@ -718,7 +752,7 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
       const glow = isAngry
         ? 5.0 + pulse * 2.0
         : speaking 
-        ? 2.0 + mouth * 3.5 
+        ? 2.5 + mouth * 3.8 
         : state === 'LISTENING' 
         ? 4.0 
         : state === 'THINKING' 
@@ -739,13 +773,16 @@ export function createVoxlyController(gltf, { onExpressionChange } = {}) {
         if (mat.emissive) mat.emissive.lerp(targetColor, 0.2);
       }
       if (materials.has('MAT_MicrophoneGlow')) {
-        materials.get('MAT_MicrophoneGlow').emissiveIntensity = state === 'LISTENING' ? 4.5 : 1.5 + mouth * 2.2;
+        materials.get('MAT_MicrophoneGlow').emissiveIntensity = state === 'LISTENING' ? 4.5 : 1.5 + mouth * 2.8;
+      }
+      if (materials.has('MAT_AccentGlow')) {
+        materials.get('MAT_AccentGlow').emissiveIntensity = 1.2 + (speaking ? mouth * 2.2 : pulse * 0.4);
       }
       if (materials.has('MAT_RingGlow')) {
         materials.get('MAT_RingGlow').emissiveIntensity = 1.6 + (state === 'IDLE' ? pulse * 0.4 : glow * 0.4);
       }
       if (materials.has('MAT_BaseGlow')) {
-        materials.get('MAT_BaseGlow').emissiveIntensity = 0.9 + (speaking ? mouth * 1.4 : state === 'THINKING' ? pulse * 0.8 : 0.3 * pulse);
+        materials.get('MAT_BaseGlow').emissiveIntensity = 0.9 + (speaking ? mouth * 1.6 : state === 'THINKING' ? pulse * 0.8 : 0.3 * pulse);
       }
 
       // Microphone subtle nod when speaking

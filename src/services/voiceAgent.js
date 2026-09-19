@@ -181,28 +181,32 @@ class VoiceAgentAdapter {
 
   /**
    * Play rich, audible futuristic robotic acoustic sound effects via Web Audio API.
-   * High-fidelity harmonic synthesis with volume calibrated to industry standards (~0.35 gain).
+   * High-fidelity harmonic synthesis with volume calibrated to industry standards (~0.45 gain).
    */
-  playRobotSound(type = 'chime') {
-    this.ensureAudioContext();
-    if (!this.audioContext || this.audioContext.state !== 'running') return;
+  async playRobotSound(type = 'chime') {
+    const ctx = this.ensureAudioContext();
+    if (!ctx) return;
+    if (ctx.state === 'suspended') {
+      try {
+        await ctx.resume();
+      } catch (e) {}
+    }
 
     try {
-      const ctx = this.audioContext;
       const now = ctx.currentTime;
       const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.35, now);
+      gain.gain.setValueAtTime(0.45, now);
 
       if (type === 'wave' || type === 'happy') {
-        // Upbeat melodic two-step chirp
+        // Upbeat melodic two-step chirp (C5 -> G5, E5 -> C6)
         const osc1 = ctx.createOscillator();
         const osc2 = ctx.createOscillator();
         osc1.type = 'sine';
         osc2.type = 'triangle';
-        osc1.frequency.setValueAtTime(523.25, now); // C5
-        osc1.frequency.exponentialRampToValueAtTime(783.99, now + 0.12); // G5
-        osc2.frequency.setValueAtTime(659.25, now + 0.04); // E5
-        osc2.frequency.exponentialRampToValueAtTime(1046.5, now + 0.22); // C6
+        osc1.frequency.setValueAtTime(523.25, now);
+        osc1.frequency.exponentialRampToValueAtTime(783.99, now + 0.12);
+        osc2.frequency.setValueAtTime(659.25, now + 0.04);
+        osc2.frequency.exponentialRampToValueAtTime(1046.5, now + 0.22);
 
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
         osc1.connect(gain);
@@ -215,30 +219,85 @@ class VoiceAgentAdapter {
         osc1.stop(now + 0.33);
         osc2.stop(now + 0.33);
       } else if (type === 'roll' || type === 'spin') {
-        // High-energy ascending arpeggiated sweep
+        // High-energy ascending acrobatic arpeggiated sweep
         const osc = ctx.createOscillator();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(440, now);
-        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.25);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(1400, now + 0.28);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
         osc.connect(gain);
         gain.connect(ctx.destination);
         if (this.analyser) gain.connect(this.analyser);
         osc.start(now);
-        osc.stop(now + 0.29);
-      } else if (type === 'tickle') {
+        osc.stop(now + 0.33);
+      } else if (type === 'think') {
+        // Thoughtful dual harmonic sonar pulse
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        osc1.type = 'sine';
+        osc2.type = 'sine';
+        osc1.frequency.setValueAtTime(440, now);
+        osc1.frequency.linearRampToValueAtTime(880, now + 0.2);
+        osc2.frequency.setValueAtTime(660, now);
+        osc2.frequency.linearRampToValueAtTime(1320, now + 0.2);
+
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+        if (this.analyser) gain.connect(this.analyser);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.31);
+        osc2.stop(now + 0.31);
+      } else if (type === 'celebrate') {
+        // Triumphant fanfare arpeggio (C5 -> E5 -> G5 -> C6)
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const noteGain = ctx.createGain();
+          const noteStart = now + idx * 0.07;
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, noteStart);
+          noteGain.gain.setValueAtTime(0.4, noteStart);
+          noteGain.gain.exponentialRampToValueAtTime(0.001, noteStart + 0.25);
+          osc.connect(noteGain);
+          noteGain.connect(ctx.destination);
+          if (this.analyser) noteGain.connect(this.analyser);
+          osc.start(noteStart);
+          osc.stop(noteStart + 0.26);
+        });
+      } else if (type === 'dance') {
+        // Funky futuristic 3-tone rhythmic bounce
+        const notes = [440, 587.33, 880];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const noteGain = ctx.createGain();
+          const noteStart = now + idx * 0.09;
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, noteStart);
+          noteGain.gain.setValueAtTime(0.25, noteStart);
+          noteGain.gain.exponentialRampToValueAtTime(0.001, noteStart + 0.16);
+          osc.connect(noteGain);
+          noteGain.connect(ctx.destination);
+          if (this.analyser) noteGain.connect(this.analyser);
+          osc.start(noteStart);
+          osc.stop(noteStart + 0.17);
+        });
+      } else if (type === 'tickle' || type === 'pouty') {
         // Playful double warble
         const osc = ctx.createOscillator();
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(800, now);
-        osc.frequency.linearRampToValueAtTime(600, now + 0.08);
-        osc.frequency.linearRampToValueAtTime(900, now + 0.16);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        osc.frequency.linearRampToValueAtTime(550, now + 0.08);
+        osc.frequency.linearRampToValueAtTime(950, now + 0.16);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
         osc.connect(gain);
         gain.connect(ctx.destination);
         if (this.analyser) gain.connect(this.analyser);
         osc.start(now);
-        osc.stop(now + 0.23);
+        osc.stop(now + 0.26);
       } else {
         // Standard high-clarity harmonic greeting chime (587Hz -> 880Hz / 440Hz -> 659Hz)
         const osc1 = ctx.createOscillator();
@@ -250,7 +309,7 @@ class VoiceAgentAdapter {
         osc2.frequency.setValueAtTime(440.0, now);
         osc2.frequency.exponentialRampToValueAtTime(659.25, now + 0.1);
 
-        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.setValueAtTime(0.45, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
 
         osc1.connect(gain);
@@ -263,7 +322,9 @@ class VoiceAgentAdapter {
         osc1.stop(now + 0.36);
         osc2.stop(now + 0.36);
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn('Robot sound synthesis error:', e);
+    }
   }
 
   playTTS(text, onEnd, onStart, options = {}) {
@@ -383,23 +444,28 @@ class VoiceAgentAdapter {
   }
 
   /**
-   * Play high-quality pre-rendered neural voice audio clips.
-   * Routes into Web Audio AnalyserNode for lip-sync and AudioContext.destination for crystal-clear playback.
+   * Play high-quality neural voice audio clips with seamless fallback to SpeechSynthesis.
+   * Feeds the Web Audio AnalyserNode for 3D character lip-sync and plays at full volume.
    */
   playAudioClip(audioUrl, onEnd, onStart, options = {}) {
     this.ensureAudioContext();
     this.isSpeaking = true;
     this.notify('stateChange', { state: 'TALKING', audioUrl });
 
-    // Play subtle robotic sound effect
+    // Play audible robotic sound effect
     this.playRobotSound(options.soundType || 'chime');
+
+    const fallbackText = options.fallbackText || options.speech;
 
     try {
       if (this.currentAudioElement) {
-        try {
-          this.currentAudioElement.pause();
-        } catch (e) {}
+        const prev = this.currentAudioElement;
         this.currentAudioElement = null;
+        try {
+          prev.pause();
+          prev.currentTime = 0;
+          prev.src = '';
+        } catch (e) {}
       }
 
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -408,15 +474,38 @@ class VoiceAgentAdapter {
         } catch (e) {}
       }
 
-      const audio = new Audio(audioUrl);
-      audio.crossOrigin = 'anonymous';
+      // Feed subtle oscillator into analyser so robot mouth moves during clip playback
+      let osc = null;
+      let gain = null;
+      if (this.audioContext && this.analyser) {
+        try {
+          osc = this.audioContext.createOscillator();
+          gain = this.audioContext.createGain();
+          gain.gain.value = 0.0001;
+          osc.frequency.setValueAtTime(220, this.audioContext.currentTime);
+          osc.connect(gain);
+          gain.connect(this.analyser);
+          osc.start();
+        } catch (e) {}
+      }
+
+      const audio = new Audio();
+      audio.src = audioUrl;
       audio.volume = 1.0;
+      audio.preload = 'auto';
       this.currentAudioElement = audio;
 
       let hasCleanedUp = false;
       const cleanup = () => {
         if (hasCleanedUp) return;
         hasCleanedUp = true;
+        if (osc) {
+          try {
+            osc.stop();
+            gain.disconnect();
+          } catch (e) {}
+          osc = null;
+        }
         this.isSpeaking = false;
         this.currentAudioElement = null;
         this.notify('stateChange', { state: 'IDLE' });
@@ -431,25 +520,28 @@ class VoiceAgentAdapter {
         cleanup();
       };
 
-      audio.onerror = () => {
+      audio.onerror = (e) => {
+        console.warn('Audio element error, falling back to speech synthesis:', e);
         cleanup();
-        if (options.fallbackText) {
-          this.playTTS(options.fallbackText, onEnd, onStart, options);
+        if (fallbackText) {
+          this.playTTS(fallbackText, onEnd, onStart, options);
         }
       };
 
       const playPromise = audio.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
+        playPromise.catch((err) => {
+          console.warn('Audio play() promise failed, falling back to speech synthesis:', err);
           cleanup();
-          if (options.fallbackText) {
-            this.playTTS(options.fallbackText, onEnd, onStart, options);
+          if (fallbackText) {
+            this.playTTS(fallbackText, onEnd, onStart, options);
           }
         });
       }
     } catch (e) {
-      if (options.fallbackText) {
-        this.playTTS(options.fallbackText, onEnd, onStart, options);
+      console.warn('playAudioClip exception, falling back to speech synthesis:', e);
+      if (fallbackText) {
+        this.playTTS(fallbackText, onEnd, onStart, options);
       } else {
         this.isSpeaking = false;
         this.notify('stateChange', { state: 'IDLE' });
@@ -463,6 +555,7 @@ class VoiceAgentAdapter {
       try {
         this.currentAudioElement.pause();
         this.currentAudioElement.currentTime = 0;
+        this.currentAudioElement.src = '';
       } catch (e) {}
       this.currentAudioElement = null;
     }

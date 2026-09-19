@@ -103,12 +103,54 @@ export function Hero({
   const loopIndexRef = useRef(0);
   const isHoveredRef = useRef(false);
 
+  // Preload all robot voice audio clips for zero-delay instant playback
+  useEffect(() => {
+    const audioUrls = [
+      ...SEQUENCE_STEPS.map((s) => s.audioSrc).filter(Boolean),
+      '/audio/voxly/hero_wave.mp3',
+      '/audio/voxly/hero_roll.mp3',
+      '/audio/voxly/hero_think.mp3',
+      '/audio/voxly/hero_celebrate.mp3',
+      '/audio/voxly/hero_dance.mp3',
+      '/audio/voxly/hero_pouty.mp3',
+    ];
+    audioUrls.forEach((url) => {
+      try {
+        const audio = new Audio();
+        audio.src = url;
+        audio.preload = 'auto';
+      } catch (e) {}
+    });
+  }, []);
+
   // Clean up all timers on unmount
   useEffect(() => {
     return () => {
       if (popupAutoDismissTimerRef.current) clearTimeout(popupAutoDismissTimerRef.current);
     };
   }, []);
+
+  // Subscribe to voiceAgent state to keep botState, lip-sync, and speaking in continuous sync
+  useEffect(() => {
+    const unsubscribe = voiceAgent.subscribe((event, data) => {
+      if (event === 'stateChange') {
+        if (data.state === 'TALKING' || data.state === 'SPEAKING') {
+          if (setBotState) setBotState('TALKING');
+          if (botControllerRef.current) {
+            botControllerRef.current.setSpeaking(true);
+            botControllerRef.current.setState('TALKING');
+          }
+        } else if (data.state === 'IDLE') {
+          if (setBotState) setBotState('IDLE');
+          if (botControllerRef.current) {
+            botControllerRef.current.setSpeaking(false);
+            botControllerRef.current.setState('IDLE');
+          }
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, [setBotState, botControllerRef]);
 
   // Helper to start the 3.5-second auto-dismiss timer
   const resetDismissTimer = (durationMs = 3500) => {
@@ -130,20 +172,55 @@ export function Hero({
     // Auto-dismiss dialogue box after 3.5 seconds
     resetDismissTimer(3500);
 
-    // Trigger 3D robot expression & physical animation
+    // Trigger 3D robot speaking state, expression & physical animation
     if (botControllerRef?.current) {
+      botControllerRef.current.setSpeaking(true);
+      botControllerRef.current.setState('TALKING');
       botControllerRef.current.setExpression(stepData.expression, true);
       if (stepData.gesture) {
         botControllerRef.current.playGesture(stepData.gesture);
       }
     }
+    if (setBotState) setBotState('TALKING');
 
-    // Play high-clarity pre-rendered neural voice clip with lip-sync and chime sound
-    const soundType = stepData.mood === 'angry' ? 'tickle' : stepData.gesture?.includes('ROLL') ? 'roll' : stepData.gesture?.includes('WAVE') ? 'wave' : 'happy';
+    const soundType = stepData.mood === 'angry'
+      ? 'tickle'
+      : stepData.gesture?.includes('ROLL')
+      ? 'roll'
+      : stepData.gesture?.includes('THINK')
+      ? 'think'
+      : stepData.gesture?.includes('CELEBRATE')
+      ? 'celebrate'
+      : stepData.gesture?.includes('DANCE')
+      ? 'dance'
+      : stepData.gesture?.includes('WAVE')
+      ? 'wave'
+      : 'happy';
+
+    const onAudioEnd = () => {
+      if (botControllerRef?.current) {
+        botControllerRef.current.setSpeaking(false);
+        botControllerRef.current.setState('IDLE');
+      }
+      if (setBotState) setBotState('IDLE');
+    };
+
+    const onAudioStart = () => {
+      if (botControllerRef?.current) {
+        botControllerRef.current.setSpeaking(true);
+        botControllerRef.current.setState('TALKING');
+      }
+      if (setBotState) setBotState('TALKING');
+    };
+
+    // Play high-clarity voice clip with lip-sync and robotic SFX, with automatic TTS fallback
     if (stepData.audioSrc) {
-      voiceAgent.playAudioClip(stepData.audioSrc, null, null, { soundType });
+      voiceAgent.playAudioClip(stepData.audioSrc, onAudioEnd, onAudioStart, {
+        soundType,
+        fallbackText: stepData.speech,
+      });
     } else {
-      voiceAgent.playTTS(stepData.speech, null, null, { soundType });
+      voiceAgent.playTTS(stepData.speech, onAudioEnd, onAudioStart, { soundType });
     }
   };
 
@@ -193,7 +270,24 @@ export function Hero({
     if (!botControllerRef?.current) return;
     resetDismissTimer(3500);
 
+    const onActionEnd = () => {
+      if (botControllerRef?.current) {
+        botControllerRef.current.setSpeaking(false);
+        botControllerRef.current.setState('IDLE');
+      }
+      if (setBotState) setBotState('IDLE');
+    };
+
+    const startSpeaking = () => {
+      if (botControllerRef?.current) {
+        botControllerRef.current.setSpeaking(true);
+        botControllerRef.current.setState('TALKING');
+      }
+      if (setBotState) setBotState('TALKING');
+    };
+
     if (actionType === 'WAVE') {
+      startSpeaking();
       botControllerRef.current.setExpression('HAPPY', true);
       botControllerRef.current.playGesture('WAVE');
       const step = {
@@ -207,8 +301,12 @@ export function Hero({
       };
       setActivePopup(step);
       setBotExpression('HAPPY');
-      voiceAgent.playAudioClip('/audio/voxly/hero_wave.mp3', null, null, { soundType: 'wave' });
+      voiceAgent.playAudioClip('/audio/voxly/hero_wave.mp3', onActionEnd, startSpeaking, {
+        soundType: 'wave',
+        fallbackText: step.speech,
+      });
     } else if (actionType === 'ROLL') {
+      startSpeaking();
       botControllerRef.current.setExpression('EXCITED', true);
       botControllerRef.current.playGesture('ROLL_DOUBLE_WAVE');
       const step = {
@@ -222,8 +320,12 @@ export function Hero({
       };
       setActivePopup(step);
       setBotExpression('EXCITED');
-      voiceAgent.playAudioClip('/audio/voxly/hero_roll.mp3', null, null, { soundType: 'roll' });
+      voiceAgent.playAudioClip('/audio/voxly/hero_roll.mp3', onActionEnd, startSpeaking, {
+        soundType: 'roll',
+        fallbackText: step.speech,
+      });
     } else if (actionType === 'THINK') {
+      startSpeaking();
       botControllerRef.current.setExpression('THINKING', true);
       botControllerRef.current.playGesture('THINKING');
       const step = {
@@ -237,8 +339,12 @@ export function Hero({
       };
       setActivePopup(step);
       setBotExpression('THINKING');
-      voiceAgent.playAudioClip('/audio/voxly/hero_think.mp3', null, null, { soundType: 'chime' });
+      voiceAgent.playAudioClip('/audio/voxly/hero_think.mp3', onActionEnd, startSpeaking, {
+        soundType: 'think',
+        fallbackText: step.speech,
+      });
     } else if (actionType === 'CELEBRATE') {
+      startSpeaking();
       botControllerRef.current.setExpression('EXCITED', true);
       botControllerRef.current.playGesture('CELEBRATE');
       const step = {
@@ -252,8 +358,12 @@ export function Hero({
       };
       setActivePopup(step);
       setBotExpression('EXCITED');
-      voiceAgent.playAudioClip('/audio/voxly/hero_celebrate.mp3', null, null, { soundType: 'happy' });
+      voiceAgent.playAudioClip('/audio/voxly/hero_celebrate.mp3', onActionEnd, startSpeaking, {
+        soundType: 'celebrate',
+        fallbackText: step.speech,
+      });
     } else if (actionType === 'DANCE') {
+      startSpeaking();
       botControllerRef.current.setExpression('HAPPY', true);
       botControllerRef.current.playGesture('DANCE');
       const step = {
@@ -267,12 +377,19 @@ export function Hero({
       };
       setActivePopup(step);
       setBotExpression('HAPPY');
-      voiceAgent.playAudioClip('/audio/voxly/hero_dance.mp3', null, null, { soundType: 'happy' });
+      voiceAgent.playAudioClip('/audio/voxly/hero_dance.mp3', onActionEnd, startSpeaking, {
+        soundType: 'dance',
+        fallbackText: step.speech,
+      });
     } else if (actionType === 'REPLAY') {
+      startSpeaking();
       if (activePopup?.audioSrc) {
-        voiceAgent.playAudioClip(activePopup.audioSrc, null, null, { soundType: 'chime' });
+        voiceAgent.playAudioClip(activePopup.audioSrc, onActionEnd, startSpeaking, {
+          soundType: 'chime',
+          fallbackText: activePopup.speech || activePopup.message,
+        });
       } else if (activePopup?.speech) {
-        voiceAgent.playTTS(activePopup.speech, null, null, { soundType: 'chime' });
+        voiceAgent.playTTS(activePopup.speech, onActionEnd, startSpeaking, { soundType: 'chime' });
       }
     }
   };
@@ -451,6 +568,7 @@ export function Hero({
                   setBotExpression(expr);
                 }}
                 pointerRef={heroPointerRef}
+                audioAnalyser={voiceAgent.getAnalyser()}
                 isInView={isHeroInView}
                 onControllerReady={(ctrl) => {
                   botControllerRef.current = ctrl;
